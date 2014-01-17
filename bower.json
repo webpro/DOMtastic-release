@@ -1,0 +1,27 @@
+{
+  "name": "jquery-evergreen",
+  "version": "0.3.3",
+  "description": "Small and fast DOM and event library for modern browsers. It has the same familiar API as jQuery, and is lean & mean with small, optional modules.",
+  "keywords": [
+    "jquery",
+    "evergreen",
+    "attr",
+    "class",
+    "DOM",
+    "event",
+    "html",
+    "selector"
+  ],
+  "authors": [{
+    "name": "Lars Kappert",
+    "email": "lars@webpro.nl",
+    "homepage": "http://webpro.nl"
+  }],
+  "homepage": "http://webpro.github.io/jquery-evergreen/",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/webpro/jquery-evergreen-release.git"
+  },
+  "main": "jquery-evergreen.amd.js",
+  "license": "MIT"
+}
