@@ -13,7 +13,7 @@ define(
      *
      * @param {String|Node|NodeList|$Object} element What to append to the element(s).
      * Clones elements as necessary.
-     * @return {Node|NodeList|$Object} Returns the object it was applied to (`this`).
+     * @return {Node|NodeList|$Object} Returns the object it was applied to.
      */
 
     var append = function(element) {
@@ -45,7 +45,7 @@ define(
      *
      * @param {String|Node|NodeList|$Object} element What to place as sibling(s) before to the element(s).
      * Clones elements as necessary.
-     * @return {Node|NodeList|$Object} Returns the object it was applied to (`this`).
+     * @return {Node|NodeList|$Object} Returns the object it was applied to.
      */
 
     var before = function(element) {
@@ -77,7 +77,7 @@ define(
      *
      * @param {String|Node|NodeList|$Object} element What to place as sibling(s) after to the element(s).
      * Clones elements as necessary.
-     * @return {Node|NodeList|$Object} Returns the object it was applied to (`this`).
+     * @return {Node|NodeList|$Object} Returns the object it was applied to.
      */
 
     var after = function(element) {

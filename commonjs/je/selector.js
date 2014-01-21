@@ -1,8 +1,7 @@
 "use strict";
-/*
- * # Selector
- */
+// # Selector
 
+var global = require("./util").global;
 var makeIterable = require("./util").makeIterable;
 
 var slice = [].slice,
@@ -57,12 +56,32 @@ var $ = function(selector, context) {
  *
  * Chaining for the `$` wrapper (aliasing `find` for `$`).
  *
- *     $('.selectors).find('.deep').$('.deepest');
+ *     $('.selector').find('.deep').$('.deepest');
  */
 
 var find = function(selector) {
     return $(selector, this);
 };
+
+/*
+ * ## Matches
+ *
+ * Returns true if the element would be selected by the specified selector string; otherwise, returns false.
+ *
+ *     $.matches(element, '.match');
+ *
+ * @param {Node} element Element to test
+ * @param {String} selector Selector to match against element
+ * @return {Boolean}
+ */
+
+var matches = (function() {
+    var context = typeof Element !== 'undefined' ? Element.prototype : global,
+        _matches = context.matches || context.matchesSelector || context.mozMatchesSelector || context.webkitMatchesSelector || context.msMatchesSelector || context.oMatchesSelector;
+    return function(element, selector) {
+        return _matches.call(element, selector);
+    }
+})();
 
 /*
  * Use the faster `getElementById` or `getElementsByClassName` over `querySelectorAll` if possible.
@@ -132,7 +151,7 @@ var createFragment = function(html) {
 var wrap = function(collection) {
 
     var wrapped = collection instanceof Array ? collection : collection.length !== undefined ? slice.call(collection) : [collection],
-        methods = $.apiMethods;
+        methods = $._api;
 
     if (hasProto) {
         wrapped.__proto__ = methods;
@@ -149,3 +168,4 @@ var wrap = function(collection) {
 
 exports.$ = $;
 exports.find = find;
+exports.matches = matches;

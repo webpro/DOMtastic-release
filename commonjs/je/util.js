@@ -1,4 +1,6 @@
 "use strict";
+// # Util
+
 /**
  * Reference to the global scope
  */
@@ -14,23 +16,23 @@ var global = new Function("return this")();
  * @return {Array}
  */
 
-var toArray = function(collection) {
+function toArray(collection) {
     return [].slice.call(collection);
-};
+}
 
 /**
  * ## makeIterable
  *
- * Make sure to return something that can be iterated over (e.g. using `forEach`).
+ * Return something that can be iterated over (e.g. using `forEach`).
  * Arrays and NodeLists are returned as-is, but `Node`s are wrapped in a `[]`.
  *
  * @param {Node|NodeList|Array} element
  * @return {Array|NodeList}
  */
 
-var makeIterable = function(element) {
+function makeIterable(element) {
     return element.length === undefined || element === window ? [element] : element;
-};
+}
 
 /**
  * ## each
@@ -42,7 +44,7 @@ var makeIterable = function(element) {
  * @returns {Node|NodeList|Array}
  */
 
-var each = function(collection, callback) {
+function each(collection, callback) {
     var length = collection.length;
     if (length !== undefined) {
         for (var i = 0; i < length; i++){
@@ -52,9 +54,32 @@ var each = function(collection, callback) {
         callback(collection);
     }
     return collection;
-};
+}
+
+/**
+ * ## extend
+ *
+ * Assign properties from source object(s) to target object
+ *
+ * @method extend
+ * @param {Object} obj Object to extend
+ * @param {Object} [source] Object to extend from
+ * @returns {Object} Extended object
+ */
+
+function extend(obj) {
+    [].slice.call(arguments, 1).forEach(function(source) {
+        if (source) {
+            for (var prop in source) {
+                obj[prop] = source[prop];
+            }
+        }
+    });
+    return obj;
+}
 
 exports.global = global;
 exports.toArray = toArray;
 exports.makeIterable = makeIterable;
 exports.each = each;
+exports.extend = extend;

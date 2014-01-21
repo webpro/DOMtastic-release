@@ -3,6 +3,8 @@ define(
   'je/util',["exports"],
   function(__exports__) {
     
+    // # Util
+
     /**
      * Reference to the global scope
      */
@@ -18,23 +20,23 @@ define(
      * @return {Array}
      */
 
-    var toArray = function(collection) {
+    function toArray(collection) {
         return [].slice.call(collection);
-    };
+    }
 
     /**
      * ## makeIterable
      *
-     * Make sure to return something that can be iterated over (e.g. using `forEach`).
+     * Return something that can be iterated over (e.g. using `forEach`).
      * Arrays and NodeLists are returned as-is, but `Node`s are wrapped in a `[]`.
      *
      * @param {Node|NodeList|Array} element
      * @return {Array|NodeList}
      */
 
-    var makeIterable = function(element) {
+    function makeIterable(element) {
         return element.length === undefined || element === window ? [element] : element;
-    };
+    }
 
     /**
      * ## each
@@ -46,7 +48,7 @@ define(
      * @returns {Node|NodeList|Array}
      */
 
-    var each = function(collection, callback) {
+    function each(collection, callback) {
         var length = collection.length;
         if (length !== undefined) {
             for (var i = 0; i < length; i++){
@@ -56,12 +58,253 @@ define(
             callback(collection);
         }
         return collection;
-    };
+    }
+
+    /**
+     * ## extend
+     *
+     * Assign properties from source object(s) to target object
+     *
+     * @method extend
+     * @param {Object} obj Object to extend
+     * @param {Object} [source] Object to extend from
+     * @returns {Object} Extended object
+     */
+
+    function extend(obj) {
+        [].slice.call(arguments, 1).forEach(function(source) {
+            if (source) {
+                for (var prop in source) {
+                    obj[prop] = source[prop];
+                }
+            }
+        });
+        return obj;
+    }
 
     __exports__.global = global;
     __exports__.toArray = toArray;
     __exports__.makeIterable = makeIterable;
     __exports__.each = each;
+    __exports__.extend = extend;
+  });
+define(
+  'je/selector',["./util","exports"],
+  function(__dependency1__, __exports__) {
+    
+    // # Selector
+
+    var global = __dependency1__.global;
+    var makeIterable = __dependency1__.makeIterable;
+
+    var slice = [].slice,
+        hasProto = !Object.prototype.isPrototypeOf({ __proto__: null }),
+        reFragment = /^\s*<(\w+|!)[^>]*>/,
+        reSingleTag = /^<(\w+)\s*\/?>(?:<\/\1>|)$/,
+        reSimpleSelector = /^[\.#]?[\w-]*$/;
+
+    /*
+     * ## $
+     *
+     * Versatile wrapper for `querySelectorAll`.
+     *
+     * @param {String|Node|NodeList} selector Query selector.
+     * Providing a selector string gives the default behavior.
+     * Providing a Node or NodeList will return a NodeList or $Object containing the same element(s).
+     * Providing a string that looks like HTML (i.e. starts with a `<tag>`) results in an attempt to create a DOM Fragment from it.
+     * @param {String|Node|NodeList} context=`document` The context for the selector to query elements.
+     * @return {NodeList|$Object}
+     */
+
+    var $ = function(selector, context) {
+
+        var collection;
+
+        if (!selector) {
+
+            collection = document.querySelectorAll(null);
+
+        } else if (typeof selector !== 'string') {
+
+            collection = makeIterable(selector);
+
+        } else if (reFragment.test(selector)) {
+
+            collection = createFragment(selector);
+
+        } else {
+
+            context = context ? typeof context === 'string' ? document.querySelector(context) : context.length ? context[0] : context : document;
+
+            collection = querySelector(selector, context);
+
+        }
+
+        return $.isNative ? collection : wrap(collection);
+
+    };
+
+    /*
+     * ## Find
+     *
+     * Chaining for the `$` wrapper (aliasing `find` for `$`).
+     *
+     *     $('.selector').find('.deep').$('.deepest');
+     */
+
+    var find = function(selector) {
+        return $(selector, this);
+    };
+
+    /*
+     * ## Matches
+     *
+     * Returns true if the element would be selected by the specified selector string; otherwise, returns false.
+     *
+     *     $.matches(element, '.match');
+     *
+     * @param {Node} element Element to test
+     * @param {String} selector Selector to match against element
+     * @return {Boolean}
+     */
+
+    var matches = (function() {
+        var context = typeof Element !== 'undefined' ? Element.prototype : global,
+            _matches = context.matches || context.matchesSelector || context.mozMatchesSelector || context.webkitMatchesSelector || context.msMatchesSelector || context.oMatchesSelector;
+        return function(element, selector) {
+            return _matches.call(element, selector);
+        }
+    })();
+
+    /*
+     * Use the faster `getElementById` or `getElementsByClassName` over `querySelectorAll` if possible.
+     *
+     * @method querySelector
+     * @private
+     * @param {String} selector Query selector.
+     * @param {Node} context The context for the selector to query elements.
+     * @return {NodeList|Node}
+     */
+
+    var querySelector = function(selector, context) {
+
+        var isSimpleSelector = reSimpleSelector.test(selector);
+
+        if (isSimpleSelector && !$.isNative) {
+            if (selector[0] === '#') {
+                return (context.getElementById ? context : document).getElementById(selector.slice(1));
+            }
+            if (selector[0] === '.') {
+                return context.getElementsByClassName(selector.slice(1));
+            }
+            return context.getElementsByTagName(selector);
+        }
+
+        return context.querySelectorAll(selector);
+
+    };
+
+    /*
+     * Create DOM fragment from an HTML string
+     *
+     * @method createFragment
+     * @private
+     * @param {String} html String representing HTML.
+     * @return {NodeList}
+     */
+
+    var createFragment = function(html) {
+
+        if (reSingleTag.test(html)) {
+            return document.createElement(RegExp.$1);
+        }
+
+        var elements = [],
+            container = document.createElement('div'),
+            children = container.childNodes;
+
+        container.innerHTML = html;
+
+        for (var i = 0, l = children.length; i < l; i++) {
+            elements.push(children[i]);
+        }
+
+        return elements;
+    };
+
+    /*
+     * Calling `$(selector)` returns a wrapped array of elements [by default](mode.html).
+     *
+     * @method wrap
+     * @private
+     * @param {NodeList|Node|Array} collection Element(s) to wrap as a `$Object`.
+     * @return {$Object} Array with augmented API.
+     */
+
+    var wrap = function(collection) {
+
+        var wrapped = collection instanceof Array ? collection : collection.length !== undefined ? slice.call(collection) : [collection],
+            methods = $._api;
+
+        if (hasProto) {
+            wrapped.__proto__ = methods;
+        } else {
+            for (var key in methods) {
+                wrapped[key] = methods[key];
+            }
+        }
+
+        return wrapped;
+    };
+
+    // Export interface
+
+    __exports__.$ = $;
+    __exports__.find = find;
+    __exports__.matches = matches;
+  });
+define(
+  'je/array',["./util","./selector","exports"],
+  function(__dependency1__, __dependency2__, __exports__) {
+    
+    // # Array
+
+    var _each = __dependency1__.each;
+    var $ = __dependency2__.$;
+    var matches = __dependency2__.matches;
+
+    var ArrayProto = Array.prototype;
+
+    // Filter the collection by selector or function.
+
+    function filter(selector) {
+        var callback = typeof selector === 'function' ? selector : function(element) {
+            return matches(element, selector);
+        };
+        return $(ArrayProto.filter.call(this, callback));
+    }
+
+    function each(callback) {
+        return _each(this, callback);
+    }
+
+    function reverse() {
+        var elements = ArrayProto.slice.call(this);
+        return $(ArrayProto.reverse.call(elements));
+    }
+
+    var every = ArrayProto.every,
+        forEach = each,
+        map = ArrayProto.map,
+        some = ArrayProto.some;
+
+    __exports__.each = each;
+    __exports__.every = every;
+    __exports__.filter = filter;
+    __exports__.forEach = forEach;
+    __exports__.map = map;
+    __exports__.reverse = reverse;
+    __exports__.some = some;
   });
 define(
   'je/attr',["./util","exports"],
@@ -74,9 +317,15 @@ define(
     /**
      * ## attr
      *
+     * Get the value of an attribute for the first element, or set one or more attributes for each element in the collection.
+     *
      *     $('.item').attr('attrName');
      *     $('.item').attr('attrName', 'attrValue');
      *     $('.item').attr({'attr1', 'value1'}, {'attr2', 'value2});
+     *
+     * @param {String|Object} key The name of the attribute to get or set. Or an object containing key-value pairs to set as attributes.
+     * @param {String} [value] The value of the attribute to set.
+     * @return {$Object} or Node/List in native mode
      */
 
     var attr = function(key, value) {
@@ -100,13 +349,13 @@ define(
 
     // Export interface
 
-    __exports__["default"] = attr;
+    __exports__.attr = attr;
   });
 define(
   'je/class',["./util","exports"],
   function(__dependency1__, __exports__) {
     
-    // # Class methods
+    // # Class
 
     var makeIterable = __dependency1__.makeIterable;
     var each = __dependency1__.each;
@@ -116,8 +365,8 @@ define(
      *
      *     $('.item').addClass('bar');
      *
-     * @param {string} value The class name to add to the element(s).
-     * @return {$Object} or Node/List in native mode (`this`)
+     * @param {String} value The class name to add to the element(s).
+     * @return {$Object} or Node/List in native mode
      */
 
     var addClass = function(value) {
@@ -132,8 +381,8 @@ define(
      *
      *     $('.items').removeClass('bar');
      *
-     * @param {string} value The class name to remove from the element(s).
-     * @return {$Object} or Node/List in native mode (`this`)
+     * @param {String} value The class name to remove from the element(s).
+     * @return {$Object} or Node/List in native mode
      */
 
     var removeClass = function(value) {
@@ -148,8 +397,8 @@ define(
      *
      *     $('.item').toggleClass('bar');
      *
-     * @param {string} value The class name to toggle at the element(s).
-     * @return {$Object} or Node/List in native mode (`this`)
+     * @param {String} value The class name to toggle at the element(s).
+     * @return {$Object} or Node/List in native mode
      */
 
     var toggleClass = function(value) {
@@ -164,7 +413,7 @@ define(
      *
      *     $('.item').hasClass('bar');
      *
-     * @param {string} value Check if the DOM element contains the class name. When applied to multiple elements,
+     * @param {String} value Check if the DOM element contains the class name. When applied to multiple elements,
      * returns `true` if _any_ of them contains the class name.
      * @return {boolean}
      */
@@ -197,7 +446,7 @@ define(
      *
      * @param {String|Node|NodeList|$Object} element What to append to the element(s).
      * Clones elements as necessary.
-     * @return {Node|NodeList|$Object} Returns the object it was applied to (`this`).
+     * @return {Node|NodeList|$Object} Returns the object it was applied to.
      */
 
     var append = function(element) {
@@ -229,7 +478,7 @@ define(
      *
      * @param {String|Node|NodeList|$Object} element What to place as sibling(s) before to the element(s).
      * Clones elements as necessary.
-     * @return {Node|NodeList|$Object} Returns the object it was applied to (`this`).
+     * @return {Node|NodeList|$Object} Returns the object it was applied to.
      */
 
     var before = function(element) {
@@ -261,7 +510,7 @@ define(
      *
      * @param {String|Node|NodeList|$Object} element What to place as sibling(s) after to the element(s).
      * Clones elements as necessary.
-     * @return {Node|NodeList|$Object} Returns the object it was applied to (`this`).
+     * @return {Node|NodeList|$Object} Returns the object it was applied to.
      */
 
     var after = function(element) {
@@ -313,13 +562,14 @@ define(
     __exports__.after = after;
   });
 define(
-  'je/event',["./util","exports"],
-  function(__dependency1__, __exports__) {
+  'je/event',["./util","./selector","exports"],
+  function(__dependency1__, __dependency2__, __exports__) {
     
     // # Events
 
     var global = __dependency1__.global;
     var each = __dependency1__.each;
+    var matches = __dependency2__.matches;
 
     /**
      * ## on
@@ -333,7 +583,7 @@ define(
      * @param {String} [selector] Selector to filter descendants that delegate the event to this element.
      * @param {Function} handler Event handler
      * @param {Boolean} useCapture=false
-     * @return {Node|NodeList|$Object} Returns the object it was applied to (`this`).
+     * @return {Node|NodeList|$Object} Returns the object it was applied to.
      */
 
     var on = function(eventName, selector, handler, useCapture) {
@@ -380,7 +630,7 @@ define(
      * @param {String} [selector] Selector to filter descendants that undelegate the event to this element.
      * @param {Function} handler Event handler
      * @param {Boolean} useCapture=false
-     * @return {Node|NodeList|$Object} Returns the object it was applied to (`this`).
+     * @return {Node|NodeList|$Object} Returns the object it was applied to.
      */
 
     var off = function(eventName, selector, handler, useCapture) {
@@ -593,20 +843,13 @@ define(
 
     var delegateHandler = function(selector, handler, event) {
         var eventTarget = event._target || event.target;
-        if (matchesSelector.call(eventTarget, selector)) {
+        if (matches(eventTarget, selector)) {
             if (!event.currentTarget) {
                 event.currentTarget = eventTarget;
             }
             handler.call(eventTarget, event);
         }
     };
-
-    // Get the available `matches` or `matchesSelector` method.
-
-    var matchesSelector = (function() {
-        var context = typeof Element !== 'undefined' ? Element.prototype : global;
-        return context.matches || context.matchesSelector || context.mozMatchesSelector || context.webkitMatchesSelector || context.msMatchesSelector || context.oMatchesSelector;
-    })();
 
     /**
      * Polyfill for CustomEvent, borrowed from [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent#Polyfill).
@@ -661,197 +904,45 @@ define(
     /*
      * ## html
      *
+     * Get the HTML contents of the first element, or set the HTML contents for each element in the collection.
+     *
      *     $('.item').html();
      *     $('.item').html('<span>more</span>');
      *
      * @param {String} [fragment] HTML fragment to set for the element
-     * @return {Node|NodeList|$Object} Returns the object it was applied to (`this`).
+     * @return {Node|NodeList|$Object} Returns the object it was applied to.
      */
 
     var html = function(fragment) {
 
-        if (!fragment) {
+        if (typeof fragment !== 'string') {
             return (this.nodeType ? this : this[0]).innerHTML;
         }
 
         each(this, function(element) {
             element.innerHTML = fragment;
         });
+
         return this;
 
     };
 
     // Export interface
 
-    __exports__["default"] = html;
-  });
-define(
-  'je/selector',["./util","exports"],
-  function(__dependency1__, __exports__) {
-    
-    /*
-     * # Selector
-     */
-
-    var makeIterable = __dependency1__.makeIterable;
-
-    var slice = [].slice,
-        hasProto = !Object.prototype.isPrototypeOf({ __proto__: null }),
-        reFragment = /^\s*<(\w+|!)[^>]*>/,
-        reSingleTag = /^<(\w+)\s*\/?>(?:<\/\1>|)$/,
-        reSimpleSelector = /^[\.#]?[\w-]*$/;
-
-    /*
-     * ## $
-     *
-     * Versatile wrapper for `querySelectorAll`.
-     *
-     * @param {String|Node|NodeList} selector Query selector.
-     * Providing a selector string gives the default behavior.
-     * Providing a Node or NodeList will return a NodeList or $Object containing the same element(s).
-     * Providing a string that looks like HTML (i.e. starts with a `<tag>`) results in an attempt to create a DOM Fragment from it.
-     * @param {String|Node|NodeList} context=`document` The context for the selector to query elements.
-     * @return {NodeList|$Object}
-     */
-
-    var $ = function(selector, context) {
-
-        var collection;
-
-        if (!selector) {
-
-            collection = document.querySelectorAll(null);
-
-        } else if (typeof selector !== 'string') {
-
-            collection = makeIterable(selector);
-
-        } else if (reFragment.test(selector)) {
-
-            collection = createFragment(selector);
-
-        } else {
-
-            context = context ? typeof context === 'string' ? document.querySelector(context) : context.length ? context[0] : context : document;
-
-            collection = querySelector(selector, context);
-
-        }
-
-        return $.isNative ? collection : wrap(collection);
-
-    };
-
-    /*
-     * ## Find
-     *
-     * Chaining for the `$` wrapper (aliasing `find` for `$`).
-     *
-     *     $('.selectors).find('.deep').$('.deepest');
-     */
-
-    var find = function(selector) {
-        return $(selector, this);
-    };
-
-    /*
-     * Use the faster `getElementById` or `getElementsByClassName` over `querySelectorAll` if possible.
-     *
-     * @method querySelector
-     * @private
-     * @param {String} selector Query selector.
-     * @param {Node} context The context for the selector to query elements.
-     * @return {NodeList|Node}
-     */
-
-    var querySelector = function(selector, context) {
-
-        var isSimpleSelector = reSimpleSelector.test(selector);
-
-        if (isSimpleSelector && !$.isNative) {
-            if (selector[0] === '#') {
-                return (context.getElementById ? context : document).getElementById(selector.slice(1));
-            }
-            if (selector[0] === '.') {
-                return context.getElementsByClassName(selector.slice(1));
-            }
-            return context.getElementsByTagName(selector);
-        }
-
-        return context.querySelectorAll(selector);
-
-    };
-
-    /*
-     * Create DOM fragment from an HTML string
-     *
-     * @method createFragment
-     * @private
-     * @param {String} html String representing HTML.
-     * @return {NodeList}
-     */
-
-    var createFragment = function(html) {
-
-        if (reSingleTag.test(html)) {
-            return document.createElement(RegExp.$1);
-        }
-
-        var elements = [],
-            container = document.createElement('div'),
-            children = container.childNodes;
-
-        container.innerHTML = html;
-
-        for (var i = 0, l = children.length; i < l; i++) {
-            elements.push(children[i]);
-        }
-
-        return elements;
-    };
-
-    /*
-     * Calling `$(selector)` returns a wrapped array of elements [by default](mode.html).
-     *
-     * @method wrap
-     * @private
-     * @param {NodeList|Node|Array} collection Element(s) to wrap as a `$Object`.
-     * @return {$Object} Array with augmented API.
-     */
-
-    var wrap = function(collection) {
-
-        var wrapped = collection instanceof Array ? collection : collection.length !== undefined ? slice.call(collection) : [collection],
-            methods = $.apiMethods;
-
-        if (hasProto) {
-            wrapped.__proto__ = methods;
-        } else {
-            for (var key in methods) {
-                wrapped[key] = methods[key];
-            }
-        }
-
-        return wrapped;
-    };
-
-    // Export interface
-
-    __exports__.$ = $;
-    __exports__.find = find;
+    __exports__.html = html;
   });
 define(
   'je/noconflict',["./util","exports"],
   function(__dependency1__, __exports__) {
     
-    var global = __dependency1__.global;
-
     /*
      * # noConflict
      *
      * In case another library sets the global `$` variable before jQuery Evergreen does,
      * this method can be used to return the global `$` to that other library.
      */
+
+    var global = __dependency1__.global;
 
     // Save the previous value of the global `$` variable, so that it can be restored later on.
 
@@ -867,99 +958,50 @@ define(
 
     // Export interface
 
-    __exports__["default"] = noConflict;
+    __exports__.noConflict = noConflict;
   });
 define(
-  'je/api',["./attr","./class","./dom","./event","./html","./selector","./noconflict","exports"],
-  function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __dependency5__, __dependency6__, __dependency7__, __exports__) {
+  'je/api',["./util","./array","./attr","./class","./dom","./event","./html","./selector","./noconflict","exports"],
+  function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __dependency5__, __dependency6__, __dependency7__, __dependency8__, __dependency9__, __exports__) {
     
-    /*
-     * # API
-     *
-     * Import modules to build the API.
-     */
+    // # API
+
+    var extend = __dependency1__.extend;
 
     var api = {},
+        apiNodeList = {},
         $ = {};
 
-    var attr = __dependency1__["default"];
-    api.attr = attr;
+    // Import modules to build up the API
 
-    var addClass = __dependency2__.addClass;
-    var removeClass = __dependency2__.removeClass;
-    var toggleClass = __dependency2__.toggleClass;
-    var hasClass = __dependency2__.hasClass;
-    api.addClass = addClass;
-    api.removeClass = removeClass;
-    api.toggleClass = toggleClass;
-    api.hasClass = hasClass;
+    var array = __dependency2__;
+    var attr = __dependency3__;
+    var className = __dependency4__;
+    var dom = __dependency5__;
+    var event = __dependency6__;
+    var html = __dependency7__;
+    var selector = __dependency8__;
 
-    var append = __dependency3__.append;
-    var before = __dependency3__.before;
-    var after = __dependency3__.after;
-    api.append = append;
-    api.before = before;
-    api.after = after;
+    if (selector !== undefined) {
+        $ = selector.$;
+        $.matches = selector.matches;
+        api.find = selector.find;
+    }
 
-    var on = __dependency4__.on;
-    var off = __dependency4__.off;
-    var delegate = __dependency4__.delegate;
-    var undelegate = __dependency4__.undelegate;
-    var trigger = __dependency4__.trigger;
-    api.on = on;
-    api.off = off;
-    api.delegate = delegate;
-    api.undelegate = undelegate;
-    api.trigger = trigger;
+    var noconflict = __dependency9__;
+    extend($, noconflict);
 
-    var html = __dependency5__["default"];
-    api.html = html;
+    extend(api, array, attr, className, dom, event, html);
+    extend(apiNodeList, array);
 
-    var $ = __dependency6__.$;
-    var find = __dependency6__.find;
-    api.find = find;
+    // Util
 
-    var noConflict = __dependency7__["default"];
-    $.noConflict = noConflict;
+    $.extend = extend;
 
-    /*
-     * The `apiNodeList` object represents the API that gets augmented onto
-     * either the wrapped array or the native `NodeList` object.
-     */
+    // Internal properties to switch between default and native mode
 
-    var apiNodeList = {};
-
-    ['every', 'filter', 'forEach', 'map', 'reverse', 'some'].forEach(function(methodName) {
-        apiNodeList[methodName] = Array.prototype[methodName];
-    });
-
-    /*
-     * Augment the `$` function to be able to:
-     *
-     * - wrap the `$` objects and add the API methods
-     * - switch to native mode
-     */
-
-    $.getNodeMethods = function() {
-        return api;
-    };
-
-    $.getNodeListMethods = function() {
-        return apiNodeList;
-    };
-
-    $.apiMethods = function(api, apiNodeList) {
-
-        var methods = apiNodeList,
-            key;
-
-        for (key in api) {
-            methods[key] = api[key];
-        }
-
-        return methods;
-
-    }(api, apiNodeList);
+    $._api = api;
+    $._apiNodeList = apiNodeList;
 
     // Export interface
 

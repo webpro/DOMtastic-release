@@ -2,7 +2,7 @@ define(
   ["./util","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
-    // # Class methods
+    // # Class
 
     var makeIterable = __dependency1__.makeIterable;
     var each = __dependency1__.each;
@@ -12,8 +12,8 @@ define(
      *
      *     $('.item').addClass('bar');
      *
-     * @param {string} value The class name to add to the element(s).
-     * @return {$Object} or Node/List in native mode (`this`)
+     * @param {String} value The class name to add to the element(s).
+     * @return {$Object} or Node/List in native mode
      */
 
     var addClass = function(value) {
@@ -28,8 +28,8 @@ define(
      *
      *     $('.items').removeClass('bar');
      *
-     * @param {string} value The class name to remove from the element(s).
-     * @return {$Object} or Node/List in native mode (`this`)
+     * @param {String} value The class name to remove from the element(s).
+     * @return {$Object} or Node/List in native mode
      */
 
     var removeClass = function(value) {
@@ -44,8 +44,8 @@ define(
      *
      *     $('.item').toggleClass('bar');
      *
-     * @param {string} value The class name to toggle at the element(s).
-     * @return {$Object} or Node/List in native mode (`this`)
+     * @param {String} value The class name to toggle at the element(s).
+     * @return {$Object} or Node/List in native mode
      */
 
     var toggleClass = function(value) {
@@ -60,7 +60,7 @@ define(
      *
      *     $('.item').hasClass('bar');
      *
-     * @param {string} value Check if the DOM element contains the class name. When applied to multiple elements,
+     * @param {String} value Check if the DOM element contains the class name. When applied to multiple elements,
      * returns `true` if _any_ of them contains the class name.
      * @return {boolean}
      */

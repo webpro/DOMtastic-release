@@ -1,12 +1,12 @@
 "use strict";
-var global = require("./util").global;
-
 /*
  * # noConflict
  *
  * In case another library sets the global `$` variable before jQuery Evergreen does,
  * this method can be used to return the global `$` to that other library.
  */
+
+var global = require("./util").global;
 
 // Save the previous value of the global `$` variable, so that it can be restored later on.
 
@@ -22,4 +22,4 @@ var noConflict = function() {
 
 // Export interface
 
-exports["default"] = noConflict;
+exports.noConflict = noConflict;

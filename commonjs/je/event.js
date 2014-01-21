@@ -3,6 +3,7 @@
 
 var global = require("./util").global;
 var each = require("./util").each;
+var matches = require("./selector").matches;
 
 /**
  * ## on
@@ -16,7 +17,7 @@ var each = require("./util").each;
  * @param {String} [selector] Selector to filter descendants that delegate the event to this element.
  * @param {Function} handler Event handler
  * @param {Boolean} useCapture=false
- * @return {Node|NodeList|$Object} Returns the object it was applied to (`this`).
+ * @return {Node|NodeList|$Object} Returns the object it was applied to.
  */
 
 var on = function(eventName, selector, handler, useCapture) {
@@ -63,7 +64,7 @@ var on = function(eventName, selector, handler, useCapture) {
  * @param {String} [selector] Selector to filter descendants that undelegate the event to this element.
  * @param {Function} handler Event handler
  * @param {Boolean} useCapture=false
- * @return {Node|NodeList|$Object} Returns the object it was applied to (`this`).
+ * @return {Node|NodeList|$Object} Returns the object it was applied to.
  */
 
 var off = function(eventName, selector, handler, useCapture) {
@@ -276,20 +277,13 @@ var clearHandlers = function(element) {
 
 var delegateHandler = function(selector, handler, event) {
     var eventTarget = event._target || event.target;
-    if (matchesSelector.call(eventTarget, selector)) {
+    if (matches(eventTarget, selector)) {
         if (!event.currentTarget) {
             event.currentTarget = eventTarget;
         }
         handler.call(eventTarget, event);
     }
 };
-
-// Get the available `matches` or `matchesSelector` method.
-
-var matchesSelector = (function() {
-    var context = typeof Element !== 'undefined' ? Element.prototype : global;
-    return context.matches || context.matchesSelector || context.mozMatchesSelector || context.webkitMatchesSelector || context.msMatchesSelector || context.oMatchesSelector;
-})();
 
 /**
  * Polyfill for CustomEvent, borrowed from [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent#Polyfill).

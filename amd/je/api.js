@@ -1,99 +1,49 @@
 define(
-  ["./attr","./class","./dom","./event","./html","./selector","./mode","./noconflict","exports"],
-  function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __dependency5__, __dependency6__, __dependency7__, __dependency8__, __exports__) {
+  ["./util","./array","./attr","./class","./dom","./dom_extra","./event","./html","./selector","./selector_extra","./mode","./noconflict","exports"],
+  function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __dependency5__, __dependency6__, __dependency7__, __dependency8__, __dependency9__, __dependency10__, __dependency11__, __dependency12__, __exports__) {
     "use strict";
-    /*
-     * # API
-     *
-     * Import modules to build the API.
-     */
+    // # API
+
+    var extend = __dependency1__.extend;
 
     var api = {},
+        apiNodeList = {},
         $ = {};
 
-    var attr = __dependency1__["default"];
-    api.attr = attr;
+    // Import modules to build up the API
 
-    var addClass = __dependency2__.addClass;
-    var removeClass = __dependency2__.removeClass;
-    var toggleClass = __dependency2__.toggleClass;
-    var hasClass = __dependency2__.hasClass;
-    api.addClass = addClass;
-    api.removeClass = removeClass;
-    api.toggleClass = toggleClass;
-    api.hasClass = hasClass;
+    var array = __dependency2__;
+    var attr = __dependency3__;
+    var className = __dependency4__;
+    var dom = __dependency5__;
+    var dom_extra = __dependency6__;
+    var event = __dependency7__;
+    var html = __dependency8__;
+    var selector = __dependency9__;
+    var selector_extra = __dependency10__;
 
-    var append = __dependency3__.append;
-    var before = __dependency3__.before;
-    var after = __dependency3__.after;
-    api.append = append;
-    api.before = before;
-    api.after = after;
+    if (selector !== undefined) {
+        $ = selector.$;
+        $.matches = selector.matches;
+        api.find = selector.find;
+    }
 
-    var on = __dependency4__.on;
-    var off = __dependency4__.off;
-    var delegate = __dependency4__.delegate;
-    var undelegate = __dependency4__.undelegate;
-    var trigger = __dependency4__.trigger;
-    api.on = on;
-    api.off = off;
-    api.delegate = delegate;
-    api.undelegate = undelegate;
-    api.trigger = trigger;
+    var mode = __dependency11__;
+    extend($, mode);
+    var noconflict = __dependency12__;
+    extend($, noconflict);
 
-    var html = __dependency5__["default"];
-    api.html = html;
+    extend(api, array, attr, className, dom, dom_extra, event, html, selector_extra);
+    extend(apiNodeList, array);
 
-    var $ = __dependency6__.$;
-    var find = __dependency6__.find;
-    api.find = find;
+    // Util
 
-    var isNative = __dependency7__.isNative;
-    var native = __dependency7__.native;
-    $.isNative = isNative;
-    $.native = native;
+    $.extend = extend;
 
-    var noConflict = __dependency8__["default"];
-    $.noConflict = noConflict;
+    // Internal properties to switch between default and native mode
 
-    /*
-     * The `apiNodeList` object represents the API that gets augmented onto
-     * either the wrapped array or the native `NodeList` object.
-     */
-
-    var apiNodeList = {};
-
-    ['every', 'filter', 'forEach', 'map', 'reverse', 'some'].forEach(function(methodName) {
-        apiNodeList[methodName] = Array.prototype[methodName];
-    });
-
-    /*
-     * Augment the `$` function to be able to:
-     *
-     * - wrap the `$` objects and add the API methods
-     * - switch to native mode
-     */
-
-    $.getNodeMethods = function() {
-        return api;
-    };
-
-    $.getNodeListMethods = function() {
-        return apiNodeList;
-    };
-
-    $.apiMethods = function(api, apiNodeList) {
-
-        var methods = apiNodeList,
-            key;
-
-        for (key in api) {
-            methods[key] = api[key];
-        }
-
-        return methods;
-
-    }(api, apiNodeList);
+    $._api = api;
+    $._apiNodeList = apiNodeList;
 
     // Export interface
 

@@ -2,14 +2,14 @@ define(
   ["./util","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
-    var global = __dependency1__.global;
-
     /*
      * # noConflict
      *
      * In case another library sets the global `$` variable before jQuery Evergreen does,
      * this method can be used to return the global `$` to that other library.
      */
+
+    var global = __dependency1__.global;
 
     // Save the previous value of the global `$` variable, so that it can be restored later on.
 
@@ -25,5 +25,5 @@ define(
 
     // Export interface
 
-    __exports__["default"] = noConflict;
+    __exports__.noConflict = noConflict;
   });

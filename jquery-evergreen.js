@@ -1,97 +1,111 @@
 require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";
-/*
- * # API
- *
- * Import modules to build the API.
- */
+function __es6_transpiler_warn__(warning) {
+  if (typeof console === 'undefined') {
+  } else if (typeof console.warn === "function") {
+    console.warn(warning);
+  } else if (typeof console.log === "function") {
+    console.log(warning);
+  }
+}
+function __es6_transpiler_build_module_object__(name, imported) {
+  var moduleInstanceObject = Object.create ? Object.create(null) : {};
+  if (typeof imported === "function") {
+    __es6_transpiler_warn__("imported module '"+name+"' exported a function - this may not work as expected");
+  }
+  for (var key in imported) {
+    if (Object.prototype.hasOwnProperty.call(imported, key)) {
+      moduleInstanceObject[key] = imported[key];
+    }
+  }
+  if (Object.freeze) {
+    Object.freeze(moduleInstanceObject);
+  }
+  return moduleInstanceObject;
+}
+// # API
+
+var extend = require("./util").extend;
 
 var api = {},
+    apiNodeList = {},
     $ = {};
 
-var attr = require("./attr")["default"];
-api.attr = attr;
+// Import modules to build up the API
 
-var addClass = require("./class").addClass;
-var removeClass = require("./class").removeClass;
-var toggleClass = require("./class").toggleClass;
-var hasClass = require("./class").hasClass;
-api.addClass = addClass;
-api.removeClass = removeClass;
-api.toggleClass = toggleClass;
-api.hasClass = hasClass;
+var array = __es6_transpiler_build_module_object__("array", require("./array"));
+var attr = __es6_transpiler_build_module_object__("attr", require("./attr"));
+var className = __es6_transpiler_build_module_object__("className", require("./class"));
+var dom = __es6_transpiler_build_module_object__("dom", require("./dom"));
+var event = __es6_transpiler_build_module_object__("event", require("./event"));
+var html = __es6_transpiler_build_module_object__("html", require("./html"));
+var selector = __es6_transpiler_build_module_object__("selector", require("./selector"));
 
-var append = require("./dom").append;
-var before = require("./dom").before;
-var after = require("./dom").after;
-api.append = append;
-api.before = before;
-api.after = after;
+if (selector !== undefined) {
+    $ = selector.$;
+    $.matches = selector.matches;
+    api.find = selector.find;
+}
 
-var on = require("./event").on;
-var off = require("./event").off;
-var delegate = require("./event").delegate;
-var undelegate = require("./event").undelegate;
-var trigger = require("./event").trigger;
-api.on = on;
-api.off = off;
-api.delegate = delegate;
-api.undelegate = undelegate;
-api.trigger = trigger;
+var noconflict = __es6_transpiler_build_module_object__("noconflict", require("./noconflict"));
+extend($, noconflict);
 
-var html = require("./html")["default"];
-api.html = html;
+extend(api, array, attr, className, dom, event, html);
+extend(apiNodeList, array);
 
-var $ = require("./selector").$;
-var find = require("./selector").find;
-api.find = find;
+// Util
 
-var noConflict = require("./noconflict")["default"];
-$.noConflict = noConflict;
+$.extend = extend;
 
-/*
- * The `apiNodeList` object represents the API that gets augmented onto
- * either the wrapped array or the native `NodeList` object.
- */
+// Internal properties to switch between default and native mode
 
-var apiNodeList = {};
-
-['every', 'filter', 'forEach', 'map', 'reverse', 'some'].forEach(function(methodName) {
-    apiNodeList[methodName] = Array.prototype[methodName];
-});
-
-/*
- * Augment the `$` function to be able to:
- *
- * - wrap the `$` objects and add the API methods
- * - switch to native mode
- */
-
-$.getNodeMethods = function() {
-    return api;
-};
-
-$.getNodeListMethods = function() {
-    return apiNodeList;
-};
-
-$.apiMethods = function(api, apiNodeList) {
-
-    var methods = apiNodeList,
-        key;
-
-    for (key in api) {
-        methods[key] = api[key];
-    }
-
-    return methods;
-
-}(api, apiNodeList);
+$._api = api;
+$._apiNodeList = apiNodeList;
 
 // Export interface
 
 exports["default"] = $;
-},{"./attr":2,"./class":3,"./dom":4,"./event":5,"./html":6,"./noconflict":7,"./selector":8}],2:[function(require,module,exports){
+},{"./array":2,"./attr":3,"./class":4,"./dom":5,"./event":6,"./html":7,"./noconflict":8,"./selector":9,"./util":10}],2:[function(require,module,exports){
+"use strict";
+// # Array
+
+var _each = require("./util").each;
+var $ = require("./selector").$;
+var matches = require("./selector").matches;
+
+var ArrayProto = Array.prototype;
+
+// Filter the collection by selector or function.
+
+function filter(selector) {
+    var callback = typeof selector === 'function' ? selector : function(element) {
+        return matches(element, selector);
+    };
+    return $(ArrayProto.filter.call(this, callback));
+}
+
+function each(callback) {
+    return _each(this, callback);
+}
+
+function reverse() {
+    var elements = ArrayProto.slice.call(this);
+    return $(ArrayProto.reverse.call(elements));
+}
+
+var every = ArrayProto.every,
+    forEach = each,
+    map = ArrayProto.map,
+    some = ArrayProto.some;
+
+exports.each = each;
+exports.every = every;
+exports.filter = filter;
+exports.forEach = forEach;
+exports.map = map;
+exports.reverse = reverse;
+exports.some = some;
+},{"./selector":9,"./util":10}],3:[function(require,module,exports){
 "use strict";
 // # Attr
 
@@ -100,9 +114,15 @@ var each = require("./util").each;
 /**
  * ## attr
  *
+ * Get the value of an attribute for the first element, or set one or more attributes for each element in the collection.
+ *
  *     $('.item').attr('attrName');
  *     $('.item').attr('attrName', 'attrValue');
  *     $('.item').attr({'attr1', 'value1'}, {'attr2', 'value2});
+ *
+ * @param {String|Object} key The name of the attribute to get or set. Or an object containing key-value pairs to set as attributes.
+ * @param {String} [value] The value of the attribute to set.
+ * @return {$Object} or Node/List in native mode
  */
 
 var attr = function(key, value) {
@@ -126,10 +146,10 @@ var attr = function(key, value) {
 
 // Export interface
 
-exports["default"] = attr;
-},{"./util":9}],3:[function(require,module,exports){
+exports.attr = attr;
+},{"./util":10}],4:[function(require,module,exports){
 "use strict";
-// # Class methods
+// # Class
 
 var makeIterable = require("./util").makeIterable;
 var each = require("./util").each;
@@ -139,8 +159,8 @@ var each = require("./util").each;
  *
  *     $('.item').addClass('bar');
  *
- * @param {string} value The class name to add to the element(s).
- * @return {$Object} or Node/List in native mode (`this`)
+ * @param {String} value The class name to add to the element(s).
+ * @return {$Object} or Node/List in native mode
  */
 
 var addClass = function(value) {
@@ -155,8 +175,8 @@ var addClass = function(value) {
  *
  *     $('.items').removeClass('bar');
  *
- * @param {string} value The class name to remove from the element(s).
- * @return {$Object} or Node/List in native mode (`this`)
+ * @param {String} value The class name to remove from the element(s).
+ * @return {$Object} or Node/List in native mode
  */
 
 var removeClass = function(value) {
@@ -171,8 +191,8 @@ var removeClass = function(value) {
  *
  *     $('.item').toggleClass('bar');
  *
- * @param {string} value The class name to toggle at the element(s).
- * @return {$Object} or Node/List in native mode (`this`)
+ * @param {String} value The class name to toggle at the element(s).
+ * @return {$Object} or Node/List in native mode
  */
 
 var toggleClass = function(value) {
@@ -187,7 +207,7 @@ var toggleClass = function(value) {
  *
  *     $('.item').hasClass('bar');
  *
- * @param {string} value Check if the DOM element contains the class name. When applied to multiple elements,
+ * @param {String} value Check if the DOM element contains the class name. When applied to multiple elements,
  * returns `true` if _any_ of them contains the class name.
  * @return {boolean}
  */
@@ -204,7 +224,7 @@ exports.addClass = addClass;
 exports.removeClass = removeClass;
 exports.toggleClass = toggleClass;
 exports.hasClass = hasClass;
-},{"./util":9}],4:[function(require,module,exports){
+},{"./util":10}],5:[function(require,module,exports){
 "use strict";
 // # DOM Manipulation
 
@@ -217,7 +237,7 @@ var toArray = require("./util").toArray;
  *
  * @param {String|Node|NodeList|$Object} element What to append to the element(s).
  * Clones elements as necessary.
- * @return {Node|NodeList|$Object} Returns the object it was applied to (`this`).
+ * @return {Node|NodeList|$Object} Returns the object it was applied to.
  */
 
 var append = function(element) {
@@ -249,7 +269,7 @@ var append = function(element) {
  *
  * @param {String|Node|NodeList|$Object} element What to place as sibling(s) before to the element(s).
  * Clones elements as necessary.
- * @return {Node|NodeList|$Object} Returns the object it was applied to (`this`).
+ * @return {Node|NodeList|$Object} Returns the object it was applied to.
  */
 
 var before = function(element) {
@@ -281,7 +301,7 @@ var before = function(element) {
  *
  * @param {String|Node|NodeList|$Object} element What to place as sibling(s) after to the element(s).
  * Clones elements as necessary.
- * @return {Node|NodeList|$Object} Returns the object it was applied to (`this`).
+ * @return {Node|NodeList|$Object} Returns the object it was applied to.
  */
 
 var after = function(element) {
@@ -331,12 +351,13 @@ var clone = function(element) {
 exports.append = append;
 exports.before = before;
 exports.after = after;
-},{"./util":9}],5:[function(require,module,exports){
+},{"./util":10}],6:[function(require,module,exports){
 "use strict";
 // # Events
 
 var global = require("./util").global;
 var each = require("./util").each;
+var matches = require("./selector").matches;
 
 /**
  * ## on
@@ -350,7 +371,7 @@ var each = require("./util").each;
  * @param {String} [selector] Selector to filter descendants that delegate the event to this element.
  * @param {Function} handler Event handler
  * @param {Boolean} useCapture=false
- * @return {Node|NodeList|$Object} Returns the object it was applied to (`this`).
+ * @return {Node|NodeList|$Object} Returns the object it was applied to.
  */
 
 var on = function(eventName, selector, handler, useCapture) {
@@ -397,7 +418,7 @@ var on = function(eventName, selector, handler, useCapture) {
  * @param {String} [selector] Selector to filter descendants that undelegate the event to this element.
  * @param {Function} handler Event handler
  * @param {Boolean} useCapture=false
- * @return {Node|NodeList|$Object} Returns the object it was applied to (`this`).
+ * @return {Node|NodeList|$Object} Returns the object it was applied to.
  */
 
 var off = function(eventName, selector, handler, useCapture) {
@@ -610,20 +631,13 @@ var clearHandlers = function(element) {
 
 var delegateHandler = function(selector, handler, event) {
     var eventTarget = event._target || event.target;
-    if (matchesSelector.call(eventTarget, selector)) {
+    if (matches(eventTarget, selector)) {
         if (!event.currentTarget) {
             event.currentTarget = eventTarget;
         }
         handler.call(eventTarget, event);
     }
 };
-
-// Get the available `matches` or `matchesSelector` method.
-
-var matchesSelector = (function() {
-    var context = typeof Element !== 'undefined' ? Element.prototype : global;
-    return context.matches || context.matchesSelector || context.mozMatchesSelector || context.webkitMatchesSelector || context.msMatchesSelector || context.oMatchesSelector;
-})();
 
 /**
  * Polyfill for CustomEvent, borrowed from [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent#Polyfill).
@@ -666,7 +680,7 @@ exports.off = off;
 exports.delegate = delegate;
 exports.undelegate = undelegate;
 exports.trigger = trigger;
-},{"./util":9}],6:[function(require,module,exports){
+},{"./selector":9,"./util":10}],7:[function(require,module,exports){
 "use strict";
 // # HTML
 
@@ -675,39 +689,42 @@ var each = require("./util").each;
 /*
  * ## html
  *
+ * Get the HTML contents of the first element, or set the HTML contents for each element in the collection.
+ *
  *     $('.item').html();
  *     $('.item').html('<span>more</span>');
  *
  * @param {String} [fragment] HTML fragment to set for the element
- * @return {Node|NodeList|$Object} Returns the object it was applied to (`this`).
+ * @return {Node|NodeList|$Object} Returns the object it was applied to.
  */
 
 var html = function(fragment) {
 
-    if (!fragment) {
+    if (typeof fragment !== 'string') {
         return (this.nodeType ? this : this[0]).innerHTML;
     }
 
     each(this, function(element) {
         element.innerHTML = fragment;
     });
+
     return this;
 
 };
 
 // Export interface
 
-exports["default"] = html;
-},{"./util":9}],7:[function(require,module,exports){
+exports.html = html;
+},{"./util":10}],8:[function(require,module,exports){
 "use strict";
-var global = require("./util").global;
-
 /*
  * # noConflict
  *
  * In case another library sets the global `$` variable before jQuery Evergreen does,
  * this method can be used to return the global `$` to that other library.
  */
+
+var global = require("./util").global;
 
 // Save the previous value of the global `$` variable, so that it can be restored later on.
 
@@ -723,13 +740,12 @@ var noConflict = function() {
 
 // Export interface
 
-exports["default"] = noConflict;
-},{"./util":9}],8:[function(require,module,exports){
+exports.noConflict = noConflict;
+},{"./util":10}],9:[function(require,module,exports){
 "use strict";
-/*
- * # Selector
- */
+// # Selector
 
+var global = require("./util").global;
 var makeIterable = require("./util").makeIterable;
 
 var slice = [].slice,
@@ -784,12 +800,32 @@ var $ = function(selector, context) {
  *
  * Chaining for the `$` wrapper (aliasing `find` for `$`).
  *
- *     $('.selectors).find('.deep').$('.deepest');
+ *     $('.selector').find('.deep').$('.deepest');
  */
 
 var find = function(selector) {
     return $(selector, this);
 };
+
+/*
+ * ## Matches
+ *
+ * Returns true if the element would be selected by the specified selector string; otherwise, returns false.
+ *
+ *     $.matches(element, '.match');
+ *
+ * @param {Node} element Element to test
+ * @param {String} selector Selector to match against element
+ * @return {Boolean}
+ */
+
+var matches = (function() {
+    var context = typeof Element !== 'undefined' ? Element.prototype : global,
+        _matches = context.matches || context.matchesSelector || context.mozMatchesSelector || context.webkitMatchesSelector || context.msMatchesSelector || context.oMatchesSelector;
+    return function(element, selector) {
+        return _matches.call(element, selector);
+    }
+})();
 
 /*
  * Use the faster `getElementById` or `getElementsByClassName` over `querySelectorAll` if possible.
@@ -859,7 +895,7 @@ var createFragment = function(html) {
 var wrap = function(collection) {
 
     var wrapped = collection instanceof Array ? collection : collection.length !== undefined ? slice.call(collection) : [collection],
-        methods = $.apiMethods;
+        methods = $._api;
 
     if (hasProto) {
         wrapped.__proto__ = methods;
@@ -876,8 +912,11 @@ var wrap = function(collection) {
 
 exports.$ = $;
 exports.find = find;
-},{"./util":9}],9:[function(require,module,exports){
+exports.matches = matches;
+},{"./util":10}],10:[function(require,module,exports){
 "use strict";
+// # Util
+
 /**
  * Reference to the global scope
  */
@@ -893,23 +932,23 @@ var global = new Function("return this")();
  * @return {Array}
  */
 
-var toArray = function(collection) {
+function toArray(collection) {
     return [].slice.call(collection);
-};
+}
 
 /**
  * ## makeIterable
  *
- * Make sure to return something that can be iterated over (e.g. using `forEach`).
+ * Return something that can be iterated over (e.g. using `forEach`).
  * Arrays and NodeLists are returned as-is, but `Node`s are wrapped in a `[]`.
  *
  * @param {Node|NodeList|Array} element
  * @return {Array|NodeList}
  */
 
-var makeIterable = function(element) {
+function makeIterable(element) {
     return element.length === undefined || element === window ? [element] : element;
-};
+}
 
 /**
  * ## each
@@ -921,7 +960,7 @@ var makeIterable = function(element) {
  * @returns {Node|NodeList|Array}
  */
 
-var each = function(collection, callback) {
+function each(collection, callback) {
     var length = collection.length;
     if (length !== undefined) {
         for (var i = 0; i < length; i++){
@@ -931,12 +970,35 @@ var each = function(collection, callback) {
         callback(collection);
     }
     return collection;
-};
+}
+
+/**
+ * ## extend
+ *
+ * Assign properties from source object(s) to target object
+ *
+ * @method extend
+ * @param {Object} obj Object to extend
+ * @param {Object} [source] Object to extend from
+ * @returns {Object} Extended object
+ */
+
+function extend(obj) {
+    [].slice.call(arguments, 1).forEach(function(source) {
+        if (source) {
+            for (var prop in source) {
+                obj[prop] = source[prop];
+            }
+        }
+    });
+    return obj;
+}
 
 exports.global = global;
 exports.toArray = toArray;
 exports.makeIterable = makeIterable;
 exports.each = each;
+exports.extend = extend;
 },{}],"jQueryEvergreen":[function(require,module,exports){
 module.exports=require('Jrwj7x');
 },{}],"Jrwj7x":[function(require,module,exports){

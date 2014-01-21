@@ -1,96 +1,69 @@
 "use strict";
-/*
- * # API
- *
- * Import modules to build the API.
- */
+function __es6_transpiler_warn__(warning) {
+  if (typeof console === 'undefined') {
+  } else if (typeof console.warn === "function") {
+    console.warn(warning);
+  } else if (typeof console.log === "function") {
+    console.log(warning);
+  }
+}
+function __es6_transpiler_build_module_object__(name, imported) {
+  var moduleInstanceObject = Object.create ? Object.create(null) : {};
+  if (typeof imported === "function") {
+    __es6_transpiler_warn__("imported module '"+name+"' exported a function - this may not work as expected");
+  }
+  for (var key in imported) {
+    if (Object.prototype.hasOwnProperty.call(imported, key)) {
+      moduleInstanceObject[key] = imported[key];
+    }
+  }
+  if (Object.freeze) {
+    Object.freeze(moduleInstanceObject);
+  }
+  return moduleInstanceObject;
+}
+// # API
+
+var extend = require("./util").extend;
 
 var api = {},
+    apiNodeList = {},
     $ = {};
 
-var attr = require("./attr")["default"];
-api.attr = attr;
+// Import modules to build up the API
 
-var addClass = require("./class").addClass;
-var removeClass = require("./class").removeClass;
-var toggleClass = require("./class").toggleClass;
-var hasClass = require("./class").hasClass;
-api.addClass = addClass;
-api.removeClass = removeClass;
-api.toggleClass = toggleClass;
-api.hasClass = hasClass;
+var array = __es6_transpiler_build_module_object__("array", require("./array"));
+var attr = __es6_transpiler_build_module_object__("attr", require("./attr"));
+var className = __es6_transpiler_build_module_object__("className", require("./class"));
+var dom = __es6_transpiler_build_module_object__("dom", require("./dom"));
+var dom_extra = __es6_transpiler_build_module_object__("dom_extra", require("./dom_extra"));
+var event = __es6_transpiler_build_module_object__("event", require("./event"));
+var html = __es6_transpiler_build_module_object__("html", require("./html"));
+var selector = __es6_transpiler_build_module_object__("selector", require("./selector"));
+var selector_extra = __es6_transpiler_build_module_object__("selector_extra", require("./selector_extra"));
 
-var append = require("./dom").append;
-var before = require("./dom").before;
-var after = require("./dom").after;
-api.append = append;
-api.before = before;
-api.after = after;
+if (selector !== undefined) {
+    $ = selector.$;
+    $.matches = selector.matches;
+    api.find = selector.find;
+}
 
-var on = require("./event").on;
-var off = require("./event").off;
-var delegate = require("./event").delegate;
-var undelegate = require("./event").undelegate;
-var trigger = require("./event").trigger;
-api.on = on;
-api.off = off;
-api.delegate = delegate;
-api.undelegate = undelegate;
-api.trigger = trigger;
+var mode = __es6_transpiler_build_module_object__("mode", require("./mode"));
+extend($, mode);
+var noconflict = __es6_transpiler_build_module_object__("noconflict", require("./noconflict"));
+extend($, noconflict);
 
-var html = require("./html")["default"];
-api.html = html;
+extend(api, array, attr, className, dom, dom_extra, event, html, selector_extra);
+extend(apiNodeList, array);
 
-var $ = require("./selector").$;
-var find = require("./selector").find;
-api.find = find;
+// Util
 
-var isNative = require("./mode").isNative;
-var native = require("./mode").native;
-$.isNative = isNative;
-$.native = native;
+$.extend = extend;
 
-var noConflict = require("./noconflict")["default"];
-$.noConflict = noConflict;
+// Internal properties to switch between default and native mode
 
-/*
- * The `apiNodeList` object represents the API that gets augmented onto
- * either the wrapped array or the native `NodeList` object.
- */
-
-var apiNodeList = {};
-
-['every', 'filter', 'forEach', 'map', 'reverse', 'some'].forEach(function(methodName) {
-    apiNodeList[methodName] = Array.prototype[methodName];
-});
-
-/*
- * Augment the `$` function to be able to:
- *
- * - wrap the `$` objects and add the API methods
- * - switch to native mode
- */
-
-$.getNodeMethods = function() {
-    return api;
-};
-
-$.getNodeListMethods = function() {
-    return apiNodeList;
-};
-
-$.apiMethods = function(api, apiNodeList) {
-
-    var methods = apiNodeList,
-        key;
-
-    for (key in api) {
-        methods[key] = api[key];
-    }
-
-    return methods;
-
-}(api, apiNodeList);
+$._api = api;
+$._apiNodeList = apiNodeList;
 
 // Export interface
 
