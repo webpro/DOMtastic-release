@@ -119,12 +119,12 @@ var each = require("./util").each;
  * @return {$Object} or Node/List in native mode
  */
 
-var addClass = function(value) {
+function addClass(value) {
     each(this, function(element) {
         element.classList.add(value);
     });
     return this;
-};
+}
 
 /**
  * ## removeClass
@@ -135,12 +135,12 @@ var addClass = function(value) {
  * @return {$Object} or Node/List in native mode
  */
 
-var removeClass = function(value) {
+function removeClass(value) {
     each(this, function(element) {
         element.classList.remove(value);
     });
     return this;
-};
+}
 
 /**
  * ## toggleClass
@@ -151,12 +151,12 @@ var removeClass = function(value) {
  * @return {$Object} or Node/List in native mode
  */
 
-var toggleClass = function(value) {
+function toggleClass(value) {
     each(this, function(element) {
         element.classList.toggle(value);
     });
     return this;
-};
+}
 
 /**
  * ## hasClass
@@ -168,11 +168,11 @@ var toggleClass = function(value) {
  * @return {boolean}
  */
 
-var hasClass = function(value) {
+function hasClass(value) {
     return makeIterable(this).some(function(element) {
         return element.classList.contains(value);
     });
-};
+}
 
 // Export interface
 
@@ -196,7 +196,7 @@ var toArray = require("./util").toArray;
  * @return {Node|NodeList|$Object} Returns the object it was applied to.
  */
 
-var append = function(element) {
+function append(element) {
     if (this instanceof Node) {
         if (typeof element === 'string') {
             this.insertAdjacentHTML('beforeend', element);
@@ -216,7 +216,7 @@ var append = function(element) {
         }
     }
     return this;
-};
+}
 
 /**
  * ## before
@@ -228,7 +228,7 @@ var append = function(element) {
  * @return {Node|NodeList|$Object} Returns the object it was applied to.
  */
 
-var before = function(element) {
+function before(element) {
     if (this instanceof Node) {
         if (typeof element === 'string') {
             this.insertAdjacentHTML('beforebegin', element);
@@ -248,7 +248,7 @@ var before = function(element) {
         }
     }
     return this;
-};
+}
 
 /**
  * ## after
@@ -260,7 +260,7 @@ var before = function(element) {
  * @return {Node|NodeList|$Object} Returns the object it was applied to.
  */
 
-var after = function(element) {
+function after(element) {
     if (this instanceof Node) {
         if (typeof element === 'string') {
             this.insertAdjacentHTML('afterend', element);
@@ -280,7 +280,7 @@ var after = function(element) {
         }
     }
     return this;
-};
+}
 
 /**
  * @method clone
@@ -289,7 +289,7 @@ var after = function(element) {
  * @return {String|Node|NodeList|Array} The cloned element(s)
  */
 
-var clone = function(element) {
+function clone(element) {
     if (typeof element === 'string') {
         return element;
     } else if (element instanceof Node) {
@@ -300,7 +300,7 @@ var clone = function(element) {
         });
     }
     return element;
-};
+}
 
 // Export interface
 
@@ -330,7 +330,7 @@ var matches = require("./selector").matches;
  * @return {Node|NodeList|$Object} Returns the object it was applied to.
  */
 
-var on = function(eventName, selector, handler, useCapture) {
+function on(eventName, selector, handler, useCapture) {
 
     if (typeof selector === 'function') {
         handler = selector;
@@ -361,7 +361,7 @@ var on = function(eventName, selector, handler, useCapture) {
     });
 
     return this;
-};
+}
 
 /**
  * ## off
@@ -377,7 +377,7 @@ var on = function(eventName, selector, handler, useCapture) {
  * @return {Node|NodeList|$Object} Returns the object it was applied to.
  */
 
-var off = function(eventName, selector, handler, useCapture) {
+function off(eventName, selector, handler, useCapture) {
 
     if (typeof selector === 'function') {
         handler = selector;
@@ -422,7 +422,7 @@ var off = function(eventName, selector, handler, useCapture) {
     });
 
     return this;
-};
+}
 
 /**
  * ## delegate
@@ -437,9 +437,9 @@ var off = function(eventName, selector, handler, useCapture) {
  * @return {Node|NodeList|$Object} Returns the object it was applied to (`this`).
  */
 
-var delegate = function(selector, eventName, fn) {
+function delegate(selector, eventName, fn) {
     return on.call(this, eventName, selector, fn);
-};
+}
 
 /**
  * ## undelegate
@@ -454,9 +454,9 @@ var delegate = function(selector, eventName, fn) {
  * @return {Node|NodeList|$Object} Returns the object it was applied to (`this`).
  */
 
-var undelegate = function(selector, eventName, fn) {
+function undelegate(selector, eventName, fn) {
     return off.call(this, eventName, selector, fn);
-};
+}
 
 /**
  * ## trigger
@@ -473,7 +473,7 @@ var undelegate = function(selector, eventName, fn) {
  * @return {Node|NodeList|$Object} Returns the object it was applied to (`this`).
  */
 
-var trigger = function(type, params) {
+function trigger(type, params) {
     params = params || { bubbles: true, cancelable: true, detail: undefined };
     var event = new CustomEvent(type, params);
     each(this, function(element) {
@@ -484,7 +484,7 @@ var trigger = function(type, params) {
         }
     });
     return this;
-};
+}
 
 /**
  * Check whether the element is attached to (or detached from) the document
@@ -495,7 +495,7 @@ var trigger = function(type, params) {
  * @return {Boolean}
  */
 
-var isAttachedToDocument = function(element) {
+function isAttachedToDocument(element) {
     if (element === window || element === document) {
         return true;
     }
@@ -506,7 +506,7 @@ var isAttachedToDocument = function(element) {
         return !(container.compareDocumentPosition(element) & Node.DOCUMENT_POSITION_DISCONNECTED);
     }
     return false;
-};
+}
 
 /**
  * Dispatch the event at the element and its ancestors.
@@ -523,7 +523,7 @@ var isAttachedToDocument = function(element) {
  * @param {Mixed} params.detail=undefined Additional information about the event.
  */
 
-var triggerForPath = function(element, type, params) {
+function triggerForPath(element, type, params) {
     params = params || {};
     params.bubbles = false;
     var event = new CustomEvent(type, params);
@@ -532,7 +532,7 @@ var triggerForPath = function(element, type, params) {
         element.dispatchEvent(event);
         element = element.parentNode;
     }
-};
+}
 
 /**
  * Get event handlers from an element
@@ -548,13 +548,13 @@ var id = 1;
 var handlers = {};
 var unusedKeys = [];
 
-var getHandlers = function(element) {
+function getHandlers(element) {
     if (!element[cacheKeyProp]) {
         element[cacheKeyProp] = unusedKeys.length === 0 ? ++id : unusedKeys.pop();
     }
     var key = element[cacheKeyProp];
     return handlers[key] || (handlers[key] = []);
-};
+}
 
 /**
  * Clear event handlers for an element
@@ -564,14 +564,14 @@ var getHandlers = function(element) {
  * @param {Node} element
  */
 
-var clearHandlers = function(element) {
+function clearHandlers(element) {
     var key = element[cacheKeyProp];
     if (handlers[key]) {
         handlers[key] = null;
         element[key] = null;
         unusedKeys.push(key);
     }
-};
+}
 
 /**
  * Function to test whether delegated events match the provided `selector` (filter),
@@ -585,7 +585,7 @@ var clearHandlers = function(element) {
  * @param {Event} event
  */
 
-var delegateHandler = function(selector, handler, event) {
+function delegateHandler(selector, handler, event) {
     var eventTarget = event._target || event.target;
     if (matches(eventTarget, selector)) {
         if (!event.currentTarget) {
@@ -593,7 +593,7 @@ var delegateHandler = function(selector, handler, event) {
         }
         handler.call(eventTarget, event);
     }
-};
+}
 
 /**
  * Polyfill for CustomEvent, borrowed from [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent#Polyfill).
@@ -601,12 +601,12 @@ var delegateHandler = function(selector, handler, event) {
  */
 
 (function() {
-    var CustomEvent = function(event, params) {
+    function CustomEvent(event, params) {
         params = params || { bubbles: false, cancelable: false, detail: undefined };
         var evt = document.createEvent('CustomEvent');
         evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
         return evt;
-    };
+    }
 
     CustomEvent.prototype = global.CustomEvent && global.CustomEvent.prototype;
     global.CustomEvent = CustomEvent;
@@ -654,10 +654,10 @@ var previousLib = global.$;
 // Put jQuery Evergreen in noConflict mode, returning the `$` variable to its previous owner.
 // Returns a reference to jQuery Evergreen.
 
-var noConflict = function() {
+function noConflict() {
     global.$ = previousLib;
     return this;
-};
+}
 
 // Export interface
 
@@ -670,7 +670,7 @@ var global = require("./util").global;
 var makeIterable = require("./util").makeIterable;
 
 var slice = [].slice,
-    hasProto = !Object.prototype.isPrototypeOf({ __proto__: null }),
+    isPrototypeSet = false,
     reFragment = /^\s*<(\w+|!)[^>]*>/,
     reSingleTag = /^<(\w+)\s*\/?>(?:<\/\1>|)$/,
     reSimpleSelector = /^[\.#]?[\w-]*$/;
@@ -688,7 +688,7 @@ var slice = [].slice,
  * @return {NodeList|$Object}
  */
 
-var $ = function(selector, context) {
+function $(selector, context) {
 
     var collection;
 
@@ -706,7 +706,7 @@ var $ = function(selector, context) {
 
     } else {
 
-        context = context ? typeof context === 'string' ? document.querySelector(context) : context.length ? context[0] : context : document;
+        context = context ? (typeof context === 'string' ? document.querySelector(context) : context.length ? context[0] : context) : document;
 
         collection = querySelector(selector, context);
 
@@ -714,7 +714,7 @@ var $ = function(selector, context) {
 
     return $.isNative ? collection : wrap(collection);
 
-};
+}
 
 /*
  * ## Find
@@ -724,9 +724,9 @@ var $ = function(selector, context) {
  *     $('.selector').find('.deep').$('.deepest');
  */
 
-var find = function(selector) {
+function find(selector) {
     return $(selector, this);
-};
+}
 
 /*
  * ## Matches
@@ -758,13 +758,13 @@ var matches = (function() {
  * @return {NodeList|Node}
  */
 
-var querySelector = function(selector, context) {
+function querySelector(selector, context) {
 
     var isSimpleSelector = reSimpleSelector.test(selector);
 
     if (isSimpleSelector && !$.isNative) {
         if (selector[0] === '#') {
-            return (context.getElementById ? context : document).getElementById(selector.slice(1));
+            return [(context.getElementById ? context : document).getElementById(selector.slice(1))];
         }
         if (selector[0] === '.') {
             return context.getElementsByClassName(selector.slice(1));
@@ -774,7 +774,7 @@ var querySelector = function(selector, context) {
 
     return context.querySelectorAll(selector);
 
-};
+}
 
 /*
  * Create DOM fragment from an HTML string
@@ -785,10 +785,10 @@ var querySelector = function(selector, context) {
  * @return {NodeList}
  */
 
-var createFragment = function(html) {
+function createFragment(html) {
 
     if (reSingleTag.test(html)) {
-        return document.createElement(RegExp.$1);
+        return [document.createElement(RegExp.$1)];
     }
 
     var elements = [],
@@ -802,32 +802,38 @@ var createFragment = function(html) {
     }
 
     return elements;
-};
+}
 
 /*
- * Calling `$(selector)` returns a wrapped array of elements [by default](mode.html).
+ * Calling `$(selector)` returns a wrapped array-like object of elements [by default](mode.html).
  *
  * @method wrap
  * @private
- * @param {NodeList|Node|Array} collection Element(s) to wrap as a `$Object`.
+ * @param {NodeList|Array} collection Element(s) to wrap as a `$Object`.
  * @return {$Object} Array with augmented API.
  */
 
-var wrap = function(collection) {
+function wrap(collection) {
 
-    var wrapped = collection instanceof Array ? collection : collection.length !== undefined ? slice.call(collection) : [collection],
-        methods = $._api;
-
-    if (hasProto) {
-        wrapped.__proto__ = methods;
-    } else {
-        for (var key in methods) {
-            wrapped[key] = methods[key];
-        }
+    if (!isPrototypeSet) {
+        Wrapper.prototype = $._api;
+        Wrapper.prototype.constructor = Wrapper;
+        isPrototypeSet = true;
     }
 
-    return wrapped;
-};
+    return new Wrapper(collection);
+
+}
+
+// Constructor for the Object.prototype strategy
+
+function Wrapper(collection) {
+    var i = 0, length = collection.length;
+    for (; i < length;) {
+        this[i] = collection[i++];
+    }
+    this.length = length;
+}
 
 // Export interface
 
@@ -842,7 +848,8 @@ exports.matches = matches;
  * Reference to the global scope
  */
 
-var global = new Function("return this")();
+var global = new Function("return this")(),
+    slice = Array.prototype.slice;
 
 /**
  * ## toArray
@@ -854,7 +861,7 @@ var global = new Function("return this")();
  */
 
 function toArray(collection) {
-    return [].slice.call(collection);
+    return slice.call(collection);
 }
 
 /**
@@ -905,7 +912,7 @@ function each(collection, callback) {
  */
 
 function extend(obj) {
-    [].slice.call(arguments, 1).forEach(function(source) {
+    slice.call(arguments, 1).forEach(function(source) {
         if (source) {
             for (var prop in source) {
                 obj[prop] = source[prop];

@@ -18,7 +18,7 @@ define(
      * @return {Node|NodeList|$Object} Returns the object it was applied to.
      */
 
-    var html = function(fragment) {
+    function html(fragment) {
 
         if (typeof fragment !== 'string') {
             return (this.nodeType ? this : this[0]).innerHTML;
@@ -30,7 +30,7 @@ define(
 
         return this;
 
-    };
+    }
 
     // Export interface
 

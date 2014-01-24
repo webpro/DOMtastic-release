@@ -23,7 +23,7 @@ define(
      * @return {Node|NodeList|$Object} Returns the object it was applied to.
      */
 
-    var on = function(eventName, selector, handler, useCapture) {
+    function on(eventName, selector, handler, useCapture) {
 
         if (typeof selector === 'function') {
             handler = selector;
@@ -54,7 +54,7 @@ define(
         });
 
         return this;
-    };
+    }
 
     /**
      * ## off
@@ -70,7 +70,7 @@ define(
      * @return {Node|NodeList|$Object} Returns the object it was applied to.
      */
 
-    var off = function(eventName, selector, handler, useCapture) {
+    function off(eventName, selector, handler, useCapture) {
 
         if (typeof selector === 'function') {
             handler = selector;
@@ -115,7 +115,7 @@ define(
         });
 
         return this;
-    };
+    }
 
     /**
      * ## delegate
@@ -130,9 +130,9 @@ define(
      * @return {Node|NodeList|$Object} Returns the object it was applied to (`this`).
      */
 
-    var delegate = function(selector, eventName, fn) {
+    function delegate(selector, eventName, fn) {
         return on.call(this, eventName, selector, fn);
-    };
+    }
 
     /**
      * ## undelegate
@@ -147,9 +147,9 @@ define(
      * @return {Node|NodeList|$Object} Returns the object it was applied to (`this`).
      */
 
-    var undelegate = function(selector, eventName, fn) {
+    function undelegate(selector, eventName, fn) {
         return off.call(this, eventName, selector, fn);
-    };
+    }
 
     /**
      * ## trigger
@@ -166,7 +166,7 @@ define(
      * @return {Node|NodeList|$Object} Returns the object it was applied to (`this`).
      */
 
-    var trigger = function(type, params) {
+    function trigger(type, params) {
         params = params || { bubbles: true, cancelable: true, detail: undefined };
         var event = new CustomEvent(type, params);
         each(this, function(element) {
@@ -177,7 +177,7 @@ define(
             }
         });
         return this;
-    };
+    }
 
     /**
      * Check whether the element is attached to (or detached from) the document
@@ -188,7 +188,7 @@ define(
      * @return {Boolean}
      */
 
-    var isAttachedToDocument = function(element) {
+    function isAttachedToDocument(element) {
         if (element === window || element === document) {
             return true;
         }
@@ -199,7 +199,7 @@ define(
             return !(container.compareDocumentPosition(element) & Node.DOCUMENT_POSITION_DISCONNECTED);
         }
         return false;
-    };
+    }
 
     /**
      * Dispatch the event at the element and its ancestors.
@@ -216,7 +216,7 @@ define(
      * @param {Mixed} params.detail=undefined Additional information about the event.
      */
 
-    var triggerForPath = function(element, type, params) {
+    function triggerForPath(element, type, params) {
         params = params || {};
         params.bubbles = false;
         var event = new CustomEvent(type, params);
@@ -225,7 +225,7 @@ define(
             element.dispatchEvent(event);
             element = element.parentNode;
         }
-    };
+    }
 
     /**
      * Get event handlers from an element
@@ -241,13 +241,13 @@ define(
     var handlers = {};
     var unusedKeys = [];
 
-    var getHandlers = function(element) {
+    function getHandlers(element) {
         if (!element[cacheKeyProp]) {
             element[cacheKeyProp] = unusedKeys.length === 0 ? ++id : unusedKeys.pop();
         }
         var key = element[cacheKeyProp];
         return handlers[key] || (handlers[key] = []);
-    };
+    }
 
     /**
      * Clear event handlers for an element
@@ -257,14 +257,14 @@ define(
      * @param {Node} element
      */
 
-    var clearHandlers = function(element) {
+    function clearHandlers(element) {
         var key = element[cacheKeyProp];
         if (handlers[key]) {
             handlers[key] = null;
             element[key] = null;
             unusedKeys.push(key);
         }
-    };
+    }
 
     /**
      * Function to test whether delegated events match the provided `selector` (filter),
@@ -278,7 +278,7 @@ define(
      * @param {Event} event
      */
 
-    var delegateHandler = function(selector, handler, event) {
+    function delegateHandler(selector, handler, event) {
         var eventTarget = event._target || event.target;
         if (matches(eventTarget, selector)) {
             if (!event.currentTarget) {
@@ -286,7 +286,7 @@ define(
             }
             handler.call(eventTarget, event);
         }
-    };
+    }
 
     /**
      * Polyfill for CustomEvent, borrowed from [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent#Polyfill).
@@ -294,12 +294,12 @@ define(
      */
 
     (function() {
-        var CustomEvent = function(event, params) {
+        function CustomEvent(event, params) {
             params = params || { bubbles: false, cancelable: false, detail: undefined };
             var evt = document.createEvent('CustomEvent');
             evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
             return evt;
-        };
+        }
 
         CustomEvent.prototype = global.CustomEvent && global.CustomEvent.prototype;
         global.CustomEvent = CustomEvent;

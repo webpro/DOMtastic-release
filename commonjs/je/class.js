@@ -13,12 +13,12 @@ var each = require("./util").each;
  * @return {$Object} or Node/List in native mode
  */
 
-var addClass = function(value) {
+function addClass(value) {
     each(this, function(element) {
         element.classList.add(value);
     });
     return this;
-};
+}
 
 /**
  * ## removeClass
@@ -29,12 +29,12 @@ var addClass = function(value) {
  * @return {$Object} or Node/List in native mode
  */
 
-var removeClass = function(value) {
+function removeClass(value) {
     each(this, function(element) {
         element.classList.remove(value);
     });
     return this;
-};
+}
 
 /**
  * ## toggleClass
@@ -45,12 +45,12 @@ var removeClass = function(value) {
  * @return {$Object} or Node/List in native mode
  */
 
-var toggleClass = function(value) {
+function toggleClass(value) {
     each(this, function(element) {
         element.classList.toggle(value);
     });
     return this;
-};
+}
 
 /**
  * ## hasClass
@@ -62,11 +62,11 @@ var toggleClass = function(value) {
  * @return {boolean}
  */
 
-var hasClass = function(value) {
+function hasClass(value) {
     return makeIterable(this).some(function(element) {
         return element.classList.contains(value);
     });
-};
+}
 
 // Export interface
 

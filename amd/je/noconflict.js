@@ -18,10 +18,10 @@ define(
     // Put jQuery Evergreen in noConflict mode, returning the `$` variable to its previous owner.
     // Returns a reference to jQuery Evergreen.
 
-    var noConflict = function() {
+    function noConflict() {
         global.$ = previousLib;
         return this;
-    };
+    }
 
     // Export interface
 

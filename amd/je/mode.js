@@ -32,7 +32,7 @@ define(
 
     var isNative = false;
 
-    var native = function(native) {
+    function native(native) {
         var wasNative = isNative;
         isNative = typeof native === 'boolean' ? native : true;
         if (global.$) {
@@ -45,7 +45,7 @@ define(
             unaugmentNativePrototypes(this._api, this._apiNodeList);
         }
         return isNative;
-    };
+    }
 
     var NodeProto = typeof Node !== 'undefined' && Node.prototype,
         NodeListProto = typeof NodeList !== 'undefined' && NodeList.prototype;
@@ -55,7 +55,7 @@ define(
      * Only add the method if object not already had it (non-inherited).
      */
 
-    var augment = function(obj, key, value) {
+    function augment(obj, key, value) {
         if (!obj.hasOwnProperty(key)) {
             Object.defineProperty(obj, key, {
                 value: value,
@@ -63,21 +63,21 @@ define(
                 enumerable: false
             });
         }
-    };
+    }
 
     /*
      * Remove property from object (only inherited properties will be removed).
      */
 
-    var unaugment = function(obj, key) {
+    function unaugment(obj, key) {
         delete obj[key];
-    };
+    }
 
     /*
      * Augment native `Node` and `NodeList` objects in native mode.
      */
 
-    var augmentNativePrototypes = function(methodsNode, methodsNodeList) {
+    function augmentNativePrototypes(methodsNode, methodsNodeList) {
 
         var key;
 
@@ -89,14 +89,14 @@ define(
         for (key in methodsNodeList) {
             augment(NodeListProto, key, methodsNodeList[key]);
         }
-    };
+    }
 
     /*
      * Unaugment native `Node` and `NodeList` objects to switch back to default mode.
      * Mainly used for tests.
      */
 
-    var unaugmentNativePrototypes = function(methodsNode, methodsNodeList) {
+    function unaugmentNativePrototypes(methodsNode, methodsNodeList) {
 
         var key;
 
@@ -108,7 +108,7 @@ define(
         for (key in methodsNodeList) {
             unaugment(NodeListProto, key);
         }
-    };
+    }
 
     // Export interface
 

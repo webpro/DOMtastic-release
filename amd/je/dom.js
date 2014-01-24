@@ -16,7 +16,7 @@ define(
      * @return {Node|NodeList|$Object} Returns the object it was applied to.
      */
 
-    var append = function(element) {
+    function append(element) {
         if (this instanceof Node) {
             if (typeof element === 'string') {
                 this.insertAdjacentHTML('beforeend', element);
@@ -36,7 +36,7 @@ define(
             }
         }
         return this;
-    };
+    }
 
     /**
      * ## before
@@ -48,7 +48,7 @@ define(
      * @return {Node|NodeList|$Object} Returns the object it was applied to.
      */
 
-    var before = function(element) {
+    function before(element) {
         if (this instanceof Node) {
             if (typeof element === 'string') {
                 this.insertAdjacentHTML('beforebegin', element);
@@ -68,7 +68,7 @@ define(
             }
         }
         return this;
-    };
+    }
 
     /**
      * ## after
@@ -80,7 +80,7 @@ define(
      * @return {Node|NodeList|$Object} Returns the object it was applied to.
      */
 
-    var after = function(element) {
+    function after(element) {
         if (this instanceof Node) {
             if (typeof element === 'string') {
                 this.insertAdjacentHTML('afterend', element);
@@ -100,7 +100,7 @@ define(
             }
         }
         return this;
-    };
+    }
 
     /**
      * @method clone
@@ -109,7 +109,7 @@ define(
      * @return {String|Node|NodeList|Array} The cloned element(s)
      */
 
-    var clone = function(element) {
+    function clone(element) {
         if (typeof element === 'string') {
             return element;
         } else if (element instanceof Node) {
@@ -120,7 +120,7 @@ define(
             });
         }
         return element;
-    };
+    }
 
     // Export interface
 

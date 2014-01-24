@@ -17,7 +17,7 @@ define(
      *     $('.selector').children('.filter');
      */
 
-    var children = function(selector) {
+    function children(selector) {
         var nodes = [];
         each(this, function(element) {
             each(element.children, function(child) {
@@ -27,7 +27,7 @@ define(
             });
         });
         return $(nodes);
-    };
+    }
 
     /**
      * ## eq
@@ -38,9 +38,9 @@ define(
      * @returns {$Object}
      */
 
-    var eq = function(index) {
+    function eq(index) {
         return slice.call(this, index, index + 1);
-    };
+    }
 
     /**
      * ## get
@@ -51,9 +51,9 @@ define(
      * @returns {Node}
      */
 
-    var get = function(index) {
+    function get(index) {
         return this[index];
-    };
+    }
 
     /**
      * ## slice
@@ -65,9 +65,9 @@ define(
      * @returns {$Object}
      */
 
-    var slice = function(start, end) {
+    function slice(start, end) {
         return $([].slice.apply(this, arguments));
-    };
+    }
 
     __exports__.children = children;
     __exports__.eq = eq;
