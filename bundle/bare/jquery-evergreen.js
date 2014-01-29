@@ -1,4 +1,4 @@
-require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+!function(e){if("object"==typeof exports)module.exports=e()["default"];else if("function"==typeof define&&define.amd)define(function(){return e()["default"];});else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.$=e()["default"]}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";
 function __es6_transpiler_warn__(warning) {
   if (typeof console === 'undefined') {
@@ -45,6 +45,7 @@ if (selector !== undefined) {
     api.find = selector.find;
 }
 
+extend($);
 var noconflict = __es6_transpiler_build_module_object__("noconflict", require("./noconflict"));
 extend($, noconflict);
 
@@ -745,7 +746,7 @@ var matches = (function() {
         _matches = context.matches || context.matchesSelector || context.mozMatchesSelector || context.webkitMatchesSelector || context.msMatchesSelector || context.oMatchesSelector;
     return function(element, selector) {
         return _matches.call(element, selector);
-    }
+    };
 })();
 
 /*
@@ -764,7 +765,8 @@ function querySelector(selector, context) {
 
     if (isSimpleSelector && !$.isNative) {
         if (selector[0] === '#') {
-            return [(context.getElementById ? context : document).getElementById(selector.slice(1))];
+            var element = (context.getElementById ? context : document).getElementById(selector.slice(1));
+            return element ? [element] : [];
         }
         if (selector[0] === '.') {
             return context.getElementsByClassName(selector.slice(1));
@@ -927,7 +929,7 @@ exports.toArray = toArray;
 exports.makeIterable = makeIterable;
 exports.each = each;
 exports.extend = extend;
-},{}],"Jrwj7x":[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 "use strict";
 /**
  * # jQuery Evergreen
@@ -944,6 +946,8 @@ exports.extend = extend;
 var $ = require("./je/api")["default"];
 
 exports["default"] = $;
-},{"./je/api":1}],"jQueryEvergreen":[function(require,module,exports){
-module.exports=require('Jrwj7x');
-},{}]},{},["Jrwj7x"]);window.$=require('jQueryEvergreen')['default'];
+},{"./je/api":1}],10:[function(require,module,exports){
+
+},{}]},{},[9])
+(9)
+});

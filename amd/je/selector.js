@@ -83,7 +83,7 @@ define(
             _matches = context.matches || context.matchesSelector || context.mozMatchesSelector || context.webkitMatchesSelector || context.msMatchesSelector || context.oMatchesSelector;
         return function(element, selector) {
             return _matches.call(element, selector);
-        }
+        };
     })();
 
     /*
@@ -102,7 +102,8 @@ define(
 
         if (isSimpleSelector && !$.isNative) {
             if (selector[0] === '#') {
-                return [(context.getElementById ? context : document).getElementById(selector.slice(1))];
+                var element = (context.getElementById ? context : document).getElementById(selector.slice(1));
+                return element ? [element] : [];
             }
             if (selector[0] === '.') {
                 return context.getElementsByClassName(selector.slice(1));

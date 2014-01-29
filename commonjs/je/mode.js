@@ -21,7 +21,7 @@
  *
  * Note that in native mode, `$(selector)` can stil be used. It returns a NodeList.
  *
- * Build the lib using Grunt with `mode` not excluded.
+ * Build the lib using gulp with `mode` not excluded.
  * Use `$.native()` to activate this behavior. The API is the same in both modes.
  */
 
@@ -29,9 +29,9 @@ var global = require("./util").global;
 
 var isNative = false;
 
-function native(native) {
+function native(goNative) {
     var wasNative = isNative;
-    isNative = typeof native === 'boolean' ? native : true;
+    isNative = typeof goNative === 'boolean' ? goNative : true;
     if (global.$) {
         global.$.isNative = isNative;
     }

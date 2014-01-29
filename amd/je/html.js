@@ -21,7 +21,8 @@ define(
     function html(fragment) {
 
         if (typeof fragment !== 'string') {
-            return (this.nodeType ? this : this[0]).innerHTML;
+            var element = this.nodeType ? this : this[0];
+            return element ? element.innerHTML : undefined;
         }
 
         each(this, function(element) {

@@ -20,7 +20,8 @@ var each = require("./util").each;
 function attr(key, value) {
 
     if (typeof key === 'string' && typeof value === 'undefined') {
-        return (this.nodeType ? this : this[0]).getAttribute(key);
+        var element = this.nodeType ? this : this[0];
+        return element ? element.getAttribute(key) : undefined;
     }
 
     each(this, function(element) {
