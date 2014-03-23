@@ -38,6 +38,10 @@ define(
     extend(api, array, attr, className, dom, dom_extra, event, html, selector_extra);
     extend(apiNodeList, array);
 
+    // Version
+
+    $.version = '0.4.3';
+
     // Util
 
     $.extend = extend;

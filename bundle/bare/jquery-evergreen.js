@@ -54,6 +54,10 @@ extend($, noconflict);
 extend(api, array, className, dom, event);
 extend(apiNodeList, array);
 
+// Version
+
+$.version = '0.4.3';
+
 // Util
 
 $.extend = extend;
@@ -500,7 +504,7 @@ function off(eventName, selector, handler, useCapture) {
 
     each(this, function(element) {
 
-        var handlers = getHandlers(element) || [];
+        var handlers = getHandlers(element);
 
         if (!eventName && !namespace && !selector && !handler) {
 
