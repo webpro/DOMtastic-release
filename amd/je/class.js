@@ -2,18 +2,21 @@ define(
   ["./util","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
-    // # Class
+    /**
+     * @module Class
+     */
 
     var makeIterable = __dependency1__.makeIterable;
     var each = __dependency1__.each;
 
     /**
-     * ## addClass
-     *
-     *     $('.item').addClass('bar');
+     * Add a class to the element(s)
      *
      * @param {String} value The class name to add to the element(s).
-     * @return {$Object} or Node/List in native mode
+     * @return {Object} The wrapped collection
+     * @chainable
+     * @example
+     *     $('.item').addClass('bar');
      */
 
     function addClass(value) {
@@ -24,12 +27,13 @@ define(
     }
 
     /**
-     * ## removeClass
-     *
-     *     $('.items').removeClass('bar');
+     * Remove a class from the element(s)
      *
      * @param {String} value The class name to remove from the element(s).
-     * @return {$Object} or Node/List in native mode
+     * @return {Object} The wrapped collection
+     * @chainable
+     * @example
+     *     $('.items').removeClass('bar');
      */
 
     function removeClass(value) {
@@ -40,12 +44,13 @@ define(
     }
 
     /**
-     * ## toggleClass
-     *
-     *     $('.item').toggleClass('bar');
+     * Toggle a class at the element(s)
      *
      * @param {String} value The class name to toggle at the element(s).
-     * @return {$Object} or Node/List in native mode
+     * @return {Object} The wrapped collection
+     * @chainable
+     * @example
+     *     $('.item').toggleClass('bar');
      */
 
     function toggleClass(value) {
@@ -56,13 +61,13 @@ define(
     }
 
     /**
-     * ## hasClass
-     *
-     *     $('.item').hasClass('bar');
+     * Check if the element(s) have a class.
      *
      * @param {String} value Check if the DOM element contains the class name. When applied to multiple elements,
      * returns `true` if _any_ of them contains the class name.
-     * @return {boolean}
+     * @return {Boolean} Whether the element's class attribute contains the class name.
+     * @example
+     *     $('.item').hasClass('bar');
      */
 
     function hasClass(value) {
@@ -71,7 +76,9 @@ define(
         });
     }
 
-    // Export interface
+    /*
+     * Export interface
+     */
 
     __exports__.addClass = addClass;
     __exports__.removeClass = removeClass;

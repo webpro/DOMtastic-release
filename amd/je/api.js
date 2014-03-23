@@ -2,7 +2,9 @@ define(
   ["./util","./array","./attr","./class","./dom","./dom_extra","./event","./html","./selector","./selector_extra","./mode","./noconflict","exports"],
   function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __dependency5__, __dependency6__, __dependency7__, __dependency8__, __dependency9__, __dependency10__, __dependency11__, __dependency12__, __exports__) {
     "use strict";
-    // # API
+    /**
+     * @module API
+     */
 
     var extend = __dependency1__.extend;
 

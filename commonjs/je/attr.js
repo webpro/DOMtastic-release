@@ -1,20 +1,21 @@
 "use strict";
-// # Attr
+/**
+ * @module Attr
+ */
 
 var each = require("./util").each;
 
 /**
- * ## attr
- *
  * Get the value of an attribute for the first element, or set one or more attributes for each element in the collection.
- *
- *     $('.item').attr('attrName');
- *     $('.item').attr('attrName', 'attrValue');
- *     $('.item').attr({'attr1', 'value1'}, {'attr2', 'value2});
  *
  * @param {String|Object} key The name of the attribute to get or set. Or an object containing key-value pairs to set as attributes.
  * @param {String} [value] The value of the attribute to set.
- * @return {$Object} or Node/List in native mode
+ * @return {Object} The wrapped collection
+ * @chainable
+ * @example
+ *     $('.item').attr('attrName');
+ *     $('.item').attr('attrName', 'attrValue');
+ *     $('.item').attr({'attr1', 'value1'}, {'attr2', 'value2});
  */
 
 function attr(key, value) {
@@ -37,6 +38,8 @@ function attr(key, value) {
     return this;
 }
 
-// Export interface
+/*
+ * Export interface
+ */
 
 exports.attr = attr;

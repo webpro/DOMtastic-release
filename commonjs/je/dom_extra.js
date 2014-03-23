@@ -1,5 +1,7 @@
 "use strict";
-// # DOM Manipulation (extra)
+/**
+ * @module DOM (extra)
+ */
 
 var each = require("./util").each;
 var append = require("./dom").append;
@@ -8,15 +10,13 @@ var after = require("./dom").after;
 var $ = require("./selector").$;
 
 /**
- * ## appendTo
+ * Append each element in the collection to the specified element(s).
  *
- * Inverse of [append](dom.html#append).
- *
+ * @param {Node|NodeList|Object} element What to append the element(s) to. Clones elements as necessary.
+ * @return {Object} The wrapped collection
+ * @chainable
+ * @example
  *     $('.item').appendTo(container);
- *
- * @param {Node|NodeList|$Object} element What to append the element(s) to.
- * Clones elements as necessary.
- * @return {$Object}
  */
 
 function appendTo(element) {
@@ -26,11 +26,9 @@ function appendTo(element) {
 }
 
 /**
- * ## remove
- *
  * Remove the collection from the DOM.
  *
- * @return {Array} Removed elements
+ * @return {Array} Array containing the removed elements
  */
 
 function remove() {
@@ -42,18 +40,18 @@ function remove() {
 }
 
 /**
- * ## replaceWith
+ * Replace each element in the collection with the provided new content, and return the array of elements that were replaced.
  *
- * Replace each element in the collection with the provided new content, and return the array of elements that were removed.
- *
- * @return {Array}
+ * @return {Array} Array containing the replaced elements
  */
 
 function replaceWith() {
     return before.apply(this, arguments).remove();
 }
 
-// Export interface
+/*
+ * Export interface
+ */
 
 exports.appendTo = appendTo;
 exports.remove = remove;

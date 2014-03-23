@@ -12,6 +12,8 @@ define(
      * The [source](https://github.com/webpro/jquery-evergreen) is written in the ES6 Modules format, and transpiled to an AMD and a CommonJS version using the [ES6 Module Transpiler](http://square.github.io/es6-module-transpiler/). And last but also least, the CommonJS version is "browserified".
      *
      * Please find the table of contents in upper right.
+     *
+     * @module main
      */
 
     var $ = __dependency1__["default"];

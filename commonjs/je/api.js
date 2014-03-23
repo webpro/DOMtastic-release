@@ -22,7 +22,9 @@ function __es6_transpiler_build_module_object__(name, imported) {
   }
   return moduleInstanceObject;
 }
-// # API
+/**
+ * @module API
+ */
 
 var extend = require("./util").extend;
 
