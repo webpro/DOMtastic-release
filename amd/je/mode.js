@@ -1,125 +1,66 @@
-define(
-  ["./util","exports"],
-  function(__dependency1__, __exports__) {
-    "use strict";
-    /*
-     * # Opt-in to Native Mode
-     *
-     * The default, non-intrusive mode is similar to how jQuery operates: working with static, array-like `$` objects:
-     *
-     *     $('.items').append('<span>foo</span>);
-     *     $(document.body).on('click', '.tab', handler);
-     *
-     * However, you can opt-in to work with live NodeList objects.
-     * In this "native" mode, the `Node` and `NodeList` prototypes are augmented (in a safe and reversible manner) to fill up the chainable API,
-     * to enable working with `Node` and `NodeList` objects directly:
-     *
-     *     var collection = document.querySelectorAll('.items');
-     *     collection.append('<span>foo</span>);
-     *     collection.addClass('bar');
-     *     collection.forEach(iteratorFn);
-     *     collection.find('.more');
-     *
-     *     document.body.on('click', '.tab', handler)
-     *
-     * Note that in native mode, `$(selector)` can stil be used. It returns a NodeList.
-     *
-     * Build the lib using gulp with `mode` not excluded.
-     * Use `$.native()` to activate this behavior. The API is the same in both modes.
-     */
-
-    var global = __dependency1__.global;
-
-    var isNative = false;
-
-    function native(goNative) {
-        var wasNative = isNative;
-        isNative = typeof goNative === 'boolean' ? goNative : true;
-        if (global.$) {
-            global.$.isNative = isNative;
-        }
-        if (!wasNative && isNative) {
-            augmentNativePrototypes(this._api, this._apiNodeList);
-        }
-        if (wasNative && !isNative) {
-            unaugmentNativePrototypes(this._api, this._apiNodeList);
-        }
-        return isNative;
+define(['./util'], function($__0) {
+  "use strict";
+  var __moduleName = "mode";
+  if (!$__0 || !$__0.__esModule)
+    $__0 = {'default': $__0};
+  var global = ($__0).global;
+  var isNative = false;
+  function native(goNative) {
+    var wasNative = isNative;
+    isNative = typeof goNative === 'boolean' ? goNative : true;
+    if (global.$) {
+      global.$.isNative = isNative;
     }
-
-    var NodeProto = typeof Node !== 'undefined' && Node.prototype,
-        NodeListProto = typeof NodeList !== 'undefined' && NodeList.prototype;
-
-    /*
-     * Add a property (i.e. method) to an object in a safe and reversible manner.
-     * Only add the method if object not already had it (non-inherited).
-     *
-     * @private
-     */
-
-    function augment(obj, key, value) {
-        if (!obj.hasOwnProperty(key)) {
-            Object.defineProperty(obj, key, {
-                value: value,
-                configurable: true,
-                enumerable: false
-            });
-        }
+    if (!wasNative && isNative) {
+      augmentNativePrototypes(this._api, this._apiNodeList);
     }
-
-    /*
-     * Remove property from object (only inherited properties will be removed).
-     *
-     * @private
-     */
-
-    function unaugment(obj, key) {
-        delete obj[key];
+    if (wasNative && !isNative) {
+      unaugmentNativePrototypes(this._api, this._apiNodeList);
     }
-
-    /*
-     * Augment native `Node` and `NodeList` objects in native mode.
-     *
-     * @private
-     */
-
-    function augmentNativePrototypes(methodsNode, methodsNodeList) {
-
-        var key;
-
-        for (key in methodsNode) {
-            augment(NodeProto, key, methodsNode[key]);
-            augment(NodeListProto, key, methodsNode[key]);
-        }
-
-        for (key in methodsNodeList) {
-            augment(NodeListProto, key, methodsNodeList[key]);
-        }
+    return isNative;
+  }
+  var NodeProto = typeof Node !== 'undefined' && Node.prototype,
+      NodeListProto = typeof NodeList !== 'undefined' && NodeList.prototype;
+  function augment(obj, key, value) {
+    if (!obj.hasOwnProperty(key)) {
+      Object.defineProperty(obj, key, {
+        value: value,
+        configurable: true,
+        enumerable: false
+      });
     }
-
-    /*
-     * Unaugment native `Node` and `NodeList` objects to switch back to default mode.
-     * Mainly used for tests.
-     *
-     * @private
-     */
-
-    function unaugmentNativePrototypes(methodsNode, methodsNodeList) {
-
-        var key;
-
-        for (key in methodsNode) {
-            unaugment(NodeProto, key);
-            unaugment(NodeListProto, key);
-        }
-
-        for (key in methodsNodeList) {
-            unaugment(NodeListProto, key);
-        }
+  }
+  function unaugment(obj, key) {
+    delete obj[key];
+  }
+  function augmentNativePrototypes(methodsNode, methodsNodeList) {
+    var key;
+    for (key in methodsNode) {
+      augment(NodeProto, key, methodsNode[key]);
+      augment(NodeListProto, key, methodsNode[key]);
     }
-
-    // Export interface
-
-    __exports__.isNative = isNative;
-    __exports__.native = native;
-  });
+    for (key in methodsNodeList) {
+      augment(NodeListProto, key, methodsNodeList[key]);
+    }
+  }
+  function unaugmentNativePrototypes(methodsNode, methodsNodeList) {
+    var key;
+    for (key in methodsNode) {
+      unaugment(NodeProto, key);
+      unaugment(NodeListProto, key);
+    }
+    for (key in methodsNodeList) {
+      unaugment(NodeListProto, key);
+    }
+  }
+  ;
+  return {
+    get isNative() {
+      return isNative;
+    },
+    get native() {
+      return native;
+    },
+    __esModule: true
+  };
+});

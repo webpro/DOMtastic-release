@@ -1,49 +1,30 @@
-define(
-  ["./util","exports"],
-  function(__dependency1__, __exports__) {
-    "use strict";
-    /**
-     * @module Attr
-     */
-
-    var each = __dependency1__.each;
-
-    /**
-     * Get the value of an attribute for the first element, or set one or more attributes for each element in the collection.
-     *
-     * @param {String|Object} key The name of the attribute to get or set. Or an object containing key-value pairs to set as attributes.
-     * @param {String} [value] The value of the attribute to set.
-     * @return {Object} The wrapped collection
-     * @chainable
-     * @example
-     *     $('.item').attr('attrName');
-     *     $('.item').attr('attrName', 'attrValue');
-     *     $('.item').attr({'attr1', 'value1'}, {'attr2', 'value2});
-     */
-
-    function attr(key, value) {
-
-        if (typeof key === 'string' && typeof value === 'undefined') {
-            var element = this.nodeType ? this : this[0];
-            return element ? element.getAttribute(key) : undefined;
-        }
-
-        each(this, function(element) {
-            if (typeof key === 'object') {
-                for (var attr in key) {
-                    element.setAttribute(attr, key[attr]);
-                }
-            } else {
-                element.setAttribute(key, value);
-            }
-        });
-
-        return this;
+define(['./util'], function($__0) {
+  "use strict";
+  var __moduleName = "attr";
+  if (!$__0 || !$__0.__esModule)
+    $__0 = {'default': $__0};
+  var each = ($__0).each;
+  function attr(key, value) {
+    if (typeof key === 'string' && typeof value === 'undefined') {
+      var element = this.nodeType ? this : this[0];
+      return element ? element.getAttribute(key) : undefined;
     }
-
-    /*
-     * Export interface
-     */
-
-    __exports__.attr = attr;
-  });
+    each(this, function(element) {
+      if (typeof key === 'object') {
+        for (var attr in key) {
+          element.setAttribute(attr, key[attr]);
+        }
+      } else {
+        element.setAttribute(key, value);
+      }
+    });
+    return this;
+  }
+  ;
+  return {
+    get attr() {
+      return attr;
+    },
+    __esModule: true
+  };
+});
