@@ -20,7 +20,7 @@ var noconflict = _dereq_('./noconflict');
 extend($, noconflict);
 extend(api, array, className, dom, event);
 extend(apiNodeList, array);
-$.version = '0.5.0';
+$.version = '0.5.1';
 $.extend = extend;
 $._api = api;
 $._apiNodeList = apiNodeList;
@@ -31,7 +31,7 @@ module.exports = {
 };
 
 
-},{"./array":2,"./attr":3,"./class":4,"./dom":5,"./dom_extra":6,"./event":7,"./html":8,"./mode":9,"./noconflict":10,"./selector":11,"./selector_extra":12,"./util":13}],2:[function(_dereq_,module,exports){
+},{"./array":2,"./class":3,"./dom":4,"./event":5,"./noconflict":6,"./selector":7,"./util":8}],2:[function(_dereq_,module,exports){
 "use strict";
 var __moduleName = "src/je/array";
 var _each = _dereq_('./util').each;
@@ -71,34 +71,7 @@ module.exports = {
 };
 
 
-},{"./selector":11,"./util":13}],3:[function(_dereq_,module,exports){
-"use strict";
-var __moduleName = "src/je/attr";
-var each = _dereq_('./util').each;
-function attr(key, value) {
-  if (typeof key === 'string' && typeof value === 'undefined') {
-    var element = this.nodeType ? this : this[0];
-    return element ? element.getAttribute(key) : undefined;
-  }
-  each(this, function(element) {
-    if (typeof key === 'object') {
-      for (var attr in key) {
-        element.setAttribute(attr, key[attr]);
-      }
-    } else {
-      element.setAttribute(key, value);
-    }
-  });
-  return this;
-}
-;
-module.exports = {
-  attr: attr,
-  __esModule: true
-};
-
-
-},{"./util":13}],4:[function(_dereq_,module,exports){
+},{"./selector":7,"./util":8}],3:[function(_dereq_,module,exports){
 "use strict";
 var __moduleName = "src/je/class";
 var $__0 = _dereq_('./util'),
@@ -137,7 +110,7 @@ module.exports = {
 };
 
 
-},{"./util":13}],5:[function(_dereq_,module,exports){
+},{"./util":8}],4:[function(_dereq_,module,exports){
 "use strict";
 var __moduleName = "src/je/dom";
 var toArray = _dereq_('./util').toArray;
@@ -225,40 +198,7 @@ module.exports = {
 };
 
 
-},{"./util":13}],6:[function(_dereq_,module,exports){
-"use strict";
-var __moduleName = "src/je/dom_extra";
-var each = _dereq_('./util').each;
-var $__0 = _dereq_('./dom'),
-    append = $__0.append,
-    before = $__0.before,
-    after = $__0.after;
-var $ = _dereq_('./selector').$;
-function appendTo(element) {
-  var context = typeof element === 'string' ? $(element) : element;
-  append.call(context, this);
-  return this;
-}
-function remove() {
-  return each(this, function(element) {
-    if (element.parentNode) {
-      element.parentNode.removeChild(element);
-    }
-  });
-}
-function replaceWith() {
-  return before.apply(this, arguments).remove();
-}
-;
-module.exports = {
-  appendTo: appendTo,
-  remove: remove,
-  replaceWith: replaceWith,
-  __esModule: true
-};
-
-
-},{"./dom":5,"./selector":11,"./util":13}],7:[function(_dereq_,module,exports){
+},{"./util":8}],5:[function(_dereq_,module,exports){
 "use strict";
 var __moduleName = "src/je/event";
 var $__0 = _dereq_('./util'),
@@ -431,89 +371,7 @@ module.exports = {
 };
 
 
-},{"./selector":11,"./util":13}],8:[function(_dereq_,module,exports){
-"use strict";
-var __moduleName = "src/je/html";
-var each = _dereq_('./util').each;
-function html(fragment) {
-  if (typeof fragment !== 'string') {
-    var element = this.nodeType ? this : this[0];
-    return element ? element.innerHTML : undefined;
-  }
-  each(this, function(element) {
-    element.innerHTML = fragment;
-  });
-  return this;
-}
-;
-module.exports = {
-  html: html,
-  __esModule: true
-};
-
-
-},{"./util":13}],9:[function(_dereq_,module,exports){
-"use strict";
-var __moduleName = "src/je/mode";
-var global = _dereq_('./util').global;
-var isNative = false;
-function native(goNative) {
-  var wasNative = isNative;
-  isNative = typeof goNative === 'boolean' ? goNative : true;
-  if (global.$) {
-    global.$.isNative = isNative;
-  }
-  if (!wasNative && isNative) {
-    augmentNativePrototypes(this._api, this._apiNodeList);
-  }
-  if (wasNative && !isNative) {
-    unaugmentNativePrototypes(this._api, this._apiNodeList);
-  }
-  return isNative;
-}
-var NodeProto = typeof Node !== 'undefined' && Node.prototype,
-    NodeListProto = typeof NodeList !== 'undefined' && NodeList.prototype;
-function augment(obj, key, value) {
-  if (!obj.hasOwnProperty(key)) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      configurable: true,
-      enumerable: false
-    });
-  }
-}
-function unaugment(obj, key) {
-  delete obj[key];
-}
-function augmentNativePrototypes(methodsNode, methodsNodeList) {
-  var key;
-  for (key in methodsNode) {
-    augment(NodeProto, key, methodsNode[key]);
-    augment(NodeListProto, key, methodsNode[key]);
-  }
-  for (key in methodsNodeList) {
-    augment(NodeListProto, key, methodsNodeList[key]);
-  }
-}
-function unaugmentNativePrototypes(methodsNode, methodsNodeList) {
-  var key;
-  for (key in methodsNode) {
-    unaugment(NodeProto, key);
-    unaugment(NodeListProto, key);
-  }
-  for (key in methodsNodeList) {
-    unaugment(NodeListProto, key);
-  }
-}
-;
-module.exports = {
-  isNative: isNative,
-  native: native,
-  __esModule: true
-};
-
-
-},{"./util":13}],10:[function(_dereq_,module,exports){
+},{"./selector":7,"./util":8}],6:[function(_dereq_,module,exports){
 "use strict";
 var __moduleName = "src/je/noconflict";
 var global = _dereq_('./util').global;
@@ -529,7 +387,7 @@ module.exports = {
 };
 
 
-},{"./util":13}],11:[function(_dereq_,module,exports){
+},{"./util":8}],7:[function(_dereq_,module,exports){
 "use strict";
 var __moduleName = "src/je/selector";
 var $__0 = _dereq_('./util'),
@@ -617,64 +475,7 @@ module.exports = {
 };
 
 
-},{"./util":13}],12:[function(_dereq_,module,exports){
-"use strict";
-var __moduleName = "src/je/selector_extra";
-var each = _dereq_('./util').each;
-var $__0 = _dereq_('./selector'),
-    $ = $__0.$,
-    matches = $__0.matches;
-function children(selector) {
-  var nodes = [];
-  each(this, function(element) {
-    each(element.children, function(child) {
-      if (!selector || (selector && matches(child, selector))) {
-        nodes.push(child);
-      }
-    });
-  });
-  return $(nodes);
-}
-function closest(selector) {
-  var node = this[0];
-  for (; node.nodeType !== node.DOCUMENT_NODE; node = node.parentNode) {
-    if (matches(node, selector)) {
-      return $(node);
-    }
-  }
-  return $();
-}
-function parent(selector) {
-  var nodes = [];
-  each(this, function(element) {
-    if (!selector || (selector && matches(element.parentNode, selector))) {
-      nodes.push(element.parentNode);
-    }
-  });
-  return $(nodes);
-}
-function eq(index) {
-  return slice.call(this, index, index + 1);
-}
-function get(index) {
-  return this[index];
-}
-function slice(start, end) {
-  return $([].slice.apply(this, arguments));
-}
-;
-module.exports = {
-  children: children,
-  closest: closest,
-  parent: parent,
-  eq: eq,
-  get: get,
-  slice: slice,
-  __esModule: true
-};
-
-
-},{"./selector":11,"./util":13}],13:[function(_dereq_,module,exports){
+},{"./util":8}],8:[function(_dereq_,module,exports){
 "use strict";
 var __moduleName = "src/je/util";
 var global = new Function("return this")(),
@@ -717,7 +518,7 @@ module.exports = {
 };
 
 
-},{}],14:[function(_dereq_,module,exports){
+},{}],9:[function(_dereq_,module,exports){
 "use strict";
 var __moduleName = "src/main";
 var $ = _dereq_('./je/api').default;
@@ -728,6 +529,6 @@ module.exports = {
 };
 
 
-},{"./je/api":1}]},{},[14])
-(14)
+},{"./je/api":1}]},{},[9])
+(9)
 });
