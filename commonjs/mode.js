@@ -2,9 +2,10 @@
 var __moduleName = "mode";
 var global = require('./util').global;
 var isNative = false;
-function native(goNative) {
+function native() {
+  var goNative = arguments[0] !== (void 0) ? arguments[0] : true;
   var wasNative = isNative;
-  isNative = typeof goNative === 'boolean' ? goNative : true;
+  isNative = goNative;
   if (global.$) {
     global.$.isNative = isNative;
   }
@@ -27,9 +28,9 @@ function augment(obj, key, value) {
     });
   }
 }
-function unaugment(obj, key) {
+var unaugment = (function(obj, key) {
   delete obj[key];
-}
+});
 function augmentNativePrototypes(methodsNode, methodsNodeList) {
   var key;
   for (key in methodsNode) {

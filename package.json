@@ -1,8 +1,9 @@
 {
-  "name": "jquery-evergreen",
-  "version": "0.5.1",
+  "name": "domtastic",
+  "version": "0.6.0",
   "description": "Small and fast DOM and event library for modern browsers. It has the same familiar API as jQuery, and is lean & mean with small, optional modules.",
   "keywords": [
+    "domtastic",
     "jquery",
     "evergreen",
     "attr",
@@ -10,7 +11,8 @@
     "DOM",
     "event",
     "html",
-    "selector"
+    "selector",
+    "es6"
   ],
   "author": {
     "name": "Lars Kappert",
@@ -25,6 +27,6 @@
   "bugs": {
     "url": "https://github.com/webpro/jquery-evergreen/issues"
   },
-  "main": "commonjs/main.js",
+  "main": "domtastic.js",
   "license": "MIT"
 }

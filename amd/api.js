@@ -49,7 +49,7 @@ define(['./util', './array', './attr', './class', './dom', './dom_extra', './eve
   extend($, noconflict);
   extend(api, array, attr, className, dom, dom_extra, event, html, selector_extra);
   extend(apiNodeList, array);
-  $.version = '0.5.1';
+  $.version = '0.6.0';
   $.extend = extend;
   $._api = api;
   $._apiNodeList = apiNodeList;

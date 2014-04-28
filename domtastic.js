@@ -1,6 +1,6 @@
 !function(e){if("object"==typeof exports)module.exports=e();else if("function"==typeof define&&define.amd)define(e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.$=e()["default"]}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
 "use strict";
-var __moduleName = "src/je/api";
+var __moduleName = "src/api";
 var extend = _dereq_('./util').extend;
 var api = {},
     apiNodeList = {},
@@ -22,7 +22,7 @@ var noconflict = _dereq_('./noconflict');
 extend($, noconflict);
 extend(api, array, attr, className, dom, event, html);
 extend(apiNodeList, array);
-$.version = '0.5.1';
+$.version = '0.6.0';
 $.extend = extend;
 $._api = api;
 $._apiNodeList = apiNodeList;
@@ -33,9 +33,9 @@ module.exports = {
 };
 
 
-},{"./array":2,"./attr":3,"./class":4,"./dom":5,"./event":6,"./html":7,"./noconflict":8,"./selector":9,"./util":10}],2:[function(_dereq_,module,exports){
+},{"./array":2,"./attr":3,"./class":4,"./dom":5,"./event":6,"./html":7,"./noconflict":9,"./selector":10,"./util":11}],2:[function(_dereq_,module,exports){
 "use strict";
-var __moduleName = "src/je/array";
+var __moduleName = "src/array";
 var _each = _dereq_('./util').each;
 var $__0 = _dereq_('./selector'),
     $ = $__0.$,
@@ -73,9 +73,9 @@ module.exports = {
 };
 
 
-},{"./selector":9,"./util":10}],3:[function(_dereq_,module,exports){
+},{"./selector":10,"./util":11}],3:[function(_dereq_,module,exports){
 "use strict";
-var __moduleName = "src/je/attr";
+var __moduleName = "src/attr";
 var each = _dereq_('./util').each;
 function attr(key, value) {
   if (typeof key === 'string' && typeof value === 'undefined') {
@@ -100,9 +100,9 @@ module.exports = {
 };
 
 
-},{"./util":10}],4:[function(_dereq_,module,exports){
+},{"./util":11}],4:[function(_dereq_,module,exports){
 "use strict";
-var __moduleName = "src/je/class";
+var __moduleName = "src/class";
 var $__0 = _dereq_('./util'),
     makeIterable = $__0.makeIterable,
     each = $__0.each;
@@ -139,9 +139,9 @@ module.exports = {
 };
 
 
-},{"./util":10}],5:[function(_dereq_,module,exports){
+},{"./util":11}],5:[function(_dereq_,module,exports){
 "use strict";
-var __moduleName = "src/je/dom";
+var __moduleName = "src/dom";
 var toArray = _dereq_('./util').toArray;
 function append(element) {
   if (this instanceof Node) {
@@ -227,9 +227,9 @@ module.exports = {
 };
 
 
-},{"./util":10}],6:[function(_dereq_,module,exports){
+},{"./util":11}],6:[function(_dereq_,module,exports){
 "use strict";
-var __moduleName = "src/je/event";
+var __moduleName = "src/event";
 var $__0 = _dereq_('./util'),
     global = $__0.global,
     each = $__0.each;
@@ -295,8 +295,8 @@ function delegate(selector, eventName, handler) {
 function undelegate(selector, eventName, handler) {
   return off.call(this, eventName, selector, handler);
 }
-function trigger(type, params) {
-  params = params || {
+function trigger(type) {
+  var params = arguments[1] !== (void 0) ? arguments[1] : {
     bubbles: true,
     cancelable: true,
     detail: undefined
@@ -323,8 +323,8 @@ function isAttachedToDocument(element) {
   }
   return false;
 }
-function triggerForPath(element, type, params) {
-  params = params || {};
+function triggerForPath(element, type) {
+  var params = arguments[2] !== (void 0) ? arguments[2] : {};
   params.bubbles = false;
   var event = new CustomEvent(type, params);
   event._target = element;
@@ -333,7 +333,7 @@ function triggerForPath(element, type, params) {
     element = element.parentNode;
   }
 }
-var cacheKeyProp = '_jeh';
+var cacheKeyProp = '__domtastic';
 var id = 1;
 var handlers = {};
 var unusedKeys = [];
@@ -362,8 +362,8 @@ function delegateHandler(selector, handler, event) {
   }
 }
 (function() {
-  function CustomEvent(event, params) {
-    params = params || {
+  function CustomEvent(event) {
+    var params = arguments[1] !== (void 0) ? arguments[1] : {
       bubbles: false,
       cancelable: false,
       detail: undefined
@@ -400,9 +400,9 @@ module.exports = {
 };
 
 
-},{"./selector":9,"./util":10}],7:[function(_dereq_,module,exports){
+},{"./selector":10,"./util":11}],7:[function(_dereq_,module,exports){
 "use strict";
-var __moduleName = "src/je/html";
+var __moduleName = "src/html";
 var each = _dereq_('./util').each;
 function html(fragment) {
   if (typeof fragment !== 'string') {
@@ -421,9 +421,20 @@ module.exports = {
 };
 
 
-},{"./util":10}],8:[function(_dereq_,module,exports){
+},{"./util":11}],8:[function(_dereq_,module,exports){
 "use strict";
-var __moduleName = "src/je/noconflict";
+var __moduleName = "src/index";
+var $ = _dereq_('./api').default;
+var $__default = $;
+module.exports = {
+  default: $__default,
+  __esModule: true
+};
+
+
+},{"./api":1}],9:[function(_dereq_,module,exports){
+"use strict";
+var __moduleName = "src/noconflict";
 var global = _dereq_('./util').global;
 var previousLib = global.$;
 function noConflict() {
@@ -437,9 +448,9 @@ module.exports = {
 };
 
 
-},{"./util":10}],9:[function(_dereq_,module,exports){
+},{"./util":11}],10:[function(_dereq_,module,exports){
 "use strict";
-var __moduleName = "src/je/selector";
+var __moduleName = "src/selector";
 var $__0 = _dereq_('./util'),
     global = $__0.global,
     makeIterable = $__0.makeIterable;
@@ -448,7 +459,8 @@ var slice = [].slice,
     reFragment = /^\s*<(\w+|!)[^>]*>/,
     reSingleTag = /^<(\w+)\s*\/?>(?:<\/\1>|)$/,
     reSimpleSelector = /^[\.#]?[\w-]*$/;
-function $(selector, context) {
+function $(selector) {
+  var context = arguments[1] !== (void 0) ? arguments[1] : document;
   var collection;
   if (!selector) {
     collection = document.querySelectorAll(null);
@@ -457,7 +469,7 @@ function $(selector, context) {
   } else if (reFragment.test(selector)) {
     collection = createFragment(selector);
   } else {
-    context = context ? (typeof context === 'string' ? document.querySelector(context) : context.length ? context[0] : context) : document;
+    context = typeof context === 'string' ? document.querySelector(context) : context.length ? context[0] : context;
     collection = querySelector(selector, context);
   }
   return $.isNative ? collection : wrap(collection);
@@ -525,17 +537,17 @@ module.exports = {
 };
 
 
-},{"./util":10}],10:[function(_dereq_,module,exports){
+},{"./util":11}],11:[function(_dereq_,module,exports){
 "use strict";
-var __moduleName = "src/je/util";
+var __moduleName = "src/util";
 var global = new Function("return this")(),
     slice = Array.prototype.slice;
-function toArray(collection) {
+var toArray = (function(collection) {
   return slice.call(collection);
-}
-function makeIterable(element) {
+});
+var makeIterable = (function(element) {
   return element.length === undefined || element === window ? [element] : element;
-}
+});
 function each(collection, callback) {
   var length = collection.length;
   if (length !== undefined) {
@@ -547,8 +559,11 @@ function each(collection, callback) {
   }
   return collection;
 }
-function extend(target, source) {
-  slice.call(arguments, 1).forEach(function(src) {
+function extend(target) {
+  for (var sources = [],
+      $__0 = 1; $__0 < arguments.length; $__0++)
+    sources[$__0 - 1] = arguments[$__0];
+  sources.forEach(function(src) {
     if (src) {
       for (var prop in src) {
         target[prop] = src[prop];
@@ -568,17 +583,6 @@ module.exports = {
 };
 
 
-},{}],11:[function(_dereq_,module,exports){
-"use strict";
-var __moduleName = "src/main";
-var $ = _dereq_('./je/api').default;
-var $__default = $;
-module.exports = {
-  default: $__default,
-  __esModule: true
-};
-
-
-},{"./je/api":1}]},{},[11])
-(11)
+},{}]},{},[8])
+(8)
 });

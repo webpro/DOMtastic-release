@@ -8,7 +8,8 @@ var slice = [].slice,
     reFragment = /^\s*<(\w+|!)[^>]*>/,
     reSingleTag = /^<(\w+)\s*\/?>(?:<\/\1>|)$/,
     reSimpleSelector = /^[\.#]?[\w-]*$/;
-function $(selector, context) {
+function $(selector) {
+  var context = arguments[1] !== (void 0) ? arguments[1] : document;
   var collection;
   if (!selector) {
     collection = document.querySelectorAll(null);
@@ -17,7 +18,7 @@ function $(selector, context) {
   } else if (reFragment.test(selector)) {
     collection = createFragment(selector);
   } else {
-    context = context ? (typeof context === 'string' ? document.querySelector(context) : context.length ? context[0] : context) : document;
+    context = typeof context === 'string' ? document.querySelector(context) : context.length ? context[0] : context;
     collection = querySelector(selector, context);
   }
   return $.isNative ? collection : wrap(collection);

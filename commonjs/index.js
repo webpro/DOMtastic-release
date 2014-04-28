@@ -1,6 +1,6 @@
 "use strict";
-var __moduleName = "main";
-var $ = require('./je/api').default;
+var __moduleName = "index";
+var $ = require('./api').default;
 var $__default = $;
 module.exports = {
   get default() {

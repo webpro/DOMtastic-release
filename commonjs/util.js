@@ -2,12 +2,12 @@
 var __moduleName = "util";
 var global = new Function("return this")(),
     slice = Array.prototype.slice;
-function toArray(collection) {
+var toArray = (function(collection) {
   return slice.call(collection);
-}
-function makeIterable(element) {
+});
+var makeIterable = (function(element) {
   return element.length === undefined || element === window ? [element] : element;
-}
+});
 function each(collection, callback) {
   var length = collection.length;
   if (length !== undefined) {
@@ -19,8 +19,11 @@ function each(collection, callback) {
   }
   return collection;
 }
-function extend(target, source) {
-  slice.call(arguments, 1).forEach(function(src) {
+function extend(target) {
+  for (var sources = [],
+      $__0 = 1; $__0 < arguments.length; $__0++)
+    sources[$__0 - 1] = arguments[$__0];
+  sources.forEach(function(src) {
     if (src) {
       for (var prop in src) {
         target[prop] = src[prop];

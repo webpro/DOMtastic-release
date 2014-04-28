@@ -1,26 +1,31 @@
 !function(e){if("object"==typeof exports)module.exports=e();else if("function"==typeof define&&define.amd)define(e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.$=e()["default"]}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
 "use strict";
-var __moduleName = "src/je/api";
+var __moduleName = "src/api";
 var extend = _dereq_('./util').extend;
 var api = {},
     apiNodeList = {},
     $ = {};
 var array = _dereq_('./array');
+var attr = _dereq_('./attr');
 var className = _dereq_('./class');
 var dom = _dereq_('./dom');
+var dom_extra = _dereq_('./dom_extra');
 var event = _dereq_('./event');
+var html = _dereq_('./html');
 var selector = _dereq_('./selector');
+var selector_extra = _dereq_('./selector_extra');
 if (selector !== undefined) {
   $ = selector.$;
   $.matches = selector.matches;
   api.find = selector.find;
 }
-extend($);
+var mode = _dereq_('./mode');
+extend($, mode);
 var noconflict = _dereq_('./noconflict');
 extend($, noconflict);
-extend(api, array, className, dom, event);
+extend(api, array, attr, className, dom, dom_extra, event, html, selector_extra);
 extend(apiNodeList, array);
-$.version = '0.5.1';
+$.version = '0.6.0';
 $.extend = extend;
 $._api = api;
 $._apiNodeList = apiNodeList;
@@ -31,9 +36,9 @@ module.exports = {
 };
 
 
-},{"./array":2,"./class":3,"./dom":4,"./event":5,"./noconflict":6,"./selector":7,"./util":8}],2:[function(_dereq_,module,exports){
+},{"./array":2,"./attr":3,"./class":4,"./dom":5,"./dom_extra":6,"./event":7,"./html":8,"./mode":10,"./noconflict":11,"./selector":12,"./selector_extra":13,"./util":14}],2:[function(_dereq_,module,exports){
 "use strict";
-var __moduleName = "src/je/array";
+var __moduleName = "src/array";
 var _each = _dereq_('./util').each;
 var $__0 = _dereq_('./selector'),
     $ = $__0.$,
@@ -71,9 +76,36 @@ module.exports = {
 };
 
 
-},{"./selector":7,"./util":8}],3:[function(_dereq_,module,exports){
+},{"./selector":12,"./util":14}],3:[function(_dereq_,module,exports){
 "use strict";
-var __moduleName = "src/je/class";
+var __moduleName = "src/attr";
+var each = _dereq_('./util').each;
+function attr(key, value) {
+  if (typeof key === 'string' && typeof value === 'undefined') {
+    var element = this.nodeType ? this : this[0];
+    return element ? element.getAttribute(key) : undefined;
+  }
+  each(this, function(element) {
+    if (typeof key === 'object') {
+      for (var attr in key) {
+        element.setAttribute(attr, key[attr]);
+      }
+    } else {
+      element.setAttribute(key, value);
+    }
+  });
+  return this;
+}
+;
+module.exports = {
+  attr: attr,
+  __esModule: true
+};
+
+
+},{"./util":14}],4:[function(_dereq_,module,exports){
+"use strict";
+var __moduleName = "src/class";
 var $__0 = _dereq_('./util'),
     makeIterable = $__0.makeIterable,
     each = $__0.each;
@@ -110,9 +142,9 @@ module.exports = {
 };
 
 
-},{"./util":8}],4:[function(_dereq_,module,exports){
+},{"./util":14}],5:[function(_dereq_,module,exports){
 "use strict";
-var __moduleName = "src/je/dom";
+var __moduleName = "src/dom";
 var toArray = _dereq_('./util').toArray;
 function append(element) {
   if (this instanceof Node) {
@@ -198,9 +230,42 @@ module.exports = {
 };
 
 
-},{"./util":8}],5:[function(_dereq_,module,exports){
+},{"./util":14}],6:[function(_dereq_,module,exports){
 "use strict";
-var __moduleName = "src/je/event";
+var __moduleName = "src/dom_extra";
+var each = _dereq_('./util').each;
+var $__0 = _dereq_('./dom'),
+    append = $__0.append,
+    before = $__0.before,
+    after = $__0.after;
+var $ = _dereq_('./selector').$;
+function appendTo(element) {
+  var context = typeof element === 'string' ? $(element) : element;
+  append.call(context, this);
+  return this;
+}
+function remove() {
+  return each(this, function(element) {
+    if (element.parentNode) {
+      element.parentNode.removeChild(element);
+    }
+  });
+}
+function replaceWith() {
+  return before.apply(this, arguments).remove();
+}
+;
+module.exports = {
+  appendTo: appendTo,
+  remove: remove,
+  replaceWith: replaceWith,
+  __esModule: true
+};
+
+
+},{"./dom":5,"./selector":12,"./util":14}],7:[function(_dereq_,module,exports){
+"use strict";
+var __moduleName = "src/event";
 var $__0 = _dereq_('./util'),
     global = $__0.global,
     each = $__0.each;
@@ -266,8 +331,8 @@ function delegate(selector, eventName, handler) {
 function undelegate(selector, eventName, handler) {
   return off.call(this, eventName, selector, handler);
 }
-function trigger(type, params) {
-  params = params || {
+function trigger(type) {
+  var params = arguments[1] !== (void 0) ? arguments[1] : {
     bubbles: true,
     cancelable: true,
     detail: undefined
@@ -294,8 +359,8 @@ function isAttachedToDocument(element) {
   }
   return false;
 }
-function triggerForPath(element, type, params) {
-  params = params || {};
+function triggerForPath(element, type) {
+  var params = arguments[2] !== (void 0) ? arguments[2] : {};
   params.bubbles = false;
   var event = new CustomEvent(type, params);
   event._target = element;
@@ -304,7 +369,7 @@ function triggerForPath(element, type, params) {
     element = element.parentNode;
   }
 }
-var cacheKeyProp = '_jeh';
+var cacheKeyProp = '__domtastic';
 var id = 1;
 var handlers = {};
 var unusedKeys = [];
@@ -333,8 +398,8 @@ function delegateHandler(selector, handler, event) {
   }
 }
 (function() {
-  function CustomEvent(event, params) {
-    params = params || {
+  function CustomEvent(event) {
+    var params = arguments[1] !== (void 0) ? arguments[1] : {
       bubbles: false,
       cancelable: false,
       detail: undefined
@@ -371,9 +436,103 @@ module.exports = {
 };
 
 
-},{"./selector":7,"./util":8}],6:[function(_dereq_,module,exports){
+},{"./selector":12,"./util":14}],8:[function(_dereq_,module,exports){
 "use strict";
-var __moduleName = "src/je/noconflict";
+var __moduleName = "src/html";
+var each = _dereq_('./util').each;
+function html(fragment) {
+  if (typeof fragment !== 'string') {
+    var element = this.nodeType ? this : this[0];
+    return element ? element.innerHTML : undefined;
+  }
+  each(this, function(element) {
+    element.innerHTML = fragment;
+  });
+  return this;
+}
+;
+module.exports = {
+  html: html,
+  __esModule: true
+};
+
+
+},{"./util":14}],9:[function(_dereq_,module,exports){
+"use strict";
+var __moduleName = "src/index";
+var $ = _dereq_('./api').default;
+var $__default = $;
+module.exports = {
+  default: $__default,
+  __esModule: true
+};
+
+
+},{"./api":1}],10:[function(_dereq_,module,exports){
+"use strict";
+var __moduleName = "src/mode";
+var global = _dereq_('./util').global;
+var isNative = false;
+function native() {
+  var goNative = arguments[0] !== (void 0) ? arguments[0] : true;
+  var wasNative = isNative;
+  isNative = goNative;
+  if (global.$) {
+    global.$.isNative = isNative;
+  }
+  if (!wasNative && isNative) {
+    augmentNativePrototypes(this._api, this._apiNodeList);
+  }
+  if (wasNative && !isNative) {
+    unaugmentNativePrototypes(this._api, this._apiNodeList);
+  }
+  return isNative;
+}
+var NodeProto = typeof Node !== 'undefined' && Node.prototype,
+    NodeListProto = typeof NodeList !== 'undefined' && NodeList.prototype;
+function augment(obj, key, value) {
+  if (!obj.hasOwnProperty(key)) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      configurable: true,
+      enumerable: false
+    });
+  }
+}
+var unaugment = (function(obj, key) {
+  delete obj[key];
+});
+function augmentNativePrototypes(methodsNode, methodsNodeList) {
+  var key;
+  for (key in methodsNode) {
+    augment(NodeProto, key, methodsNode[key]);
+    augment(NodeListProto, key, methodsNode[key]);
+  }
+  for (key in methodsNodeList) {
+    augment(NodeListProto, key, methodsNodeList[key]);
+  }
+}
+function unaugmentNativePrototypes(methodsNode, methodsNodeList) {
+  var key;
+  for (key in methodsNode) {
+    unaugment(NodeProto, key);
+    unaugment(NodeListProto, key);
+  }
+  for (key in methodsNodeList) {
+    unaugment(NodeListProto, key);
+  }
+}
+;
+module.exports = {
+  isNative: isNative,
+  native: native,
+  __esModule: true
+};
+
+
+},{"./util":14}],11:[function(_dereq_,module,exports){
+"use strict";
+var __moduleName = "src/noconflict";
 var global = _dereq_('./util').global;
 var previousLib = global.$;
 function noConflict() {
@@ -387,9 +546,9 @@ module.exports = {
 };
 
 
-},{"./util":8}],7:[function(_dereq_,module,exports){
+},{"./util":14}],12:[function(_dereq_,module,exports){
 "use strict";
-var __moduleName = "src/je/selector";
+var __moduleName = "src/selector";
 var $__0 = _dereq_('./util'),
     global = $__0.global,
     makeIterable = $__0.makeIterable;
@@ -398,7 +557,8 @@ var slice = [].slice,
     reFragment = /^\s*<(\w+|!)[^>]*>/,
     reSingleTag = /^<(\w+)\s*\/?>(?:<\/\1>|)$/,
     reSimpleSelector = /^[\.#]?[\w-]*$/;
-function $(selector, context) {
+function $(selector) {
+  var context = arguments[1] !== (void 0) ? arguments[1] : document;
   var collection;
   if (!selector) {
     collection = document.querySelectorAll(null);
@@ -407,7 +567,7 @@ function $(selector, context) {
   } else if (reFragment.test(selector)) {
     collection = createFragment(selector);
   } else {
-    context = context ? (typeof context === 'string' ? document.querySelector(context) : context.length ? context[0] : context) : document;
+    context = typeof context === 'string' ? document.querySelector(context) : context.length ? context[0] : context;
     collection = querySelector(selector, context);
   }
   return $.isNative ? collection : wrap(collection);
@@ -475,17 +635,74 @@ module.exports = {
 };
 
 
-},{"./util":8}],8:[function(_dereq_,module,exports){
+},{"./util":14}],13:[function(_dereq_,module,exports){
 "use strict";
-var __moduleName = "src/je/util";
+var __moduleName = "src/selector_extra";
+var each = _dereq_('./util').each;
+var $__0 = _dereq_('./selector'),
+    $ = $__0.$,
+    matches = $__0.matches;
+function children(selector) {
+  var nodes = [];
+  each(this, function(element) {
+    each(element.children, function(child) {
+      if (!selector || (selector && matches(child, selector))) {
+        nodes.push(child);
+      }
+    });
+  });
+  return $(nodes);
+}
+function closest(selector) {
+  var node = this[0];
+  for (; node.nodeType !== node.DOCUMENT_NODE; node = node.parentNode) {
+    if (matches(node, selector)) {
+      return $(node);
+    }
+  }
+  return $();
+}
+function parent(selector) {
+  var nodes = [];
+  each(this, function(element) {
+    if (!selector || (selector && matches(element.parentNode, selector))) {
+      nodes.push(element.parentNode);
+    }
+  });
+  return $(nodes);
+}
+function eq(index) {
+  return slice.call(this, index, index + 1);
+}
+function get(index) {
+  return this[index];
+}
+function slice(start, end) {
+  return $([].slice.apply(this, arguments));
+}
+;
+module.exports = {
+  children: children,
+  closest: closest,
+  parent: parent,
+  eq: eq,
+  get: get,
+  slice: slice,
+  __esModule: true
+};
+
+
+},{"./selector":12,"./util":14}],14:[function(_dereq_,module,exports){
+"use strict";
+var __moduleName = "src/util";
 var global = new Function("return this")(),
     slice = Array.prototype.slice;
-function toArray(collection) {
+var toArray = (function(collection) {
   return slice.call(collection);
-}
-function makeIterable(element) {
+});
+var makeIterable = (function(element) {
   return element.length === undefined || element === window ? [element] : element;
-}
+});
 function each(collection, callback) {
   var length = collection.length;
   if (length !== undefined) {
@@ -497,8 +714,11 @@ function each(collection, callback) {
   }
   return collection;
 }
-function extend(target, source) {
-  slice.call(arguments, 1).forEach(function(src) {
+function extend(target) {
+  for (var sources = [],
+      $__0 = 1; $__0 < arguments.length; $__0++)
+    sources[$__0 - 1] = arguments[$__0];
+  sources.forEach(function(src) {
     if (src) {
       for (var prop in src) {
         target[prop] = src[prop];
@@ -518,17 +738,6 @@ module.exports = {
 };
 
 
-},{}],9:[function(_dereq_,module,exports){
-"use strict";
-var __moduleName = "src/main";
-var $ = _dereq_('./je/api').default;
-var $__default = $;
-module.exports = {
-  default: $__default,
-  __esModule: true
-};
-
-
-},{"./je/api":1}]},{},[9])
+},{}]},{},[9])
 (9)
 });

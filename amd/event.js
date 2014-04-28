@@ -70,8 +70,8 @@ define(['./util', './selector'], function($__0,$__1) {
   function undelegate(selector, eventName, handler) {
     return off.call(this, eventName, selector, handler);
   }
-  function trigger(type, params) {
-    params = params || {
+  function trigger(type) {
+    var params = arguments[1] !== (void 0) ? arguments[1] : {
       bubbles: true,
       cancelable: true,
       detail: undefined
@@ -98,8 +98,8 @@ define(['./util', './selector'], function($__0,$__1) {
     }
     return false;
   }
-  function triggerForPath(element, type, params) {
-    params = params || {};
+  function triggerForPath(element, type) {
+    var params = arguments[2] !== (void 0) ? arguments[2] : {};
     params.bubbles = false;
     var event = new CustomEvent(type, params);
     event._target = element;
@@ -108,7 +108,7 @@ define(['./util', './selector'], function($__0,$__1) {
       element = element.parentNode;
     }
   }
-  var cacheKeyProp = '_jeh';
+  var cacheKeyProp = '__domtastic';
   var id = 1;
   var handlers = {};
   var unusedKeys = [];
@@ -137,8 +137,8 @@ define(['./util', './selector'], function($__0,$__1) {
     }
   }
   (function() {
-    function CustomEvent(event, params) {
-      params = params || {
+    function CustomEvent(event) {
+      var params = arguments[1] !== (void 0) ? arguments[1] : {
         bubbles: false,
         cancelable: false,
         detail: undefined

@@ -1,7 +1,7 @@
-# jQuery Evergreen
+# DOMtastic
 
-Release repository for [jQuery Evergreen](https://github.com/webpro/jquery-evergreen). These files are what you get when you install from npm or Bower:
+Release repository for [DOMtastic](https://github.com/webpro/DOMtastic). These files are what you get when you install from npm or Bower:
 
-    npm i jquery-evergreen
+    npm i domtastic
     
-    bower i jquery-evergreen
+    bower i domtastic
