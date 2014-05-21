@@ -17,10 +17,19 @@ function attr(key, value) {
   });
   return this;
 }
+function removeAttr(key) {
+  each(this, function(element) {
+    element.removeAttribute(key);
+  });
+  return this;
+}
 ;
 module.exports = {
   get attr() {
     return attr;
+  },
+  get removeAttr() {
+    return removeAttr;
   },
   __esModule: true
 };

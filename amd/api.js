@@ -1,4 +1,4 @@
-define(['./util', './array', './attr', './class', './dom', './dom_extra', './event', './html', './selector', './selector_extra', './mode', './noconflict'], function($__0,$__1,$__2,$__3,$__4,$__5,$__6,$__7,$__8,$__9,$__10,$__11) {
+define(['./util', './array', './attr', './class', './data', './dom', './dom_extra', './event', './html', './selector', './selector_extra', './mode', './noconflict'], function($__0,$__1,$__2,$__3,$__4,$__5,$__6,$__7,$__8,$__9,$__10,$__11,$__12) {
   "use strict";
   var __moduleName = "api";
   if (!$__0 || !$__0.__esModule)
@@ -25,6 +25,8 @@ define(['./util', './array', './attr', './class', './dom', './dom_extra', './eve
     $__10 = {'default': $__10};
   if (!$__11 || !$__11.__esModule)
     $__11 = {'default': $__11};
+  if (!$__12 || !$__12.__esModule)
+    $__12 = {'default': $__12};
   var extend = ($__0).extend;
   var api = {},
       apiNodeList = {},
@@ -32,27 +34,28 @@ define(['./util', './array', './attr', './class', './dom', './dom_extra', './eve
   var array = $__1;
   var attr = $__2;
   var className = $__3;
-  var dom = $__4;
-  var dom_extra = $__5;
-  var event = $__6;
-  var html = $__7;
-  var selector = $__8;
-  var selector_extra = $__9;
+  var data = $__4;
+  var dom = $__5;
+  var dom_extra = $__6;
+  var event = $__7;
+  var html = $__8;
+  var selector = $__9;
+  var selector_extra = $__10;
   if (selector !== undefined) {
     $ = selector.$;
     $.matches = selector.matches;
     api.find = selector.find;
   }
-  var mode = $__10;
+  var mode = $__11;
   extend($, mode);
-  var noconflict = $__11;
+  var noconflict = $__12;
   extend($, noconflict);
-  extend(api, array, attr, className, dom, dom_extra, event, html, selector_extra);
+  extend(api, array, attr, className, data, dom, dom_extra, event, html, selector_extra);
   extend(apiNodeList, array);
-  $.version = '0.6.2';
+  $.version = '0.7.0';
   $.extend = extend;
-  $._api = api;
-  $._apiNodeList = apiNodeList;
+  $.fn = api;
+  $.fnList = apiNodeList;
   var $__default = $;
   return {
     get default() {

@@ -13,6 +13,8 @@ function $(selector) {
   var collection;
   if (!selector) {
     collection = document.querySelectorAll(null);
+  } else if (selector instanceof Wrapper) {
+    return selector;
   } else if (typeof selector !== 'string') {
     collection = makeIterable(selector);
   } else if (reFragment.test(selector)) {
@@ -63,7 +65,7 @@ function createFragment(html) {
 }
 function wrap(collection) {
   if (!isPrototypeSet) {
-    Wrapper.prototype = $._api;
+    Wrapper.prototype = $.fn;
     Wrapper.prototype.constructor = Wrapper;
     isPrototypeSet = true;
   }

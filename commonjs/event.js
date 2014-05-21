@@ -12,7 +12,7 @@ function on(eventName, selector, handler, useCapture) {
   var parts = eventName.split('.');
   eventName = parts[0] || null;
   var namespace = parts[1] || null;
-  var eventListener = handler;
+  var eventListener = proxyHandler(handler);
   each(this, function(element) {
     if (selector) {
       eventListener = delegateHandler.bind(element, selector, handler);
@@ -65,13 +65,14 @@ function delegate(selector, eventName, handler) {
 function undelegate(selector, eventName, handler) {
   return off.call(this, eventName, selector, handler);
 }
-function trigger(type) {
-  var params = arguments[1] !== (void 0) ? arguments[1] : {
-    bubbles: true,
-    cancelable: true,
-    detail: undefined
-  };
+function trigger(type, data) {
+  var params = arguments[2] !== (void 0) ? arguments[2] : {};
+  params.bubbles = typeof params.bubbles === 'boolean' ? params.bubbles : true;
+  params.cancelable = typeof params.cancelable === 'boolean' ? params.cancelable : true;
+  params.preventDefault = typeof params.preventDefault === 'boolean' ? params.preventDefault : false;
+  params.detail = data;
   var event = new CustomEvent(type, params);
+  event._preventDefault = params.preventDefault;
   each(this, function(element) {
     if (!params.bubbles || isEventBubblingInDetachedTree || isAttachedToDocument(element)) {
       element.dispatchEvent(event);
@@ -79,6 +80,22 @@ function trigger(type) {
       triggerForPath(element, type, params);
     }
   });
+  return this;
+}
+function triggerHandler(type, data) {
+  if (this[0]) {
+    trigger.call(this[0], type, data, {
+      bubbles: false,
+      preventDefault: true
+    });
+  }
+}
+function ready(handler) {
+  if (/complete|loaded|interactive/.test(document.readyState) && document.body) {
+    handler();
+  } else {
+    document.addEventListener('DOMContentLoaded', handler, false);
+  }
   return this;
 }
 function isAttachedToDocument(element) {
@@ -98,30 +115,63 @@ function triggerForPath(element, type) {
   params.bubbles = false;
   var event = new CustomEvent(type, params);
   event._target = element;
-  while (element.parentNode) {
+  do {
     element.dispatchEvent(event);
-    element = element.parentNode;
-  }
+  } while (element = element.parentNode);
 }
-var cacheKeyProp = '__domtastic';
+var eventKeyProp = '__domtastic_event__';
 var id = 1;
 var handlers = {};
 var unusedKeys = [];
 function getHandlers(element) {
-  if (!element[cacheKeyProp]) {
-    element[cacheKeyProp] = unusedKeys.length === 0 ? ++id : unusedKeys.pop();
+  if (!element[eventKeyProp]) {
+    element[eventKeyProp] = unusedKeys.length === 0 ? ++id : unusedKeys.pop();
   }
-  var key = element[cacheKeyProp];
+  var key = element[eventKeyProp];
   return handlers[key] || (handlers[key] = []);
 }
 function clearHandlers(element) {
-  var key = element[cacheKeyProp];
+  var key = element[eventKeyProp];
   if (handlers[key]) {
     handlers[key] = null;
     element[key] = null;
     unusedKeys.push(key);
   }
 }
+function proxyHandler(handler) {
+  return function(event) {
+    handler(augmentEvent(event), event.detail);
+  };
+}
+var augmentEvent = (function() {
+  var eventMethods = {
+    preventDefault: 'isDefaultPrevented',
+    stopImmediatePropagation: 'isImmediatePropagationStopped',
+    stopPropagation: 'isPropagationStopped'
+  },
+      noop = (function() {}),
+      returnTrue = (function() {
+        return true;
+      }),
+      returnFalse = (function() {
+        return false;
+      });
+  return function(event) {
+    for (var methodName in eventMethods) {
+      (function(methodName, testMethodName, originalMethod) {
+        event[methodName] = function() {
+          this[testMethodName] = returnTrue;
+          return originalMethod.apply(this, arguments);
+        };
+        event[testMethodName] = returnFalse;
+      }(methodName, eventMethods[methodName], event[methodName] || noop));
+    }
+    if (event._preventDefault) {
+      event.preventDefault();
+    }
+    return event;
+  };
+})();
 function delegateHandler(selector, handler, event) {
   var eventTarget = event._target || event.target;
   if (matches(eventTarget, selector)) {
@@ -138,9 +188,9 @@ function delegateHandler(selector, handler, event) {
       cancelable: false,
       detail: undefined
     };
-    var evt = document.createEvent('CustomEvent');
-    evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
-    return evt;
+    var customEvent = document.createEvent('CustomEvent');
+    customEvent.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
+    return customEvent;
   }
   CustomEvent.prototype = global.CustomEvent && global.CustomEvent.prototype;
   global.CustomEvent = CustomEvent;
@@ -159,6 +209,8 @@ var isEventBubblingInDetachedTree = (function() {
   }
   return isBubbling;
 })();
+var bind = on,
+    unbind = off;
 ;
 module.exports = {
   get on() {
@@ -175,6 +227,18 @@ module.exports = {
   },
   get trigger() {
     return trigger;
+  },
+  get triggerHandler() {
+    return triggerHandler;
+  },
+  get ready() {
+    return ready;
+  },
+  get bind() {
+    return bind;
+  },
+  get unbind() {
+    return unbind;
   },
   __esModule: true
 };

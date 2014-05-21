@@ -22,10 +22,10 @@ var noconflict = _dereq_('./noconflict');
 extend($, noconflict);
 extend(api, array, attr, className, dom, event, html);
 extend(apiNodeList, array);
-$.version = '0.6.2';
+$.version = '0.7.0';
 $.extend = extend;
-$._api = api;
-$._apiNodeList = apiNodeList;
+$.fn = api;
+$.fnList = apiNodeList;
 var $__default = $;
 module.exports = {
   default: $__default,
@@ -93,9 +93,16 @@ function attr(key, value) {
   });
   return this;
 }
+function removeAttr(key) {
+  each(this, function(element) {
+    element.removeAttribute(key);
+  });
+  return this;
+}
 ;
 module.exports = {
   attr: attr,
+  removeAttr: removeAttr,
   __esModule: true
 };
 
@@ -158,8 +165,29 @@ function append(element) {
   } else {
     var l = this.length;
     while (l--) {
-      var elm = l === 0 ? element : clone(element);
+      var elm = l === 0 ? element : _clone(element);
       append.call(this[l], elm);
+    }
+  }
+  return this;
+}
+function prepend(element) {
+  if (this instanceof Node) {
+    if (typeof element === 'string') {
+      this.insertAdjacentHTML('afterbegin', element);
+    } else {
+      if (element instanceof Node) {
+        this.insertBefore(element, this.firstChild);
+      } else {
+        var elements = element instanceof NodeList ? toArray(element) : element;
+        elements.reverse().forEach(prepend.bind(this));
+      }
+    }
+  } else {
+    var l = this.length;
+    while (l--) {
+      var elm = l === 0 ? element : _clone(element);
+      prepend.call(this[l], elm);
     }
   }
   return this;
@@ -179,7 +207,7 @@ function before(element) {
   } else {
     var l = this.length;
     while (l--) {
-      var elm = l === 0 ? element : clone(element);
+      var elm = l === 0 ? element : _clone(element);
       before.call(this[l], elm);
     }
   }
@@ -200,13 +228,16 @@ function after(element) {
   } else {
     var l = this.length;
     while (l--) {
-      var elm = l === 0 ? element : clone(element);
+      var elm = l === 0 ? element : _clone(element);
       after.call(this[l], elm);
     }
   }
   return this;
 }
-function clone(element) {
+function clone() {
+  return $(_clone(this));
+}
+function _clone(element) {
   if (typeof element === 'string') {
     return element;
   } else if (element instanceof Node) {
@@ -221,8 +252,10 @@ function clone(element) {
 ;
 module.exports = {
   append: append,
+  prepend: prepend,
   before: before,
   after: after,
+  clone: clone,
   __esModule: true
 };
 
@@ -242,7 +275,7 @@ function on(eventName, selector, handler, useCapture) {
   var parts = eventName.split('.');
   eventName = parts[0] || null;
   var namespace = parts[1] || null;
-  var eventListener = handler;
+  var eventListener = proxyHandler(handler);
   each(this, function(element) {
     if (selector) {
       eventListener = delegateHandler.bind(element, selector, handler);
@@ -296,12 +329,13 @@ function undelegate(selector, eventName, handler) {
   return off.call(this, eventName, selector, handler);
 }
 function trigger(type) {
-  var params = arguments[1] !== (void 0) ? arguments[1] : {
-    bubbles: true,
-    cancelable: true,
-    detail: undefined
-  };
+  var params = arguments[2] !== (void 0) ? arguments[2] : {};
+  params.bubbles = typeof params.bubbles === 'boolean' ? params.bubbles : true;
+  params.cancelable = typeof params.cancelable === 'boolean' ? params.cancelable : true;
+  params.preventDefault = typeof params.preventDefault === 'boolean' ? params.preventDefault : false;
+  params.detail = data;
   var event = new CustomEvent(type, params);
+  event._preventDefault = params.preventDefault;
   each(this, function(element) {
     if (!params.bubbles || isEventBubblingInDetachedTree || isAttachedToDocument(element)) {
       element.dispatchEvent(event);
@@ -309,6 +343,22 @@ function trigger(type) {
       triggerForPath(element, type, params);
     }
   });
+  return this;
+}
+function triggerHandler(type) {
+  if (this[0]) {
+    trigger.call(this[0], type, {
+      bubbles: false,
+      preventDefault: true
+    });
+  }
+}
+function ready(handler) {
+  if (/complete|loaded|interactive/.test(document.readyState) && document.body) {
+    handler();
+  } else {
+    document.addEventListener('DOMContentLoaded', handler, false);
+  }
   return this;
 }
 function isAttachedToDocument(element) {
@@ -328,30 +378,63 @@ function triggerForPath(element, type) {
   params.bubbles = false;
   var event = new CustomEvent(type, params);
   event._target = element;
-  while (element.parentNode) {
+  do {
     element.dispatchEvent(event);
-    element = element.parentNode;
-  }
+  } while (element = element.parentNode);
 }
-var cacheKeyProp = '__domtastic';
+var eventKeyProp = '__domtastic_event__';
 var id = 1;
 var handlers = {};
 var unusedKeys = [];
 function getHandlers(element) {
-  if (!element[cacheKeyProp]) {
-    element[cacheKeyProp] = unusedKeys.length === 0 ? ++id : unusedKeys.pop();
+  if (!element[eventKeyProp]) {
+    element[eventKeyProp] = unusedKeys.length === 0 ? ++id : unusedKeys.pop();
   }
-  var key = element[cacheKeyProp];
+  var key = element[eventKeyProp];
   return handlers[key] || (handlers[key] = []);
 }
 function clearHandlers(element) {
-  var key = element[cacheKeyProp];
+  var key = element[eventKeyProp];
   if (handlers[key]) {
     handlers[key] = null;
     element[key] = null;
     unusedKeys.push(key);
   }
 }
+function proxyHandler(handler) {
+  return function(event) {
+    handler(augmentEvent(event), event.detail);
+  };
+}
+var augmentEvent = (function() {
+  var eventMethods = {
+    preventDefault: 'isDefaultPrevented',
+    stopImmediatePropagation: 'isImmediatePropagationStopped',
+    stopPropagation: 'isPropagationStopped'
+  },
+      noop = (function() {}),
+      returnTrue = (function() {
+        return true;
+      }),
+      returnFalse = (function() {
+        return false;
+      });
+  return function(event) {
+    for (var methodName in eventMethods) {
+      (function(methodName, testMethodName, originalMethod) {
+        event[methodName] = function() {
+          this[testMethodName] = returnTrue;
+          return originalMethod.apply(this, arguments);
+        };
+        event[testMethodName] = returnFalse;
+      }(methodName, eventMethods[methodName], event[methodName] || noop));
+    }
+    if (event._preventDefault) {
+      event.preventDefault();
+    }
+    return event;
+  };
+})();
 function delegateHandler(selector, handler, event) {
   var eventTarget = event._target || event.target;
   if (matches(eventTarget, selector)) {
@@ -368,9 +451,9 @@ function delegateHandler(selector, handler, event) {
       cancelable: false,
       detail: undefined
     };
-    var evt = document.createEvent('CustomEvent');
-    evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
-    return evt;
+    var customEvent = document.createEvent('CustomEvent');
+    customEvent.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
+    return customEvent;
   }
   CustomEvent.prototype = global.CustomEvent && global.CustomEvent.prototype;
   global.CustomEvent = CustomEvent;
@@ -389,6 +472,8 @@ var isEventBubblingInDetachedTree = (function() {
   }
   return isBubbling;
 })();
+var bind = on,
+    unbind = off;
 ;
 module.exports = {
   on: on,
@@ -396,6 +481,10 @@ module.exports = {
   delegate: delegate,
   undelegate: undelegate,
   trigger: trigger,
+  triggerHandler: triggerHandler,
+  ready: ready,
+  bind: bind,
+  unbind: unbind,
   __esModule: true
 };
 
@@ -464,6 +553,8 @@ function $(selector) {
   var collection;
   if (!selector) {
     collection = document.querySelectorAll(null);
+  } else if (selector instanceof Wrapper) {
+    return selector;
   } else if (typeof selector !== 'string') {
     collection = makeIterable(selector);
   } else if (reFragment.test(selector)) {
@@ -514,7 +605,7 @@ function createFragment(html) {
 }
 function wrap(collection) {
   if (!isPrototypeSet) {
-    Wrapper.prototype = $._api;
+    Wrapper.prototype = $.fn;
     Wrapper.prototype.constructor = Wrapper;
     isPrototypeSet = true;
   }
@@ -546,11 +637,11 @@ var toArray = (function(collection) {
   return slice.call(collection);
 });
 var makeIterable = (function(element) {
-  return element.length === undefined || element === window ? [element] : element;
+  return element.nodeType || element === window ? [element] : element;
 });
 function each(collection, callback) {
   var length = collection.length;
-  if (length !== undefined) {
+  if (length !== undefined && collection.nodeType === undefined) {
     for (var i = 0; i < length; i++) {
       callback(collection[i], i, collection);
     }

@@ -10,10 +10,10 @@ function native() {
     global.$.isNative = isNative;
   }
   if (!wasNative && isNative) {
-    augmentNativePrototypes(this._api, this._apiNodeList);
+    augmentNativePrototypes(this.fn, this.fnList);
   }
   if (wasNative && !isNative) {
-    unaugmentNativePrototypes(this._api, this._apiNodeList);
+    unaugmentNativePrototypes(this.fn, this.fnList);
   }
   return isNative;
 }

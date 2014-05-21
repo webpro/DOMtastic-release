@@ -7,11 +7,11 @@ define([], function() {
     return slice.call(collection);
   });
   var makeIterable = (function(element) {
-    return element.length === undefined || element === window ? [element] : element;
+    return element.nodeType || element === window ? [element] : element;
   });
   function each(collection, callback) {
     var length = collection.length;
-    if (length !== undefined) {
+    if (length !== undefined && collection.nodeType === undefined) {
       for (var i = 0; i < length; i++) {
         callback(collection[i], i, collection);
       }

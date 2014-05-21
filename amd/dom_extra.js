@@ -25,8 +25,31 @@ define(['./util', './dom', './selector'], function($__0,$__1,$__2) {
       }
     });
   }
+  function empty() {
+    return each(this, function(element) {
+      element.innerHTML = '';
+    });
+  }
   function replaceWith() {
     return before.apply(this, arguments).remove();
+  }
+  function val(value) {
+    if (typeof value !== 'string') {
+      return this[0].value;
+    }
+    each(this, function(element) {
+      element.value = value;
+    });
+    return this;
+  }
+  function text(value) {
+    if (typeof value !== 'string') {
+      return this[0].textContent;
+    }
+    each(this, function(element) {
+      element.textContent = '' + value;
+    });
+    return this;
   }
   ;
   return {
@@ -36,8 +59,17 @@ define(['./util', './dom', './selector'], function($__0,$__1,$__2) {
     get remove() {
       return remove;
     },
+    get empty() {
+      return empty;
+    },
     get replaceWith() {
       return replaceWith;
+    },
+    get val() {
+      return val;
+    },
+    get text() {
+      return text;
     },
     __esModule: true
   };

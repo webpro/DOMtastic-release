@@ -16,8 +16,29 @@ function append(element) {
   } else {
     var l = this.length;
     while (l--) {
-      var elm = l === 0 ? element : clone(element);
+      var elm = l === 0 ? element : _clone(element);
       append.call(this[l], elm);
+    }
+  }
+  return this;
+}
+function prepend(element) {
+  if (this instanceof Node) {
+    if (typeof element === 'string') {
+      this.insertAdjacentHTML('afterbegin', element);
+    } else {
+      if (element instanceof Node) {
+        this.insertBefore(element, this.firstChild);
+      } else {
+        var elements = element instanceof NodeList ? toArray(element) : element;
+        elements.reverse().forEach(prepend.bind(this));
+      }
+    }
+  } else {
+    var l = this.length;
+    while (l--) {
+      var elm = l === 0 ? element : _clone(element);
+      prepend.call(this[l], elm);
     }
   }
   return this;
@@ -37,7 +58,7 @@ function before(element) {
   } else {
     var l = this.length;
     while (l--) {
-      var elm = l === 0 ? element : clone(element);
+      var elm = l === 0 ? element : _clone(element);
       before.call(this[l], elm);
     }
   }
@@ -58,13 +79,16 @@ function after(element) {
   } else {
     var l = this.length;
     while (l--) {
-      var elm = l === 0 ? element : clone(element);
+      var elm = l === 0 ? element : _clone(element);
       after.call(this[l], elm);
     }
   }
   return this;
 }
-function clone(element) {
+function clone() {
+  return $(_clone(this));
+}
+function _clone(element) {
   if (typeof element === 'string') {
     return element;
   } else if (element instanceof Node) {
@@ -81,11 +105,17 @@ module.exports = {
   get append() {
     return append;
   },
+  get prepend() {
+    return prepend;
+  },
   get before() {
     return before;
   },
   get after() {
     return after;
+  },
+  get clone() {
+    return clone;
   },
   __esModule: true
 };

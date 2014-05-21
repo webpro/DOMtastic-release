@@ -7,6 +7,7 @@ var api = {},
 var array = require('./array');
 var attr = require('./attr');
 var className = require('./class');
+var data = require('./data');
 var dom = require('./dom');
 var dom_extra = require('./dom_extra');
 var event = require('./event');
@@ -22,12 +23,12 @@ var mode = require('./mode');
 extend($, mode);
 var noconflict = require('./noconflict');
 extend($, noconflict);
-extend(api, array, attr, className, dom, dom_extra, event, html, selector_extra);
+extend(api, array, attr, className, data, dom, dom_extra, event, html, selector_extra);
 extend(apiNodeList, array);
-$.version = '0.6.2';
+$.version = '0.7.0';
 $.extend = extend;
-$._api = api;
-$._apiNodeList = apiNodeList;
+$.fn = api;
+$.fnList = apiNodeList;
 var $__default = $;
 module.exports = {
   get default() {

@@ -1,17 +1,28 @@
 "use strict";
 var __moduleName = "selector_extra";
-var each = require('./util').each;
+var $__0 = require('./util'),
+    each = $__0.each,
+    toArray = $__0.toArray;
 var $__0 = require('./selector'),
     $ = $__0.$,
     matches = $__0.matches;
 function children(selector) {
   var nodes = [];
   each(this, function(element) {
-    each(element.children, function(child) {
-      if (!selector || (selector && matches(child, selector))) {
-        nodes.push(child);
-      }
-    });
+    if (element.children) {
+      each(element.children, function(child) {
+        if (!selector || (selector && matches(child, selector))) {
+          nodes.push(child);
+        }
+      });
+    }
+  });
+  return $(nodes);
+}
+function contents() {
+  var nodes = [];
+  each(this, function(element) {
+    nodes.push.apply(nodes, toArray(element.childNodes));
   });
   return $(nodes);
 }
@@ -46,6 +57,9 @@ function slice(start, end) {
 module.exports = {
   get children() {
     return children;
+  },
+  get contents() {
+    return contents;
   },
   get closest() {
     return closest;

@@ -20,10 +20,19 @@ define(['./util'], function($__0) {
     });
     return this;
   }
+  function removeAttr(key) {
+    each(this, function(element) {
+      element.removeAttribute(key);
+    });
+    return this;
+  }
   ;
   return {
     get attr() {
       return attr;
+    },
+    get removeAttr() {
+      return removeAttr;
     },
     __esModule: true
   };
