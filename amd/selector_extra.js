@@ -24,13 +24,6 @@ define(['./util', './selector'], function($__0,$__1) {
     });
     return $(nodes);
   }
-  function contents() {
-    var nodes = [];
-    each(this, function(element) {
-      nodes.push.apply(nodes, toArray(element.childNodes));
-    });
-    return $(nodes);
-  }
   function closest(selector) {
     var node = this[0];
     for (; node.nodeType !== node.DOCUMENT_NODE; node = node.parentNode) {
@@ -40,12 +33,10 @@ define(['./util', './selector'], function($__0,$__1) {
     }
     return $();
   }
-  function parent(selector) {
+  function contents() {
     var nodes = [];
     each(this, function(element) {
-      if (!selector || (selector && matches(element.parentNode, selector))) {
-        nodes.push(element.parentNode);
-      }
+      nodes.push.apply(nodes, toArray(element.childNodes));
     });
     return $(nodes);
   }
@@ -54,6 +45,15 @@ define(['./util', './selector'], function($__0,$__1) {
   }
   function get(index) {
     return this[index];
+  }
+  function parent(selector) {
+    var nodes = [];
+    each(this, function(element) {
+      if (!selector || (selector && matches(element.parentNode, selector))) {
+        nodes.push(element.parentNode);
+      }
+    });
+    return $(nodes);
   }
   function slice(start, end) {
     return $([].slice.apply(this, arguments));
@@ -69,14 +69,14 @@ define(['./util', './selector'], function($__0,$__1) {
     get closest() {
       return closest;
     },
-    get parent() {
-      return parent;
-    },
     get eq() {
       return eq;
     },
     get get() {
       return get;
+    },
+    get parent() {
+      return parent;
     },
     get slice() {
       return slice;

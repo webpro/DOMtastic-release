@@ -8,14 +8,14 @@ var toArray = (function(collection) {
 var makeIterable = (function(element) {
   return element.nodeType || element === window ? [element] : element;
 });
-function each(collection, callback) {
+function each(collection, callback, thisArg) {
   var length = collection.length;
   if (length !== undefined && collection.nodeType === undefined) {
     for (var i = 0; i < length; i++) {
-      callback(collection[i], i, collection);
+      callback.call(thisArg, collection[i], i, collection);
     }
   } else {
-    callback(collection, 0, collection);
+    callback.call(thisArg, collection, 0, collection);
   }
   return collection;
 }

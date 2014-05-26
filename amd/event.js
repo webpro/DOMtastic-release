@@ -9,59 +9,71 @@ define(['./util', './selector'], function($__0,$__1) {
       global = $__2.global,
       each = $__2.each;
   var matches = ($__1).matches;
-  function on(eventName, selector, handler, useCapture) {
+  function on(eventNames, selector, handler, useCapture) {
     if (typeof selector === 'function') {
       handler = selector;
       selector = null;
     }
-    var parts = eventName.split('.');
-    eventName = parts[0] || null;
-    var namespace = parts[1] || null;
-    var eventListener = proxyHandler(handler);
-    each(this, function(element) {
-      if (selector) {
-        eventListener = delegateHandler.bind(element, selector, handler);
-      }
-      element.addEventListener(eventName, eventListener, useCapture || false);
-      getHandlers(element).push({
-        eventName: eventName,
-        handler: handler,
-        eventListener: eventListener,
-        selector: selector,
-        namespace: namespace
+    var parts,
+        namespace,
+        eventListener;
+    eventNames.split(' ').forEach(function(eventName) {
+      parts = eventName.split('.');
+      eventName = parts[0] || null;
+      namespace = parts[1] || null;
+      eventListener = proxyHandler(handler);
+      each(this, function(element) {
+        if (selector) {
+          eventListener = delegateHandler.bind(element, selector, handler);
+        }
+        element.addEventListener(eventName, eventListener, useCapture || false);
+        getHandlers(element).push({
+          eventName: eventName,
+          handler: handler,
+          eventListener: eventListener,
+          selector: selector,
+          namespace: namespace
+        });
       });
-    });
+    }, this);
     return this;
   }
-  function off(eventName, selector, handler, useCapture) {
+  function off() {
+    var eventNames = arguments[0] !== (void 0) ? arguments[0] : '';
+    var selector = arguments[1];
+    var handler = arguments[2];
+    var useCapture = arguments[3];
     if (typeof selector === 'function') {
       handler = selector;
       selector = null;
     }
-    if (eventName) {
-      var parts = eventName.split('.');
-      eventName = parts[0];
-      var namespace = parts[1];
-    }
-    each(this, function(element) {
-      var handlers = getHandlers(element);
-      if (!eventName && !namespace && !selector && !handler) {
-        each(handlers, function(item) {
-          element.removeEventListener(item.eventName, item.eventListener, useCapture || false);
-        });
-        clearHandlers(element);
-      } else {
-        each(handlers.filter(function(item) {
-          return ((!eventName || item.eventName === eventName) && (!namespace || item.namespace === namespace) && (!handler || item.handler === handler) && (!selector || item.selector === selector));
-        }), function(item) {
-          element.removeEventListener(item.eventName, item.eventListener, useCapture || false);
-          handlers.splice(handlers.indexOf(item), 1);
-        });
-        if (handlers.length === 0) {
+    var parts,
+        namespace,
+        handlers;
+    eventNames.split(' ').forEach(function(eventName) {
+      parts = eventName.split('.');
+      eventName = parts[0] || null;
+      namespace = parts[1] || null;
+      each(this, function(element) {
+        handlers = getHandlers(element);
+        if (!eventName && !namespace && !selector && !handler) {
+          each(handlers, function(item) {
+            element.removeEventListener(item.eventName, item.eventListener, useCapture || false);
+          });
           clearHandlers(element);
+        } else {
+          each(handlers.filter(function(item) {
+            return ((!eventName || item.eventName === eventName) && (!namespace || item.namespace === namespace) && (!handler || item.handler === handler) && (!selector || item.selector === selector));
+          }), function(item) {
+            element.removeEventListener(item.eventName, item.eventListener, useCapture || false);
+            handlers.splice(handlers.indexOf(item), 1);
+          });
+          if (handlers.length === 0) {
+            clearHandlers(element);
+          }
         }
-      }
-    });
+      });
+    }, this);
     return this;
   }
   function delegate(selector, eventName, handler) {

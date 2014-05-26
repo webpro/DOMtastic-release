@@ -52,7 +52,7 @@ define(['./util', './array', './attr', './class', './data', './dom', './dom_extr
   extend($, noconflict);
   extend(api, array, attr, className, data, dom, dom_extra, event, html, selector_extra);
   extend(apiNodeList, array);
-  $.version = '0.7.0';
+  $.version = '0.7.1';
   $.extend = extend;
   $.fn = api;
   $.fnList = apiNodeList;

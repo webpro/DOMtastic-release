@@ -11,6 +11,11 @@ function appendTo(element) {
   append.call(context, this);
   return this;
 }
+function empty() {
+  return each(this, function(element) {
+    element.innerHTML = '';
+  });
+}
 function remove() {
   return each(this, function(element) {
     if (element.parentNode) {
@@ -18,22 +23,8 @@ function remove() {
     }
   });
 }
-function empty() {
-  return each(this, function(element) {
-    element.innerHTML = '';
-  });
-}
 function replaceWith() {
   return before.apply(this, arguments).remove();
-}
-function val(value) {
-  if (typeof value !== 'string') {
-    return this[0].value;
-  }
-  each(this, function(element) {
-    element.value = value;
-  });
-  return this;
 }
 function text(value) {
   if (typeof value !== 'string') {
@@ -44,25 +35,34 @@ function text(value) {
   });
   return this;
 }
+function val(value) {
+  if (typeof value !== 'string') {
+    return this[0].value;
+  }
+  each(this, function(element) {
+    element.value = value;
+  });
+  return this;
+}
 ;
 module.exports = {
   get appendTo() {
     return appendTo;
   },
-  get remove() {
-    return remove;
-  },
   get empty() {
     return empty;
+  },
+  get remove() {
+    return remove;
   },
   get replaceWith() {
     return replaceWith;
   },
-  get val() {
-    return val;
-  },
   get text() {
     return text;
+  },
+  get val() {
+    return val;
   },
   __esModule: true
 };

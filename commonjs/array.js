@@ -5,24 +5,28 @@ var $__0 = require('./selector'),
     $ = $__0.$,
     matches = $__0.matches;
 var ArrayProto = Array.prototype;
-function filter(selector) {
+var every = ArrayProto.every;
+function filter(selector, thisArg) {
   var callback = typeof selector === 'function' ? selector : function(element) {
     return matches(element, selector);
   };
-  return $(ArrayProto.filter.call(this, callback));
+  return $(ArrayProto.filter.call(this, callback, thisArg));
 }
-function each(callback) {
-  return _each(this, callback);
+function forEach(callback, thisArg) {
+  return _each(this, callback, thisArg);
 }
-var forEach = each;
+var each = forEach;
+var indexOf = ArrayProto.indexOf;
 var map = ArrayProto.map;
+var pop = ArrayProto.pop;
+var push = ArrayProto.push;
 function reverse() {
   var elements = ArrayProto.slice.call(this);
   return $(ArrayProto.reverse.call(elements));
 }
-var every = ArrayProto.every;
+var shift = ArrayProto.shift;
 var some = ArrayProto.some;
-var indexOf = ArrayProto.indexOf;
+var unshift = ArrayProto.unshift;
 ;
 module.exports = {
   get each() {
@@ -43,11 +47,23 @@ module.exports = {
   get map() {
     return map;
   },
+  get pop() {
+    return pop;
+  },
+  get push() {
+    return push;
+  },
   get reverse() {
     return reverse;
   },
+  get shift() {
+    return shift;
+  },
   get some() {
     return some;
+  },
+  get unshift() {
+    return unshift;
   },
   __esModule: true
 };

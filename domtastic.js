@@ -22,7 +22,7 @@ var noconflict = _dereq_('./noconflict');
 extend($, noconflict);
 extend(api, array, attr, className, dom, event, html);
 extend(apiNodeList, array);
-$.version = '0.7.0';
+$.version = '0.7.1';
 $.extend = extend;
 $.fn = api;
 $.fnList = apiNodeList;
@@ -41,24 +41,28 @@ var $__0 = _dereq_('./selector'),
     $ = $__0.$,
     matches = $__0.matches;
 var ArrayProto = Array.prototype;
-function filter(selector) {
+var every = ArrayProto.every;
+function filter(selector, thisArg) {
   var callback = typeof selector === 'function' ? selector : function(element) {
     return matches(element, selector);
   };
-  return $(ArrayProto.filter.call(this, callback));
+  return $(ArrayProto.filter.call(this, callback, thisArg));
 }
-function each(callback) {
-  return _each(this, callback);
+function forEach(callback, thisArg) {
+  return _each(this, callback, thisArg);
 }
-var forEach = each;
+var each = forEach;
+var indexOf = ArrayProto.indexOf;
 var map = ArrayProto.map;
+var pop = ArrayProto.pop;
+var push = ArrayProto.push;
 function reverse() {
   var elements = ArrayProto.slice.call(this);
   return $(ArrayProto.reverse.call(elements));
 }
-var every = ArrayProto.every;
+var shift = ArrayProto.shift;
 var some = ArrayProto.some;
-var indexOf = ArrayProto.indexOf;
+var unshift = ArrayProto.unshift;
 ;
 module.exports = {
   each: each,
@@ -67,8 +71,12 @@ module.exports = {
   forEach: forEach,
   indexOf: indexOf,
   map: map,
+  pop: pop,
+  push: push,
   reverse: reverse,
+  shift: shift,
   some: some,
+  unshift: unshift,
   __esModule: true
 };
 
@@ -267,59 +275,71 @@ var $__0 = _dereq_('./util'),
     global = $__0.global,
     each = $__0.each;
 var matches = _dereq_('./selector').matches;
-function on(eventName, selector, handler, useCapture) {
+function on(eventNames, selector, handler, useCapture) {
   if (typeof selector === 'function') {
     handler = selector;
     selector = null;
   }
-  var parts = eventName.split('.');
-  eventName = parts[0] || null;
-  var namespace = parts[1] || null;
-  var eventListener = proxyHandler(handler);
-  each(this, function(element) {
-    if (selector) {
-      eventListener = delegateHandler.bind(element, selector, handler);
-    }
-    element.addEventListener(eventName, eventListener, useCapture || false);
-    getHandlers(element).push({
-      eventName: eventName,
-      handler: handler,
-      eventListener: eventListener,
-      selector: selector,
-      namespace: namespace
+  var parts,
+      namespace,
+      eventListener;
+  eventNames.split(' ').forEach(function(eventName) {
+    parts = eventName.split('.');
+    eventName = parts[0] || null;
+    namespace = parts[1] || null;
+    eventListener = proxyHandler(handler);
+    each(this, function(element) {
+      if (selector) {
+        eventListener = delegateHandler.bind(element, selector, handler);
+      }
+      element.addEventListener(eventName, eventListener, useCapture || false);
+      getHandlers(element).push({
+        eventName: eventName,
+        handler: handler,
+        eventListener: eventListener,
+        selector: selector,
+        namespace: namespace
+      });
     });
-  });
+  }, this);
   return this;
 }
-function off(eventName, selector, handler, useCapture) {
+function off() {
+  var eventNames = arguments[0] !== (void 0) ? arguments[0] : '';
+  var selector = arguments[1];
+  var handler = arguments[2];
+  var useCapture = arguments[3];
   if (typeof selector === 'function') {
     handler = selector;
     selector = null;
   }
-  if (eventName) {
-    var parts = eventName.split('.');
-    eventName = parts[0];
-    var namespace = parts[1];
-  }
-  each(this, function(element) {
-    var handlers = getHandlers(element);
-    if (!eventName && !namespace && !selector && !handler) {
-      each(handlers, function(item) {
-        element.removeEventListener(item.eventName, item.eventListener, useCapture || false);
-      });
-      clearHandlers(element);
-    } else {
-      each(handlers.filter(function(item) {
-        return ((!eventName || item.eventName === eventName) && (!namespace || item.namespace === namespace) && (!handler || item.handler === handler) && (!selector || item.selector === selector));
-      }), function(item) {
-        element.removeEventListener(item.eventName, item.eventListener, useCapture || false);
-        handlers.splice(handlers.indexOf(item), 1);
-      });
-      if (handlers.length === 0) {
+  var parts,
+      namespace,
+      handlers;
+  eventNames.split(' ').forEach(function(eventName) {
+    parts = eventName.split('.');
+    eventName = parts[0] || null;
+    namespace = parts[1] || null;
+    each(this, function(element) {
+      handlers = getHandlers(element);
+      if (!eventName && !namespace && !selector && !handler) {
+        each(handlers, function(item) {
+          element.removeEventListener(item.eventName, item.eventListener, useCapture || false);
+        });
         clearHandlers(element);
+      } else {
+        each(handlers.filter(function(item) {
+          return ((!eventName || item.eventName === eventName) && (!namespace || item.namespace === namespace) && (!handler || item.handler === handler) && (!selector || item.selector === selector));
+        }), function(item) {
+          element.removeEventListener(item.eventName, item.eventListener, useCapture || false);
+          handlers.splice(handlers.indexOf(item), 1);
+        });
+        if (handlers.length === 0) {
+          clearHandlers(element);
+        }
       }
-    }
-  });
+    });
+  }, this);
   return this;
 }
 function delegate(selector, eventName, handler) {
@@ -639,14 +659,14 @@ var toArray = (function(collection) {
 var makeIterable = (function(element) {
   return element.nodeType || element === window ? [element] : element;
 });
-function each(collection, callback) {
+function each(collection, callback, thisArg) {
   var length = collection.length;
   if (length !== undefined && collection.nodeType === undefined) {
     for (var i = 0; i < length; i++) {
-      callback(collection[i], i, collection);
+      callback.call(thisArg, collection[i], i, collection);
     }
   } else {
-    callback(collection, 0, collection);
+    callback.call(thisArg, collection, 0, collection);
   }
   return collection;
 }
