@@ -6,21 +6,21 @@ var api = {},
     apiNodeList = {},
     $ = {};
 var array = _dereq_('./array');
-var className = _dereq_('./class');
+var class_ = _dereq_('./class');
 var dom = _dereq_('./dom');
 var event = _dereq_('./event');
 var selector = _dereq_('./selector');
-if (selector !== undefined) {
+if (typeof selector !== 'undefined') {
   $ = selector.$;
   $.matches = selector.matches;
   api.find = selector.find;
 }
 extend($);
-var noconflict = _dereq_('./noconflict');
-extend($, noconflict);
-extend(api, array, className, dom, event);
+extend($);
+extend($);
+extend(api, array, class_, dom, event);
 extend(apiNodeList, array);
-$.version = '0.7.1';
+$.version = '0.7.2';
 $.extend = extend;
 $.fn = api;
 $.fnList = apiNodeList;
@@ -31,7 +31,7 @@ module.exports = {
 };
 
 
-},{"./array":2,"./class":3,"./dom":4,"./event":5,"./noconflict":7,"./selector":8,"./util":9}],2:[function(_dereq_,module,exports){
+},{"./array":2,"./class":3,"./dom":4,"./event":5,"./selector":7,"./util":8}],2:[function(_dereq_,module,exports){
 "use strict";
 var __moduleName = "src/array";
 var _each = _dereq_('./util').each;
@@ -79,7 +79,7 @@ module.exports = {
 };
 
 
-},{"./selector":8,"./util":9}],3:[function(_dereq_,module,exports){
+},{"./selector":7,"./util":8}],3:[function(_dereq_,module,exports){
 "use strict";
 var __moduleName = "src/class";
 var $__0 = _dereq_('./util'),
@@ -118,7 +118,7 @@ module.exports = {
 };
 
 
-},{"./util":9}],4:[function(_dereq_,module,exports){
+},{"./util":8}],4:[function(_dereq_,module,exports){
 "use strict";
 var __moduleName = "src/dom";
 var toArray = _dereq_('./util').toArray;
@@ -232,7 +232,7 @@ module.exports = {
 };
 
 
-},{"./util":9}],5:[function(_dereq_,module,exports){
+},{"./util":8}],5:[function(_dereq_,module,exports){
 "use strict";
 var __moduleName = "src/event";
 var $__0 = _dereq_('./util'),
@@ -324,14 +324,14 @@ function trigger(type) {
     if (!params.bubbles || isEventBubblingInDetachedTree || isAttachedToDocument(element)) {
       element.dispatchEvent(event);
     } else {
-      triggerForPath(element, type, params);
+      triggerForPath(element, params);
     }
   });
   return this;
 }
 function triggerHandler(type) {
   if (this[0]) {
-    trigger.call(this[0], type, {
+    trigger.call(this[0], {
       bubbles: false,
       preventDefault: true
     });
@@ -357,7 +357,7 @@ function isAttachedToDocument(element) {
   }
   return false;
 }
-function triggerForPath(element, type) {
+function triggerForPath(element) {
   var params = arguments[2] !== (void 0) ? arguments[2] : {};
   params.bubbles = false;
   var event = new CustomEvent(type, params);
@@ -473,7 +473,7 @@ module.exports = {
 };
 
 
-},{"./selector":8,"./util":9}],6:[function(_dereq_,module,exports){
+},{"./selector":7,"./util":8}],6:[function(_dereq_,module,exports){
 "use strict";
 var __moduleName = "src/index";
 var $ = _dereq_('./api').default;
@@ -485,22 +485,6 @@ module.exports = {
 
 
 },{"./api":1}],7:[function(_dereq_,module,exports){
-"use strict";
-var __moduleName = "src/noconflict";
-var global = _dereq_('./util').global;
-var previousLib = global.$;
-function noConflict() {
-  global.$ = previousLib;
-  return this;
-}
-;
-module.exports = {
-  noConflict: noConflict,
-  __esModule: true
-};
-
-
-},{"./util":9}],8:[function(_dereq_,module,exports){
 "use strict";
 var __moduleName = "src/selector";
 var $__0 = _dereq_('./util'),
@@ -591,7 +575,7 @@ module.exports = {
 };
 
 
-},{"./util":9}],9:[function(_dereq_,module,exports){
+},{"./util":8}],8:[function(_dereq_,module,exports){
 "use strict";
 var __moduleName = "src/util";
 var global = new Function("return this")(),
