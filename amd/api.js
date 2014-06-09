@@ -1,4 +1,4 @@
-define(['./util', './array', './attr', './class', './data', './dom', './dom_extra', './event', './html', './selector', './selector_extra', './mode', './noconflict', './type'], function($__0,$__1,$__2,$__3,$__4,$__5,$__6,$__7,$__8,$__9,$__10,$__11,$__12,$__13) {
+define(['./util', './array', './attr', './class', './css', './data', './dom', './dom_extra', './event', './html', './selector', './selector_extra', './contains', './mode', './noconflict', './type'], function($__0,$__1,$__2,$__3,$__4,$__5,$__6,$__7,$__8,$__9,$__10,$__11,$__12,$__13,$__14,$__15) {
   "use strict";
   var __moduleName = "api";
   if (!$__0 || !$__0.__esModule)
@@ -29,6 +29,10 @@ define(['./util', './array', './attr', './class', './data', './dom', './dom_extr
     $__12 = {'default': $__12};
   if (!$__13 || !$__13.__esModule)
     $__13 = {'default': $__13};
+  if (!$__14 || !$__14.__esModule)
+    $__14 = {'default': $__14};
+  if (!$__15 || !$__15.__esModule)
+    $__15 = {'default': $__15};
   var extend = ($__0).extend;
   var api = {},
       apiNodeList = {},
@@ -36,27 +40,30 @@ define(['./util', './array', './attr', './class', './data', './dom', './dom_extr
   var array = $__1;
   var attr = $__2;
   var class_ = $__3;
-  var data = $__4;
-  var dom = $__5;
-  var dom_extra = $__6;
-  var event = $__7;
-  var html = $__8;
-  var selector = $__9;
-  var selector_extra = $__10;
+  var css = $__4;
+  var data = $__5;
+  var dom = $__6;
+  var dom_extra = $__7;
+  var event = $__8;
+  var html = $__9;
+  var selector = $__10;
+  var selector_extra = $__11;
   if (typeof selector !== 'undefined') {
     $ = selector.$;
     $.matches = selector.matches;
     api.find = selector.find;
   }
-  var mode = $__11;
+  var contains = $__12;
+  extend($, contains);
+  var mode = $__13;
   extend($, mode);
-  var noconflict = $__12;
+  var noconflict = $__14;
   extend($, noconflict);
-  var type = $__13;
+  var type = $__15;
   extend($, type);
-  extend(api, array, attr, class_, data, dom, dom_extra, event, html, selector_extra);
+  extend(api, array, attr, class_, css, data, dom, dom_extra, event, html, selector_extra);
   extend(apiNodeList, array);
-  $.version = '0.7.2';
+  $.version = '0.7.3';
   $.extend = extend;
   $.fn = api;
   $.fnList = apiNodeList;

@@ -15,12 +15,14 @@ if (typeof selector !== 'undefined') {
   $.matches = selector.matches;
   api.find = selector.find;
 }
+var contains = _dereq_('./contains');
+extend($, contains);
 extend($);
 extend($);
 extend($);
 extend(api, array, class_, dom, event);
 extend(apiNodeList, array);
-$.version = '0.7.2';
+$.version = '0.7.3';
 $.extend = extend;
 $.fn = api;
 $.fnList = apiNodeList;
@@ -31,7 +33,7 @@ module.exports = {
 };
 
 
-},{"./array":2,"./class":3,"./dom":4,"./event":5,"./selector":7,"./util":8}],2:[function(_dereq_,module,exports){
+},{"./array":2,"./class":3,"./contains":4,"./dom":5,"./event":6,"./selector":8,"./util":9}],2:[function(_dereq_,module,exports){
 "use strict";
 var __moduleName = "src/array";
 var _each = _dereq_('./util').each;
@@ -79,7 +81,7 @@ module.exports = {
 };
 
 
-},{"./selector":7,"./util":8}],3:[function(_dereq_,module,exports){
+},{"./selector":8,"./util":9}],3:[function(_dereq_,module,exports){
 "use strict";
 var __moduleName = "src/class";
 var $__0 = _dereq_('./util'),
@@ -118,7 +120,27 @@ module.exports = {
 };
 
 
-},{"./util":8}],4:[function(_dereq_,module,exports){
+},{"./util":9}],4:[function(_dereq_,module,exports){
+"use strict";
+var __moduleName = "src/contains";
+function contains(container, element) {
+  if (!container || !element || container === element) {
+    return false;
+  } else if (container.contains) {
+    return container.contains(element);
+  } else if (container.compareDocumentPosition) {
+    return !(container.compareDocumentPosition(element) & Node.DOCUMENT_POSITION_DISCONNECTED);
+  }
+  return false;
+}
+;
+module.exports = {
+  contains: contains,
+  __esModule: true
+};
+
+
+},{}],5:[function(_dereq_,module,exports){
 "use strict";
 var __moduleName = "src/dom";
 var toArray = _dereq_('./util').toArray;
@@ -232,7 +254,7 @@ module.exports = {
 };
 
 
-},{"./util":8}],5:[function(_dereq_,module,exports){
+},{"./util":9}],6:[function(_dereq_,module,exports){
 "use strict";
 var __moduleName = "src/event";
 var $__0 = _dereq_('./util'),
@@ -349,13 +371,7 @@ function isAttachedToDocument(element) {
   if (element === window || element === document) {
     return true;
   }
-  var container = element.ownerDocument.documentElement;
-  if (container.contains) {
-    return container.contains(element);
-  } else if (container.compareDocumentPosition) {
-    return !(container.compareDocumentPosition(element) & Node.DOCUMENT_POSITION_DISCONNECTED);
-  }
-  return false;
+  return $.contains(element.ownerDocument.documentElement, element);
 }
 function triggerForPath(element) {
   var params = arguments[2] !== (void 0) ? arguments[2] : {};
@@ -473,7 +489,7 @@ module.exports = {
 };
 
 
-},{"./selector":7,"./util":8}],6:[function(_dereq_,module,exports){
+},{"./selector":8,"./util":9}],7:[function(_dereq_,module,exports){
 "use strict";
 var __moduleName = "src/index";
 var $ = _dereq_('./api').default;
@@ -484,7 +500,7 @@ module.exports = {
 };
 
 
-},{"./api":1}],7:[function(_dereq_,module,exports){
+},{"./api":1}],8:[function(_dereq_,module,exports){
 "use strict";
 var __moduleName = "src/selector";
 var $__0 = _dereq_('./util'),
@@ -575,7 +591,7 @@ module.exports = {
 };
 
 
-},{"./util":8}],8:[function(_dereq_,module,exports){
+},{"./util":9}],9:[function(_dereq_,module,exports){
 "use strict";
 var __moduleName = "src/util";
 var global = new Function("return this")(),
@@ -621,6 +637,6 @@ module.exports = {
 };
 
 
-},{}]},{},[6])
-(6)
+},{}]},{},[7])
+(7)
 });

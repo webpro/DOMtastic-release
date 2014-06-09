@@ -17,13 +17,15 @@ if (typeof selector !== 'undefined') {
   $.matches = selector.matches;
   api.find = selector.find;
 }
+var contains = _dereq_('./contains');
+extend($, contains);
 extend($);
 var noconflict = _dereq_('./noconflict');
 extend($, noconflict);
 extend($);
 extend(api, array, attr, class_, dom, event, html);
 extend(apiNodeList, array);
-$.version = '0.7.2';
+$.version = '0.7.3';
 $.extend = extend;
 $.fn = api;
 $.fnList = apiNodeList;
@@ -34,7 +36,7 @@ module.exports = {
 };
 
 
-},{"./array":2,"./attr":3,"./class":4,"./dom":5,"./event":6,"./html":7,"./noconflict":9,"./selector":10,"./util":11}],2:[function(_dereq_,module,exports){
+},{"./array":2,"./attr":3,"./class":4,"./contains":5,"./dom":6,"./event":7,"./html":8,"./noconflict":10,"./selector":11,"./util":12}],2:[function(_dereq_,module,exports){
 "use strict";
 var __moduleName = "src/array";
 var _each = _dereq_('./util').each;
@@ -82,7 +84,7 @@ module.exports = {
 };
 
 
-},{"./selector":10,"./util":11}],3:[function(_dereq_,module,exports){
+},{"./selector":11,"./util":12}],3:[function(_dereq_,module,exports){
 "use strict";
 var __moduleName = "src/attr";
 var each = _dereq_('./util').each;
@@ -116,7 +118,7 @@ module.exports = {
 };
 
 
-},{"./util":11}],4:[function(_dereq_,module,exports){
+},{"./util":12}],4:[function(_dereq_,module,exports){
 "use strict";
 var __moduleName = "src/class";
 var $__0 = _dereq_('./util'),
@@ -155,7 +157,27 @@ module.exports = {
 };
 
 
-},{"./util":11}],5:[function(_dereq_,module,exports){
+},{"./util":12}],5:[function(_dereq_,module,exports){
+"use strict";
+var __moduleName = "src/contains";
+function contains(container, element) {
+  if (!container || !element || container === element) {
+    return false;
+  } else if (container.contains) {
+    return container.contains(element);
+  } else if (container.compareDocumentPosition) {
+    return !(container.compareDocumentPosition(element) & Node.DOCUMENT_POSITION_DISCONNECTED);
+  }
+  return false;
+}
+;
+module.exports = {
+  contains: contains,
+  __esModule: true
+};
+
+
+},{}],6:[function(_dereq_,module,exports){
 "use strict";
 var __moduleName = "src/dom";
 var toArray = _dereq_('./util').toArray;
@@ -269,7 +291,7 @@ module.exports = {
 };
 
 
-},{"./util":11}],6:[function(_dereq_,module,exports){
+},{"./util":12}],7:[function(_dereq_,module,exports){
 "use strict";
 var __moduleName = "src/event";
 var $__0 = _dereq_('./util'),
@@ -386,13 +408,7 @@ function isAttachedToDocument(element) {
   if (element === window || element === document) {
     return true;
   }
-  var container = element.ownerDocument.documentElement;
-  if (container.contains) {
-    return container.contains(element);
-  } else if (container.compareDocumentPosition) {
-    return !(container.compareDocumentPosition(element) & Node.DOCUMENT_POSITION_DISCONNECTED);
-  }
-  return false;
+  return $.contains(element.ownerDocument.documentElement, element);
 }
 function triggerForPath(element) {
   var params = arguments[2] !== (void 0) ? arguments[2] : {};
@@ -510,7 +526,7 @@ module.exports = {
 };
 
 
-},{"./selector":10,"./util":11}],7:[function(_dereq_,module,exports){
+},{"./selector":11,"./util":12}],8:[function(_dereq_,module,exports){
 "use strict";
 var __moduleName = "src/html";
 var each = _dereq_('./util').each;
@@ -531,7 +547,7 @@ module.exports = {
 };
 
 
-},{"./util":11}],8:[function(_dereq_,module,exports){
+},{"./util":12}],9:[function(_dereq_,module,exports){
 "use strict";
 var __moduleName = "src/index";
 var $ = _dereq_('./api').default;
@@ -542,7 +558,7 @@ module.exports = {
 };
 
 
-},{"./api":1}],9:[function(_dereq_,module,exports){
+},{"./api":1}],10:[function(_dereq_,module,exports){
 "use strict";
 var __moduleName = "src/noconflict";
 var global = _dereq_('./util').global;
@@ -558,7 +574,7 @@ module.exports = {
 };
 
 
-},{"./util":11}],10:[function(_dereq_,module,exports){
+},{"./util":12}],11:[function(_dereq_,module,exports){
 "use strict";
 var __moduleName = "src/selector";
 var $__0 = _dereq_('./util'),
@@ -649,7 +665,7 @@ module.exports = {
 };
 
 
-},{"./util":11}],11:[function(_dereq_,module,exports){
+},{"./util":12}],12:[function(_dereq_,module,exports){
 "use strict";
 var __moduleName = "src/util";
 var global = new Function("return this")(),
@@ -695,6 +711,6 @@ module.exports = {
 };
 
 
-},{}]},{},[8])
-(8)
+},{}]},{},[9])
+(9)
 });
