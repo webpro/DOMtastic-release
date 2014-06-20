@@ -24,15 +24,6 @@ define(['./util', './selector'], function($__0,$__1) {
     });
     return $(nodes);
   }
-  function closest(selector) {
-    var node = this[0];
-    for (; node.nodeType !== node.DOCUMENT_NODE; node = node.parentNode) {
-      if (matches(node, selector)) {
-        return $(node);
-      }
-    }
-    return $();
-  }
   function contents() {
     var nodes = [];
     each(this, function(element) {
@@ -65,9 +56,6 @@ define(['./util', './selector'], function($__0,$__1) {
     },
     get contents() {
       return contents;
-    },
-    get closest() {
-      return closest;
     },
     get eq() {
       return eq;

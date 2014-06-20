@@ -19,15 +19,6 @@ function children(selector) {
   });
   return $(nodes);
 }
-function closest(selector) {
-  var node = this[0];
-  for (; node.nodeType !== node.DOCUMENT_NODE; node = node.parentNode) {
-    if (matches(node, selector)) {
-      return $(node);
-    }
-  }
-  return $();
-}
 function contents() {
   var nodes = [];
   each(this, function(element) {
@@ -60,9 +51,6 @@ module.exports = {
   },
   get contents() {
     return contents;
-  },
-  get closest() {
-    return closest;
   },
   get eq() {
     return eq;

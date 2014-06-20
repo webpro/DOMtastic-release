@@ -1,4 +1,4 @@
-!function(_e){var e=function(){return _e()["default"]};if("object"==typeof exports)module.exports=e();else if("function"==typeof define&&define.amd)define(e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.$=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
+!function(_e){var e=function(){return _e()["default"]};if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.$=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
 "use strict";
 var __moduleName = "src/api";
 var extend = _dereq_('./util').extend;
@@ -7,6 +7,7 @@ var api = {},
     $ = {};
 var array = _dereq_('./array');
 var class_ = _dereq_('./class');
+var contains = _dereq_('./contains');
 var dom = _dereq_('./dom');
 var event = _dereq_('./event');
 var selector = _dereq_('./selector');
@@ -14,15 +15,12 @@ if (typeof selector !== 'undefined') {
   $ = selector.$;
   $.matches = selector.matches;
   api.find = selector.find;
+  api.closest = selector.closest;
 }
-var contains = _dereq_('./contains');
 extend($, contains);
-extend($);
-extend($);
-extend($);
 extend(api, array, class_, dom, event);
 extend(apiNodeList, array);
-$.version = '0.7.3';
+$.version = '0.7.4';
 $.extend = extend;
 $.fn = api;
 $.fnList = apiNodeList;
@@ -260,7 +258,7 @@ var __moduleName = "src/event";
 var $__0 = _dereq_('./util'),
     global = $__0.global,
     each = $__0.each;
-var matches = _dereq_('./selector').matches;
+var closest = _dereq_('./selector').closest;
 function on(eventNames, selector, handler, useCapture) {
   if (typeof selector === 'function') {
     handler = selector;
@@ -275,10 +273,13 @@ function on(eventNames, selector, handler, useCapture) {
     namespace = parts[1] || null;
     eventListener = proxyHandler(handler);
     each(this, function(element) {
-      if (selector) {
-        eventListener = delegateHandler.bind(element, selector, handler);
+      if (selector && eventName in hoverEvents) {
+        eventListener = hoverHandler(eventListener);
       }
-      element.addEventListener(eventName, eventListener, useCapture || false);
+      if (selector) {
+        eventListener = delegateHandler.bind(element, selector, eventListener);
+      }
+      element.addEventListener(hoverEvents[eventName] || eventName, eventListener, useCapture || false);
       getHandlers(element).push({
         eventName: eventName,
         handler: handler,
@@ -308,21 +309,16 @@ function off() {
     namespace = parts[1] || null;
     each(this, function(element) {
       handlers = getHandlers(element);
+      each(handlers.filter(function(item) {
+        return ((!eventName || item.eventName === eventName) && (!namespace || item.namespace === namespace) && (!handler || item.handler === handler) && (!selector || item.selector === selector));
+      }), function(item) {
+        element.removeEventListener(hoverEvents[item.eventName] || item.eventName, item.eventListener, useCapture || false);
+        handlers.splice(handlers.indexOf(item), 1);
+      });
       if (!eventName && !namespace && !selector && !handler) {
-        each(handlers, function(item) {
-          element.removeEventListener(item.eventName, item.eventListener, useCapture || false);
-        });
         clearHandlers(element);
-      } else {
-        each(handlers.filter(function(item) {
-          return ((!eventName || item.eventName === eventName) && (!namespace || item.namespace === namespace) && (!handler || item.handler === handler) && (!selector || item.selector === selector));
-        }), function(item) {
-          element.removeEventListener(item.eventName, item.eventListener, useCapture || false);
-          handlers.splice(handlers.indexOf(item), 1);
-        });
-        if (handlers.length === 0) {
-          clearHandlers(element);
-        }
+      } else if (handlers.length === 0) {
+        clearHandlers(element);
       }
     });
   }, this);
@@ -403,15 +399,16 @@ function clearHandlers(element) {
 }
 function proxyHandler(handler) {
   return function(event) {
-    handler(augmentEvent(event), event.detail);
+    handler.call(this, augmentEvent(event), event.detail);
   };
 }
 var augmentEvent = (function() {
-  var eventMethods = {
-    preventDefault: 'isDefaultPrevented',
-    stopImmediatePropagation: 'isImmediatePropagationStopped',
-    stopPropagation: 'isPropagationStopped'
-  },
+  var methodName,
+      eventMethods = {
+        preventDefault: 'isDefaultPrevented',
+        stopImmediatePropagation: 'isImmediatePropagationStopped',
+        stopPropagation: 'isPropagationStopped'
+      },
       noop = (function() {}),
       returnTrue = (function() {
         return true;
@@ -420,29 +417,43 @@ var augmentEvent = (function() {
         return false;
       });
   return function(event) {
-    for (var methodName in eventMethods) {
-      (function(methodName, testMethodName, originalMethod) {
-        event[methodName] = function() {
-          this[testMethodName] = returnTrue;
-          return originalMethod.apply(this, arguments);
-        };
-        event[testMethodName] = returnFalse;
-      }(methodName, eventMethods[methodName], event[methodName] || noop));
-    }
-    if (event._preventDefault) {
-      event.preventDefault();
+    if (!event.isDefaultPrevented || event.stopImmediatePropagation || event.stopPropagation) {
+      for (methodName in eventMethods) {
+        (function(methodName, testMethodName, originalMethod) {
+          event[methodName] = function() {
+            this[testMethodName] = returnTrue;
+            return originalMethod.apply(this, arguments);
+          };
+          event[testMethodName] = returnFalse;
+        }(methodName, eventMethods[methodName], event[methodName] || noop));
+      }
+      if (event._preventDefault) {
+        event.preventDefault();
+      }
     }
     return event;
   };
 })();
 function delegateHandler(selector, handler, event) {
-  var eventTarget = event._target || event.target;
-  if (matches(eventTarget, selector)) {
-    if (!event.currentTarget) {
-      event.currentTarget = eventTarget;
+  var eventTarget = event._target || event.target,
+      currentTarget = closest.call([eventTarget], selector, this)[0];
+  if (currentTarget && currentTarget !== this) {
+    if (currentTarget === eventTarget || !(event.isPropagationStopped && event.isPropagationStopped())) {
+      handler.call(currentTarget, event);
     }
-    handler.call(eventTarget, event);
   }
+}
+var hoverEvents = {
+  mouseenter: 'mouseover',
+  mouseleave: 'mouseout'
+};
+function hoverHandler(handler) {
+  return function(event) {
+    var relatedTarget = event.relatedTarget;
+    if (!relatedTarget || (relatedTarget !== this && !$.contains(this, relatedTarget))) {
+      return handler.apply(this, arguments);
+    }
+  };
 }
 (function() {
   function CustomEvent(event) {
@@ -531,6 +542,15 @@ function $(selector) {
 function find(selector) {
   return $(selector, this);
 }
+function closest(selector, context) {
+  var node = this[0];
+  for (; node.nodeType !== node.DOCUMENT_NODE && node !== context; node = node.parentNode) {
+    if (matches(node, selector)) {
+      return $(node);
+    }
+  }
+  return $();
+}
 var matches = (function() {
   var context = typeof Element !== 'undefined' ? Element.prototype : global,
       _matches = context.matches || context.matchesSelector || context.mozMatchesSelector || context.webkitMatchesSelector || context.msMatchesSelector || context.oMatchesSelector;
@@ -586,6 +606,7 @@ function Wrapper(collection) {
 module.exports = {
   $: $,
   find: find,
+  closest: closest,
   matches: matches,
   __esModule: true
 };

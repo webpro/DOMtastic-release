@@ -28,6 +28,15 @@ function $(selector) {
 function find(selector) {
   return $(selector, this);
 }
+function closest(selector, context) {
+  var node = this[0];
+  for (; node.nodeType !== node.DOCUMENT_NODE && node !== context; node = node.parentNode) {
+    if (matches(node, selector)) {
+      return $(node);
+    }
+  }
+  return $();
+}
 var matches = (function() {
   var context = typeof Element !== 'undefined' ? Element.prototype : global,
       _matches = context.matches || context.matchesSelector || context.mozMatchesSelector || context.webkitMatchesSelector || context.msMatchesSelector || context.oMatchesSelector;
@@ -86,6 +95,9 @@ module.exports = {
   },
   get find() {
     return find;
+  },
+  get closest() {
+    return closest;
   },
   get matches() {
     return matches;

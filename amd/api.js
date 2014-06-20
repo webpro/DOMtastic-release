@@ -1,4 +1,4 @@
-define(['./util', './array', './attr', './class', './css', './data', './dom', './dom_extra', './event', './html', './selector', './selector_extra', './contains', './mode', './noconflict', './type'], function($__0,$__1,$__2,$__3,$__4,$__5,$__6,$__7,$__8,$__9,$__10,$__11,$__12,$__13,$__14,$__15) {
+define(['./util', './array', './attr', './class', './contains', './css', './data', './dom', './dom_extra', './event', './html', './mode', './noconflict', './selector', './selector_extra', './type'], function($__0,$__1,$__2,$__3,$__4,$__5,$__6,$__7,$__8,$__9,$__10,$__11,$__12,$__13,$__14,$__15) {
   "use strict";
   var __moduleName = "api";
   if (!$__0 || !$__0.__esModule)
@@ -40,30 +40,28 @@ define(['./util', './array', './attr', './class', './css', './data', './dom', '.
   var array = $__1;
   var attr = $__2;
   var class_ = $__3;
-  var css = $__4;
-  var data = $__5;
-  var dom = $__6;
-  var dom_extra = $__7;
-  var event = $__8;
-  var html = $__9;
-  var selector = $__10;
-  var selector_extra = $__11;
+  var contains = $__4;
+  var css = $__5;
+  var data = $__6;
+  var dom = $__7;
+  var dom_extra = $__8;
+  var event = $__9;
+  var html = $__10;
+  var mode = $__11;
+  var noconflict = $__12;
+  var selector = $__13;
+  var selector_extra = $__14;
+  var type = $__15;
   if (typeof selector !== 'undefined') {
     $ = selector.$;
     $.matches = selector.matches;
     api.find = selector.find;
+    api.closest = selector.closest;
   }
-  var contains = $__12;
-  extend($, contains);
-  var mode = $__13;
-  extend($, mode);
-  var noconflict = $__14;
-  extend($, noconflict);
-  var type = $__15;
-  extend($, type);
+  extend($, contains, mode, noconflict, type);
   extend(api, array, attr, class_, css, data, dom, dom_extra, event, html, selector_extra);
   extend(apiNodeList, array);
-  $.version = '0.7.3';
+  $.version = '0.7.4';
   $.extend = extend;
   $.fn = api;
   $.fnList = apiNodeList;

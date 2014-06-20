@@ -3,7 +3,7 @@ var __moduleName = "event";
 var $__0 = require('./util'),
     global = $__0.global,
     each = $__0.each;
-var matches = require('./selector').matches;
+var closest = require('./selector').closest;
 function on(eventNames, selector, handler, useCapture) {
   if (typeof selector === 'function') {
     handler = selector;
@@ -18,10 +18,13 @@ function on(eventNames, selector, handler, useCapture) {
     namespace = parts[1] || null;
     eventListener = proxyHandler(handler);
     each(this, function(element) {
-      if (selector) {
-        eventListener = delegateHandler.bind(element, selector, handler);
+      if (selector && eventName in hoverEvents) {
+        eventListener = hoverHandler(eventListener);
       }
-      element.addEventListener(eventName, eventListener, useCapture || false);
+      if (selector) {
+        eventListener = delegateHandler.bind(element, selector, eventListener);
+      }
+      element.addEventListener(hoverEvents[eventName] || eventName, eventListener, useCapture || false);
       getHandlers(element).push({
         eventName: eventName,
         handler: handler,
@@ -51,21 +54,16 @@ function off() {
     namespace = parts[1] || null;
     each(this, function(element) {
       handlers = getHandlers(element);
+      each(handlers.filter(function(item) {
+        return ((!eventName || item.eventName === eventName) && (!namespace || item.namespace === namespace) && (!handler || item.handler === handler) && (!selector || item.selector === selector));
+      }), function(item) {
+        element.removeEventListener(hoverEvents[item.eventName] || item.eventName, item.eventListener, useCapture || false);
+        handlers.splice(handlers.indexOf(item), 1);
+      });
       if (!eventName && !namespace && !selector && !handler) {
-        each(handlers, function(item) {
-          element.removeEventListener(item.eventName, item.eventListener, useCapture || false);
-        });
         clearHandlers(element);
-      } else {
-        each(handlers.filter(function(item) {
-          return ((!eventName || item.eventName === eventName) && (!namespace || item.namespace === namespace) && (!handler || item.handler === handler) && (!selector || item.selector === selector));
-        }), function(item) {
-          element.removeEventListener(item.eventName, item.eventListener, useCapture || false);
-          handlers.splice(handlers.indexOf(item), 1);
-        });
-        if (handlers.length === 0) {
-          clearHandlers(element);
-        }
+      } else if (handlers.length === 0) {
+        clearHandlers(element);
       }
     });
   }, this);
@@ -146,15 +144,16 @@ function clearHandlers(element) {
 }
 function proxyHandler(handler) {
   return function(event) {
-    handler(augmentEvent(event), event.detail);
+    handler.call(this, augmentEvent(event), event.detail);
   };
 }
 var augmentEvent = (function() {
-  var eventMethods = {
-    preventDefault: 'isDefaultPrevented',
-    stopImmediatePropagation: 'isImmediatePropagationStopped',
-    stopPropagation: 'isPropagationStopped'
-  },
+  var methodName,
+      eventMethods = {
+        preventDefault: 'isDefaultPrevented',
+        stopImmediatePropagation: 'isImmediatePropagationStopped',
+        stopPropagation: 'isPropagationStopped'
+      },
       noop = (function() {}),
       returnTrue = (function() {
         return true;
@@ -163,29 +162,43 @@ var augmentEvent = (function() {
         return false;
       });
   return function(event) {
-    for (var methodName in eventMethods) {
-      (function(methodName, testMethodName, originalMethod) {
-        event[methodName] = function() {
-          this[testMethodName] = returnTrue;
-          return originalMethod.apply(this, arguments);
-        };
-        event[testMethodName] = returnFalse;
-      }(methodName, eventMethods[methodName], event[methodName] || noop));
-    }
-    if (event._preventDefault) {
-      event.preventDefault();
+    if (!event.isDefaultPrevented || event.stopImmediatePropagation || event.stopPropagation) {
+      for (methodName in eventMethods) {
+        (function(methodName, testMethodName, originalMethod) {
+          event[methodName] = function() {
+            this[testMethodName] = returnTrue;
+            return originalMethod.apply(this, arguments);
+          };
+          event[testMethodName] = returnFalse;
+        }(methodName, eventMethods[methodName], event[methodName] || noop));
+      }
+      if (event._preventDefault) {
+        event.preventDefault();
+      }
     }
     return event;
   };
 })();
 function delegateHandler(selector, handler, event) {
-  var eventTarget = event._target || event.target;
-  if (matches(eventTarget, selector)) {
-    if (!event.currentTarget) {
-      event.currentTarget = eventTarget;
+  var eventTarget = event._target || event.target,
+      currentTarget = closest.call([eventTarget], selector, this)[0];
+  if (currentTarget && currentTarget !== this) {
+    if (currentTarget === eventTarget || !(event.isPropagationStopped && event.isPropagationStopped())) {
+      handler.call(currentTarget, event);
     }
-    handler.call(eventTarget, event);
   }
+}
+var hoverEvents = {
+  mouseenter: 'mouseover',
+  mouseleave: 'mouseout'
+};
+function hoverHandler(handler) {
+  return function(event) {
+    var relatedTarget = event.relatedTarget;
+    if (!relatedTarget || (relatedTarget !== this && !$.contains(this, relatedTarget))) {
+      return handler.apply(this, arguments);
+    }
+  };
 }
 (function() {
   function CustomEvent(event) {
