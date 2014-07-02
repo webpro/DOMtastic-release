@@ -20,7 +20,7 @@ if (typeof selector !== 'undefined') {
 extend($, contains);
 extend(api, array, class_, dom, event);
 extend(apiNodeList, array);
-$.version = '0.7.4';
+$.version = '0.7.5';
 $.extend = extend;
 $.fn = api;
 $.fnList = apiNodeList;
@@ -86,21 +86,33 @@ var $__0 = _dereq_('./util'),
     makeIterable = $__0.makeIterable,
     each = $__0.each;
 function addClass(value) {
-  each(this, function(element) {
-    element.classList.add(value);
-  });
+  if (value && value.length) {
+    each(value.split(' '), function(className) {
+      each(this, function(element) {
+        element.classList.add(className);
+      });
+    }.bind(this));
+  }
   return this;
 }
 function removeClass(value) {
-  each(this, function(element) {
-    element.classList.remove(value);
-  });
+  if (value && value.length) {
+    each(value.split(' '), function(className) {
+      each(this, function(element) {
+        element.classList.remove(className);
+      });
+    }.bind(this));
+  }
   return this;
 }
 function toggleClass(value) {
-  each(this, function(element) {
-    element.classList.toggle(value);
-  });
+  if (value && value.length) {
+    each(value.split(' '), function(className) {
+      each(this, function(element) {
+        element.classList.toggle(className);
+      });
+    }.bind(this));
+  }
   return this;
 }
 function hasClass(value) {
@@ -340,7 +352,7 @@ function trigger(type) {
   event._preventDefault = params.preventDefault;
   each(this, function(element) {
     if (!params.bubbles || isEventBubblingInDetachedTree || isAttachedToDocument(element)) {
-      element.dispatchEvent(event);
+      dispatchEvent(element, event);
     } else {
       triggerForPath(element, params);
     }
@@ -355,14 +367,6 @@ function triggerHandler(type) {
     });
   }
 }
-function ready(handler) {
-  if (/complete|loaded|interactive/.test(document.readyState) && document.body) {
-    handler();
-  } else {
-    document.addEventListener('DOMContentLoaded', handler, false);
-  }
-  return this;
-}
 function isAttachedToDocument(element) {
   if (element === window || element === document) {
     return true;
@@ -375,8 +379,16 @@ function triggerForPath(element) {
   var event = new CustomEvent(type, params);
   event._target = element;
   do {
-    element.dispatchEvent(event);
+    dispatchEvent(element, event);
   } while (element = element.parentNode);
+}
+var directEventMethods = ['blur', 'click', 'focus', 'select'];
+function dispatchEvent(element, event) {
+  if (directEventMethods.indexOf(event.type) !== -1 && typeof element[event.type] === 'function') {
+    element[event.type]();
+  } else {
+    element.dispatchEvent(event);
+  }
 }
 var eventKeyProp = '__domtastic_event__';
 var id = 1;
@@ -493,7 +505,6 @@ module.exports = {
   undelegate: undelegate,
   trigger: trigger,
   triggerHandler: triggerHandler,
-  ready: ready,
   bind: bind,
   unbind: unbind,
   __esModule: true

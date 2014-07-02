@@ -7,21 +7,33 @@ define(['./util'], function($__0) {
       makeIterable = $__1.makeIterable,
       each = $__1.each;
   function addClass(value) {
-    each(this, function(element) {
-      element.classList.add(value);
-    });
+    if (value && value.length) {
+      each(value.split(' '), function(className) {
+        each(this, function(element) {
+          element.classList.add(className);
+        });
+      }.bind(this));
+    }
     return this;
   }
   function removeClass(value) {
-    each(this, function(element) {
-      element.classList.remove(value);
-    });
+    if (value && value.length) {
+      each(value.split(' '), function(className) {
+        each(this, function(element) {
+          element.classList.remove(className);
+        });
+      }.bind(this));
+    }
     return this;
   }
   function toggleClass(value) {
-    each(this, function(element) {
-      element.classList.toggle(value);
-    });
+    if (value && value.length) {
+      each(value.split(' '), function(className) {
+        each(this, function(element) {
+          element.classList.toggle(className);
+        });
+      }.bind(this));
+    }
     return this;
   }
   function hasClass(value) {

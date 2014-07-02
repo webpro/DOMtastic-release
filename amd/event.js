@@ -90,7 +90,7 @@ define(['./util', './selector'], function($__0,$__1) {
     event._preventDefault = params.preventDefault;
     each(this, function(element) {
       if (!params.bubbles || isEventBubblingInDetachedTree || isAttachedToDocument(element)) {
-        element.dispatchEvent(event);
+        dispatchEvent(element, event);
       } else {
         triggerForPath(element, type, params);
       }
@@ -105,14 +105,6 @@ define(['./util', './selector'], function($__0,$__1) {
       });
     }
   }
-  function ready(handler) {
-    if (/complete|loaded|interactive/.test(document.readyState) && document.body) {
-      handler();
-    } else {
-      document.addEventListener('DOMContentLoaded', handler, false);
-    }
-    return this;
-  }
   function isAttachedToDocument(element) {
     if (element === window || element === document) {
       return true;
@@ -125,8 +117,16 @@ define(['./util', './selector'], function($__0,$__1) {
     var event = new CustomEvent(type, params);
     event._target = element;
     do {
-      element.dispatchEvent(event);
+      dispatchEvent(element, event);
     } while (element = element.parentNode);
+  }
+  var directEventMethods = ['blur', 'click', 'focus', 'select'];
+  function dispatchEvent(element, event) {
+    if (directEventMethods.indexOf(event.type) !== -1 && typeof element[event.type] === 'function') {
+      element[event.type]();
+    } else {
+      element.dispatchEvent(event);
+    }
   }
   var eventKeyProp = '__domtastic_event__';
   var id = 1;
@@ -254,9 +254,6 @@ define(['./util', './selector'], function($__0,$__1) {
     },
     get triggerHandler() {
       return triggerHandler;
-    },
-    get ready() {
-      return ready;
     },
     get bind() {
       return bind;

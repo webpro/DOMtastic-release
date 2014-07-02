@@ -13,6 +13,7 @@ var dom = _dereq_('./dom');
 var event = _dereq_('./event');
 var html = _dereq_('./html');
 var noconflict = _dereq_('./noconflict');
+var ready = _dereq_('./ready');
 var selector = _dereq_('./selector');
 if (typeof selector !== 'undefined') {
   $ = selector.$;
@@ -21,9 +22,9 @@ if (typeof selector !== 'undefined') {
   api.closest = selector.closest;
 }
 extend($, contains, noconflict);
-extend(api, array, attr, class_, dom, event, html);
+extend(api, array, attr, class_, dom, event, html, ready);
 extend(apiNodeList, array);
-$.version = '0.7.4';
+$.version = '0.7.5';
 $.extend = extend;
 $.fn = api;
 $.fnList = apiNodeList;
@@ -34,7 +35,7 @@ module.exports = {
 };
 
 
-},{"./array":2,"./attr":3,"./class":4,"./contains":5,"./dom":6,"./event":7,"./html":8,"./noconflict":10,"./selector":11,"./util":12}],2:[function(_dereq_,module,exports){
+},{"./array":2,"./attr":3,"./class":4,"./contains":5,"./dom":6,"./event":7,"./html":8,"./noconflict":10,"./ready":11,"./selector":12,"./util":13}],2:[function(_dereq_,module,exports){
 "use strict";
 var __moduleName = "src/array";
 var _each = _dereq_('./util').each;
@@ -82,7 +83,7 @@ module.exports = {
 };
 
 
-},{"./selector":11,"./util":12}],3:[function(_dereq_,module,exports){
+},{"./selector":12,"./util":13}],3:[function(_dereq_,module,exports){
 "use strict";
 var __moduleName = "src/attr";
 var each = _dereq_('./util').each;
@@ -116,28 +117,40 @@ module.exports = {
 };
 
 
-},{"./util":12}],4:[function(_dereq_,module,exports){
+},{"./util":13}],4:[function(_dereq_,module,exports){
 "use strict";
 var __moduleName = "src/class";
 var $__0 = _dereq_('./util'),
     makeIterable = $__0.makeIterable,
     each = $__0.each;
 function addClass(value) {
-  each(this, function(element) {
-    element.classList.add(value);
-  });
+  if (value && value.length) {
+    each(value.split(' '), function(className) {
+      each(this, function(element) {
+        element.classList.add(className);
+      });
+    }.bind(this));
+  }
   return this;
 }
 function removeClass(value) {
-  each(this, function(element) {
-    element.classList.remove(value);
-  });
+  if (value && value.length) {
+    each(value.split(' '), function(className) {
+      each(this, function(element) {
+        element.classList.remove(className);
+      });
+    }.bind(this));
+  }
   return this;
 }
 function toggleClass(value) {
-  each(this, function(element) {
-    element.classList.toggle(value);
-  });
+  if (value && value.length) {
+    each(value.split(' '), function(className) {
+      each(this, function(element) {
+        element.classList.toggle(className);
+      });
+    }.bind(this));
+  }
   return this;
 }
 function hasClass(value) {
@@ -155,7 +168,7 @@ module.exports = {
 };
 
 
-},{"./util":12}],5:[function(_dereq_,module,exports){
+},{"./util":13}],5:[function(_dereq_,module,exports){
 "use strict";
 var __moduleName = "src/contains";
 function contains(container, element) {
@@ -289,7 +302,7 @@ module.exports = {
 };
 
 
-},{"./util":12}],7:[function(_dereq_,module,exports){
+},{"./util":13}],7:[function(_dereq_,module,exports){
 "use strict";
 var __moduleName = "src/event";
 var $__0 = _dereq_('./util'),
@@ -377,7 +390,7 @@ function trigger(type) {
   event._preventDefault = params.preventDefault;
   each(this, function(element) {
     if (!params.bubbles || isEventBubblingInDetachedTree || isAttachedToDocument(element)) {
-      element.dispatchEvent(event);
+      dispatchEvent(element, event);
     } else {
       triggerForPath(element, params);
     }
@@ -392,14 +405,6 @@ function triggerHandler(type) {
     });
   }
 }
-function ready(handler) {
-  if (/complete|loaded|interactive/.test(document.readyState) && document.body) {
-    handler();
-  } else {
-    document.addEventListener('DOMContentLoaded', handler, false);
-  }
-  return this;
-}
 function isAttachedToDocument(element) {
   if (element === window || element === document) {
     return true;
@@ -412,8 +417,16 @@ function triggerForPath(element) {
   var event = new CustomEvent(type, params);
   event._target = element;
   do {
-    element.dispatchEvent(event);
+    dispatchEvent(element, event);
   } while (element = element.parentNode);
+}
+var directEventMethods = ['blur', 'click', 'focus', 'select'];
+function dispatchEvent(element, event) {
+  if (directEventMethods.indexOf(event.type) !== -1 && typeof element[event.type] === 'function') {
+    element[event.type]();
+  } else {
+    element.dispatchEvent(event);
+  }
 }
 var eventKeyProp = '__domtastic_event__';
 var id = 1;
@@ -530,14 +543,13 @@ module.exports = {
   undelegate: undelegate,
   trigger: trigger,
   triggerHandler: triggerHandler,
-  ready: ready,
   bind: bind,
   unbind: unbind,
   __esModule: true
 };
 
 
-},{"./selector":11,"./util":12}],8:[function(_dereq_,module,exports){
+},{"./selector":12,"./util":13}],8:[function(_dereq_,module,exports){
 "use strict";
 var __moduleName = "src/html";
 var each = _dereq_('./util').each;
@@ -558,7 +570,7 @@ module.exports = {
 };
 
 
-},{"./util":12}],9:[function(_dereq_,module,exports){
+},{"./util":13}],9:[function(_dereq_,module,exports){
 "use strict";
 var __moduleName = "src/index";
 var $ = _dereq_('./api').default;
@@ -585,7 +597,25 @@ module.exports = {
 };
 
 
-},{"./util":12}],11:[function(_dereq_,module,exports){
+},{"./util":13}],11:[function(_dereq_,module,exports){
+"use strict";
+var __moduleName = "src/ready";
+function ready(handler) {
+  if (/complete|loaded|interactive/.test(document.readyState) && document.body) {
+    handler();
+  } else {
+    document.addEventListener('DOMContentLoaded', handler, false);
+  }
+  return this;
+}
+;
+module.exports = {
+  ready: ready,
+  __esModule: true
+};
+
+
+},{}],12:[function(_dereq_,module,exports){
 "use strict";
 var __moduleName = "src/selector";
 var $__0 = _dereq_('./util'),
@@ -686,7 +716,7 @@ module.exports = {
 };
 
 
-},{"./util":12}],12:[function(_dereq_,module,exports){
+},{"./util":13}],13:[function(_dereq_,module,exports){
 "use strict";
 var __moduleName = "src/util";
 var global = new Function("return this")(),
