@@ -115,9 +115,9 @@ function triggerForPath(element, type) {
     dispatchEvent(element, event);
   } while (element = element.parentNode);
 }
-var directEventMethods = ['blur', 'click', 'focus', 'select'];
+var directEventMethods = ['blur', 'click', 'focus', 'select', 'submit'];
 function dispatchEvent(element, event) {
-  if (directEventMethods.indexOf(event.type) !== -1 && typeof element[event.type] === 'function') {
+  if (directEventMethods.indexOf(event.type) !== -1 && typeof element[event.type] === 'function' && !event._preventDefault) {
     element[event.type]();
   } else {
     element.dispatchEvent(event);
