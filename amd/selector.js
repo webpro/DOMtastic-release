@@ -6,8 +6,7 @@ define(['./util'], function($__0) {
   var $__1 = $__0,
       global = $__1.global,
       makeIterable = $__1.makeIterable;
-  var slice = [].slice,
-      isPrototypeSet = false,
+  var isPrototypeSet = false,
       reFragment = /^\s*<(\w+|!)[^>]*>/,
       reSingleTag = /^<(\w+)\s*\/?>(?:<\/\1>|)$/,
       reSimpleSelector = /^[\.#]?[\w-]*$/;

@@ -5,7 +5,9 @@ define(['./util', './selector'], function($__0,$__1) {
     $__0 = {'default': $__0};
   if (!$__1 || !$__1.__esModule)
     $__1 = {'default': $__1};
-  var _each = ($__0).each;
+  var $__2 = $__0,
+      _each = $__2.each,
+      toArray = $__2.toArray;
   var $__2 = $__1,
       $ = $__2.$,
       matches = $__2.matches;
@@ -26,8 +28,7 @@ define(['./util', './selector'], function($__0,$__1) {
   var pop = ArrayProto.pop;
   var push = ArrayProto.push;
   function reverse() {
-    var elements = ArrayProto.slice.call(this);
-    return $(ArrayProto.reverse.call(elements));
+    return $(toArray(this).reverse());
   }
   var shift = ArrayProto.shift;
   var some = ArrayProto.some;

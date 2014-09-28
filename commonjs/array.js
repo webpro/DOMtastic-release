@@ -1,6 +1,8 @@
 "use strict";
 var __moduleName = "array";
-var _each = require('./util').each;
+var $__0 = require('./util'),
+    _each = $__0.each,
+    toArray = $__0.toArray;
 var $__0 = require('./selector'),
     $ = $__0.$,
     matches = $__0.matches;
@@ -21,8 +23,7 @@ var map = ArrayProto.map;
 var pop = ArrayProto.pop;
 var push = ArrayProto.push;
 function reverse() {
-  var elements = ArrayProto.slice.call(this);
-  return $(ArrayProto.reverse.call(elements));
+  return $(toArray(this).reverse());
 }
 var shift = ArrayProto.shift;
 var some = ArrayProto.some;

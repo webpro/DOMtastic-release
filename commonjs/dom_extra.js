@@ -27,7 +27,7 @@ function replaceWith() {
   return before.apply(this, arguments).remove();
 }
 function text(value) {
-  if (typeof value !== 'string') {
+  if (value == null) {
     return this[0].textContent;
   }
   each(this, function(element) {
@@ -36,7 +36,7 @@ function text(value) {
   return this;
 }
 function val(value) {
-  if (typeof value !== 'string') {
+  if (value == null) {
     return this[0].value;
   }
   each(this, function(element) {

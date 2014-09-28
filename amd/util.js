@@ -1,11 +1,15 @@
 define([], function() {
   "use strict";
   var __moduleName = "util";
-  var global = new Function("return this")(),
-      slice = Array.prototype.slice;
-  var toArray = (function(collection) {
-    return slice.call(collection);
-  });
+  var global = new Function("return this")();
+  function toArray(collection) {
+    var length = collection.length,
+        result = Array(length);
+    for (var i = 0; i < length; i++) {
+      result[i] = collection[i];
+    }
+    return result;
+  }
   var makeIterable = (function(element) {
     return element.nodeType || element === window ? [element] : element;
   });

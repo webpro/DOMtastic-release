@@ -20,7 +20,7 @@ if (typeof selector !== 'undefined') {
 extend($, contains);
 extend(api, array, class_, dom, event);
 extend(apiNodeList, array);
-$.version = '0.7.6';
+$.version = '0.7.7';
 $.extend = extend;
 $.fn = api;
 $.fnList = apiNodeList;
@@ -34,7 +34,9 @@ module.exports = {
 },{"./array":2,"./class":3,"./contains":4,"./dom":5,"./event":6,"./selector":8,"./util":9}],2:[function(_dereq_,module,exports){
 "use strict";
 var __moduleName = "src/array";
-var _each = _dereq_('./util').each;
+var $__0 = _dereq_('./util'),
+    _each = $__0.each,
+    toArray = $__0.toArray;
 var $__0 = _dereq_('./selector'),
     $ = $__0.$,
     matches = $__0.matches;
@@ -55,8 +57,7 @@ var map = ArrayProto.map;
 var pop = ArrayProto.pop;
 var push = ArrayProto.push;
 function reverse() {
-  var elements = ArrayProto.slice.call(this);
-  return $(ArrayProto.reverse.call(elements));
+  return $(toArray(this).reverse());
 }
 var shift = ArrayProto.shift;
 var some = ArrayProto.some;
@@ -528,8 +529,7 @@ var __moduleName = "src/selector";
 var $__0 = _dereq_('./util'),
     global = $__0.global,
     makeIterable = $__0.makeIterable;
-var slice = [].slice,
-    isPrototypeSet = false,
+var isPrototypeSet = false,
     reFragment = /^\s*<(\w+|!)[^>]*>/,
     reSingleTag = /^<(\w+)\s*\/?>(?:<\/\1>|)$/,
     reSimpleSelector = /^[\.#]?[\w-]*$/;
@@ -626,11 +626,15 @@ module.exports = {
 },{"./util":9}],9:[function(_dereq_,module,exports){
 "use strict";
 var __moduleName = "src/util";
-var global = new Function("return this")(),
-    slice = Array.prototype.slice;
-var toArray = (function(collection) {
-  return slice.call(collection);
-});
+var global = new Function("return this")();
+function toArray(collection) {
+  var length = collection.length,
+      result = Array(length);
+  for (var i = 0; i < length; i++) {
+    result[i] = collection[i];
+  }
+  return result;
+}
 var makeIterable = (function(element) {
   return element.nodeType || element === window ? [element] : element;
 });

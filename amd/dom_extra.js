@@ -34,7 +34,7 @@ define(['./util', './dom', './selector'], function($__0,$__1,$__2) {
     return before.apply(this, arguments).remove();
   }
   function text(value) {
-    if (typeof value !== 'string') {
+    if (value == null) {
       return this[0].textContent;
     }
     each(this, function(element) {
@@ -43,7 +43,7 @@ define(['./util', './dom', './selector'], function($__0,$__1,$__2) {
     return this;
   }
   function val(value) {
-    if (typeof value !== 'string') {
+    if (value == null) {
       return this[0].value;
     }
     each(this, function(element) {
