@@ -1,6 +1,21 @@
-define([], function() {
+/**
+ * @module contains
+ */
+
+/**
+ * Test whether an element contains another element in the DOM.
+ *
+ * @param {Element} container The element that may contain the other element.
+ * @param {Element} element The element that may be a descendant of the other element.
+ * @return {Boolean} Whether the `container` element contains the `element`.
+ * @example
+ *     $.contains(parentElement, childElement);
+ *     ➤ true/false
+ */
+
+define(["exports"], function (exports) {
   "use strict";
-  var __moduleName = "contains";
+
   function contains(container, element) {
     if (!container || !element || container === element) {
       return false;
@@ -11,11 +26,6 @@ define([], function() {
     }
     return false;
   }
-  ;
-  return {
-    get contains() {
-      return contains;
-    },
-    __esModule: true
-  };
+
+  exports.contains = contains;
 });

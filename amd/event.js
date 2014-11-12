@@ -1,30 +1,49 @@
-define(['./util', './selector'], function($__0,$__1) {
+/**
+ * @module Events
+ */
+
+define(["exports", "./util", "./selector"], function (exports, _util, _selector) {
   "use strict";
-  var __moduleName = "event";
-  if (!$__0 || !$__0.__esModule)
-    $__0 = {'default': $__0};
-  if (!$__1 || !$__1.__esModule)
-    $__1 = {'default': $__1};
-  var each = ($__0).each;
-  var closest = ($__1).closest;
+
+  var each = _util.each;
+  var closest = _selector.closest;
+
+  /**
+   * Shorthand for `addEventListener`. Supports event delegation if a filter (`selector`) is provided.
+   *
+   * @param {String} eventNames List of space-separated event types to be added to the element(s)
+   * @param {String} [selector] Selector to filter descendants that delegate the event to this element.
+   * @param {Function} handler Event handler
+   * @param {Boolean} useCapture=false
+   * @return {Object} The wrapped collection
+   * @chainable
+   * @example
+   *     $('.item').on('click', callback);
+   *     $('.container').on('click focus', '.item', handler);
+   */
+
   function on(eventNames, selector, handler, useCapture) {
-    if (typeof selector === 'function') {
+    if (typeof selector === "function") {
       handler = selector;
       selector = null;
     }
-    var parts,
-        namespace,
-        eventListener;
-    eventNames.split(' ').forEach(function(eventName) {
-      parts = eventName.split('.');
+
+    var parts, namespace, eventListener;
+
+    eventNames.split(" ").forEach(function (eventName) {
+      parts = eventName.split(".");
       eventName = parts[0] || null;
       namespace = parts[1] || null;
+
       eventListener = proxyHandler(handler);
-      each(this, function(element) {
+
+      each(this, function (element) {
         if (selector) {
           eventListener = delegateHandler.bind(element, selector, eventListener);
         }
+
         element.addEventListener(eventName, eventListener, useCapture || false);
+
         getHandlers(element).push({
           eventName: eventName,
           handler: handler,
@@ -34,32 +53,50 @@ define(['./util', './selector'], function($__0,$__1) {
         });
       });
     }, this);
+
     return this;
   }
-  function off() {
-    var eventNames = arguments[0] !== (void 0) ? arguments[0] : '';
-    var selector = arguments[1];
-    var handler = arguments[2];
-    var useCapture = arguments[3];
-    if (typeof selector === 'function') {
+
+  /**
+   * Shorthand for `removeEventListener`. Delegates to `undelegate` if that signature is used.
+   *
+   * @param {String} eventNames List of space-separated event types to be removed from the element(s)
+   * @param {String} [selector] Selector to filter descendants that undelegate the event to this element.
+   * @param {Function} handler Event handler
+   * @param {Boolean} useCapture=false
+   * @return {Object} The wrapped collection
+   * @chainable
+   * @example
+   *     $('.item').off('click', callback);
+   *     $('#my-element').off('myEvent myOtherEvent');
+   *     $('.item').off();
+   */
+
+  function off(eventNames, selector, handler, useCapture) {
+    if (eventNames === undefined) eventNames = "";
+
+    if (typeof selector === "function") {
       handler = selector;
       selector = null;
     }
-    var parts,
-        namespace,
-        handlers;
-    eventNames.split(' ').forEach(function(eventName) {
-      parts = eventName.split('.');
+
+    var parts, namespace, handlers;
+
+    eventNames.split(" ").forEach(function (eventName) {
+      parts = eventName.split(".");
       eventName = parts[0] || null;
       namespace = parts[1] || null;
-      each(this, function(element) {
+
+      each(this, function (element) {
         handlers = getHandlers(element);
-        each(handlers.filter(function(item) {
+
+        each(handlers.filter(function (item) {
           return ((!eventName || item.eventName === eventName) && (!namespace || item.namespace === namespace) && (!handler || item.handler === handler) && (!selector || item.selector === selector));
-        }), function(item) {
+        }), function (item) {
           element.removeEventListener(item.eventName, item.eventListener, useCapture || false);
           handlers.splice(handlers.indexOf(item), 1);
         });
+
         if (!eventName && !namespace && !selector && !handler) {
           clearHandlers(element);
         } else if (handlers.length === 0) {
@@ -67,18 +104,31 @@ define(['./util', './selector'], function($__0,$__1) {
         }
       });
     }, this);
+
     return this;
   }
+
   function delegate(selector, eventName, handler) {
     return on.call(this, eventName, selector, handler);
   }
+
   function undelegate(selector, eventName, handler) {
     return off.call(this, eventName, selector, handler);
   }
-  var eventKeyProp = '__domtastic_event__';
+
+  /**
+   * Get event handlers from an element
+   *
+   * @private
+   * @param {Node} element
+   * @return {Array}
+   */
+
+  var eventKeyProp = "__domtastic_event__";
   var id = 1;
   var handlers = {};
   var unusedKeys = [];
+
   function getHandlers(element) {
     if (!element[eventKeyProp]) {
       element[eventKeyProp] = unusedKeys.length === 0 ? ++id : unusedKeys.pop();
@@ -86,6 +136,14 @@ define(['./util', './selector'], function($__0,$__1) {
     var key = element[eventKeyProp];
     return handlers[key] || (handlers[key] = []);
   }
+
+  /**
+   * Clear event handlers for an element
+   *
+   * @private
+   * @param {Node} element
+   */
+
   function clearHandlers(element) {
     var key = element[eventKeyProp];
     if (handlers[key]) {
@@ -94,35 +152,51 @@ define(['./util', './selector'], function($__0,$__1) {
       unusedKeys.push(key);
     }
   }
+
+  /**
+   * Function to create a handler that augments the event object with some extra methods,
+   * and executes the callback with the event and the event data (i.e. `event.detail`).
+   *
+   * @private
+   * @param handler Callback to execute as `handler(event, data)`
+   * @return {Function}
+   */
+
   function proxyHandler(handler) {
-    return function(event) {
+    return function (event) {
       handler.call(this, augmentEvent(event), event.detail);
     };
   }
-  var augmentEvent = (function() {
-    var methodName,
-        eventMethods = {
-          preventDefault: 'isDefaultPrevented',
-          stopImmediatePropagation: 'isImmediatePropagationStopped',
-          stopPropagation: 'isPropagationStopped'
-        },
-        noop = (function() {}),
-        returnTrue = (function() {
-          return true;
-        }),
-        returnFalse = (function() {
-          return false;
-        });
-    return function(event) {
+
+  /**
+   * Attempt to augment events and implement something closer to DOM Level 3 Events.
+   *
+   * @private
+   * @param {Object} event
+   * @return {Function}
+   */
+
+  var augmentEvent = (function () {
+    var methodName, eventMethods = {
+      preventDefault: "isDefaultPrevented",
+      stopImmediatePropagation: "isImmediatePropagationStopped",
+      stopPropagation: "isPropagationStopped"
+    }, returnTrue = function () {
+      return true;
+    }, returnFalse = function () {
+      return false;
+    };
+
+    return function (event) {
       if (!event.isDefaultPrevented || event.stopImmediatePropagation || event.stopPropagation) {
         for (methodName in eventMethods) {
-          (function(methodName, testMethodName, originalMethod) {
-            event[methodName] = function() {
+          (function (methodName, testMethodName, originalMethod) {
+            event[methodName] = function () {
               this[testMethodName] = returnTrue;
-              return originalMethod.apply(this, arguments);
+              return originalMethod && originalMethod.apply(this, arguments);
             };
             event[testMethodName] = returnFalse;
-          }(methodName, eventMethods[methodName], event[methodName] || noop));
+          }(methodName, eventMethods[methodName], event[methodName]));
         }
         if (event._preventDefault) {
           event.preventDefault();
@@ -131,37 +205,33 @@ define(['./util', './selector'], function($__0,$__1) {
       return event;
     };
   })();
+
+  /**
+   * Function to test whether delegated events match the provided `selector` (filter),
+   * if the event propagation was stopped, and then actually call the provided event handler.
+   * Use `this` instead of `event.currentTarget` on the event object.
+   *
+   * @private
+   * @param {String} selector Selector to filter descendants that undelegate the event to this element.
+   * @param {Function} handler Event handler
+   * @param {Event} event
+   */
+
   function delegateHandler(selector, handler, event) {
-    var eventTarget = event._target || event.target,
-        currentTarget = closest.call([eventTarget], selector, this)[0];
+    var eventTarget = event._target || event.target, currentTarget = closest.call([eventTarget], selector, this)[0];
     if (currentTarget && currentTarget !== this) {
       if (currentTarget === eventTarget || !(event.isPropagationStopped && event.isPropagationStopped())) {
         handler.call(currentTarget, event);
       }
     }
   }
-  var bind = on,
-      unbind = off;
-  ;
-  return {
-    get on() {
-      return on;
-    },
-    get off() {
-      return off;
-    },
-    get delegate() {
-      return delegate;
-    },
-    get undelegate() {
-      return undelegate;
-    },
-    get bind() {
-      return bind;
-    },
-    get unbind() {
-      return unbind;
-    },
-    __esModule: true
-  };
+
+  var bind = on, unbind = off;
+
+  exports.on = on;
+  exports.off = off;
+  exports.delegate = delegate;
+  exports.undelegate = undelegate;
+  exports.bind = bind;
+  exports.unbind = unbind;
 });

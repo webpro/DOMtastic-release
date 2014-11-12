@@ -1,9 +1,38 @@
+/*
+ * # Opt-in to Native Mode
+ *
+ * The default, non-intrusive mode is similar to how jQuery operates: working with static, array-like `$` objects:
+ *
+ *     $('.items').append('<span>foo</span>);
+ *     $(document.body).on('click', '.tab', handler);
+ *
+ * However, you can opt-in to work with live NodeList objects.
+ * In this "native" mode, the `Node` and `NodeList` prototypes are augmented (in a safe and reversible manner) to fill up the chainable API,
+ * to enable working with `Node` and `NodeList` objects directly:
+ *
+ *     var collection = document.querySelectorAll('.items');
+ *     collection.append('<span>foo</span>);
+ *     collection.addClass('bar');
+ *     collection.forEach(iteratorFn);
+ *     collection.find('.more');
+ *
+ *     document.body.on('click', '.tab', handler)
+ *
+ * Note that in native mode, `$(selector)` can stil be used. It returns a NodeList.
+ *
+ * Build the lib with `mode` included.
+ * Use `$.native()` to activate this behavior. The API is the same in both modes.
+ */
+
 "use strict";
-var __moduleName = "mode";
+
 var global = require('./util').global;
+
 var isNative = false;
-function native() {
-  var goNative = arguments[0] !== (void 0) ? arguments[0] : true;
+
+function native(goNative) {
+  if (goNative === undefined) goNative = true;
+
   var wasNative = isNative;
   isNative = goNative;
   if (global.$) {
@@ -17,8 +46,16 @@ function native() {
   }
   return isNative;
 }
-var NodeProto = typeof Node !== 'undefined' && Node.prototype,
-    NodeListProto = typeof NodeList !== 'undefined' && NodeList.prototype;
+
+var NodeProto = typeof Node !== "undefined" && Node.prototype, NodeListProto = typeof NodeList !== "undefined" && NodeList.prototype;
+
+/*
+ * Add a property (i.e. method) to an object in a safe and reversible manner.
+ * Only add the method if object not already had it (non-inherited).
+ *
+ * @private
+ */
+
 function augment(obj, key, value) {
   if (!obj.hasOwnProperty(key)) {
     Object.defineProperty(obj, key, {
@@ -28,36 +65,55 @@ function augment(obj, key, value) {
     });
   }
 }
-var unaugment = (function(obj, key) {
+
+/*
+ * Remove property from object (only inherited properties will be removed).
+ *
+ * @private
+ */
+
+var unaugment = function (obj, key) {
   delete obj[key];
-});
+};
+
+/*
+ * Augment native `Node` and `NodeList` objects in native mode.
+ *
+ * @private
+ */
+
 function augmentNativePrototypes(methodsNode, methodsNodeList) {
   var key;
+
   for (key in methodsNode) {
     augment(NodeProto, key, methodsNode[key]);
     augment(NodeListProto, key, methodsNode[key]);
   }
+
   for (key in methodsNodeList) {
     augment(NodeListProto, key, methodsNodeList[key]);
   }
 }
+
+/*
+ * Unaugment native `Node` and `NodeList` objects to switch back to default mode.
+ * Mainly used for tests.
+ *
+ * @private
+ */
+
 function unaugmentNativePrototypes(methodsNode, methodsNodeList) {
   var key;
+
   for (key in methodsNode) {
     unaugment(NodeProto, key);
     unaugment(NodeListProto, key);
   }
+
   for (key in methodsNodeList) {
     unaugment(NodeListProto, key);
   }
 }
-;
-module.exports = {
-  get isNative() {
-    return isNative;
-  },
-  get native() {
-    return native;
-  },
-  __esModule: true
-};
+
+exports.isNative = isNative;
+exports.native = native;

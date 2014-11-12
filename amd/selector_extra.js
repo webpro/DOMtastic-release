@@ -1,21 +1,31 @@
-define(['./util', './selector'], function($__0,$__1) {
+/**
+ * @module Selector (extra)
+ */
+
+define(["exports", "./util", "./selector"], function (exports, _util, _selector) {
   "use strict";
-  var __moduleName = "selector_extra";
-  if (!$__0 || !$__0.__esModule)
-    $__0 = {'default': $__0};
-  if (!$__1 || !$__1.__esModule)
-    $__1 = {'default': $__1};
-  var $__2 = $__0,
-      each = $__2.each,
-      toArray = $__2.toArray;
-  var $__2 = $__1,
-      $ = $__2.$,
-      matches = $__2.matches;
+
+  var each = _util.each;
+  var toArray = _util.toArray;
+  var $ = _selector.$;
+  var matches = _selector.matches;
+
+  /**
+   * Return children of each element in the collection, optionally filtered by a selector.
+   *
+   * @param {String} [selector] Filter
+   * @return {Object} New wrapped collection
+   * @chainable
+   * @example
+   *     $('.selector').children();
+   *     $('.selector').children('.filter');
+   */
+
   function children(selector) {
     var nodes = [];
-    each(this, function(element) {
+    each(this, function (element) {
       if (element.children) {
-        each(element.children, function(child) {
+        each(element.children, function (child) {
           if (!selector || (selector && matches(child, selector))) {
             nodes.push(child);
           }
@@ -24,51 +34,92 @@ define(['./util', './selector'], function($__0,$__1) {
     });
     return $(nodes);
   }
+
+  /**
+   * Return child nodes of each element in the collection, including text and comment nodes.
+   *
+   * @return {Object} New wrapped collection
+   * @example
+   *     $('.selector').contents();
+   */
+
   function contents() {
     var nodes = [];
-    each(this, function(element) {
+    each(this, function (element) {
       nodes.push.apply(nodes, toArray(element.childNodes));
     });
     return $(nodes);
   }
+
+  /**
+   * Return a collection containing only the one at the specified index.
+   *
+   * @param {Number} index
+   * @return {Object} New wrapped collection
+   * @chainable
+   * @example
+   *     $('.items').eq(1)
+   *     ➤ The second item; result is the same as doing $($('.items')[1]);
+   */
+
   function eq(index) {
     return slice.call(this, index, index + 1);
   }
+
+  /**
+   * Return the DOM element at the specified index.
+   *
+   * @param {Number} index
+   * @return {Node} Element at the specified index
+   * @example
+   *     $('.items').get(1)
+   *     ➤ The second element; result is the same as doing $('.items')[1];
+   */
+
   function get(index) {
     return this[index];
   }
+
+  /**
+   * Return the parent elements of each element in the collection, optionally filtered by a selector.
+   *
+   * @param {String} [selector] Filter
+   * @return {Object} New wrapped collection
+   * @chainable
+   * @example
+   *     $('.selector').parent();
+   *     $('.selector').parent('.filter');
+   */
+
   function parent(selector) {
     var nodes = [];
-    each(this, function(element) {
+    each(this, function (element) {
       if (!selector || (selector && matches(element.parentNode, selector))) {
         nodes.push(element.parentNode);
       }
     });
     return $(nodes);
   }
+
+  /**
+   * Create a new, sliced collection.
+   *
+   * @param {Number} start
+   * @param {Number} end
+   * @return {Object} New wrapped collection
+   * @example
+   *     $('.items').slice(1, 3)
+   *     ➤ New wrapped collection containing the second, third, and fourth element.
+   */
+
   function slice(start, end) {
     return $([].slice.apply(this, arguments));
   }
-  ;
-  return {
-    get children() {
-      return children;
-    },
-    get contents() {
-      return contents;
-    },
-    get eq() {
-      return eq;
-    },
-    get get() {
-      return get;
-    },
-    get parent() {
-      return parent;
-    },
-    get slice() {
-      return slice;
-    },
-    __esModule: true
-  };
+
+  exports.children = children;
+  exports.contents = contents;
+  exports.eq = eq;
+  exports.get = get;
+  exports.parent = parent;
+  exports.slice = slice;
 });

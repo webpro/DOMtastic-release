@@ -1,6 +1,6 @@
 {
   "name": "domtastic",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "Small and fast DOM and event library for modern browsers. It has the same familiar API as jQuery, and is lean & mean with small, optional modules.",
   "keywords": [
     "domtastic",
@@ -27,6 +27,6 @@
   "bugs": {
     "url": "https://github.com/webpro/DOMtastic/issues"
   },
-  "main": "bundle/full/domtastic.js",
+  "main": "domtastic.js",
   "license": "MIT"
 }

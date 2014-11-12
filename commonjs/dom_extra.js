@@ -1,68 +1,119 @@
+/**
+ * @module DOM (extra)
+ */
+
 "use strict";
-var __moduleName = "dom_extra";
+
 var each = require('./util').each;
-var $__0 = require('./dom'),
-    append = $__0.append,
-    before = $__0.before,
-    after = $__0.after;
+var append = require('./dom').append;
+var before = require('./dom').before;
+var after = require('./dom').after;
 var $ = require('./selector').$;
+
+/**
+ * Append each element in the collection to the specified element(s).
+ *
+ * @param {Node|NodeList|Object} element What to append the element(s) to. Clones elements as necessary.
+ * @return {Object} The wrapped collection
+ * @chainable
+ * @example
+ *     $('.item').appendTo(container);
+ */
+
 function appendTo(element) {
-  var context = typeof element === 'string' ? $(element) : element;
+  var context = typeof element === "string" ? $(element) : element;
   append.call(context, this);
   return this;
 }
+
+/*
+ * Empty each element in the collection.
+ *
+ * @return {Object} The wrapped collection
+ * @chainable
+ * @example
+ *     $('.item').empty();
+ */
+
 function empty() {
-  return each(this, function(element) {
-    element.innerHTML = '';
+  return each(this, function (element) {
+    element.innerHTML = "";
   });
 }
+
+/**
+ * Remove the collection from the DOM.
+ *
+ * @return {Array} Array containing the removed elements
+ * @example
+ *     $('.item').remove();
+ */
+
 function remove() {
-  return each(this, function(element) {
+  return each(this, function (element) {
     if (element.parentNode) {
       element.parentNode.removeChild(element);
     }
   });
 }
+
+/**
+ * Replace each element in the collection with the provided new content, and return the array of elements that were replaced.
+ *
+ * @return {Array} Array containing the replaced elements
+ */
+
 function replaceWith() {
   return before.apply(this, arguments).remove();
 }
+
+/**
+ * Get the `textContent` from the first, or set the `textContent` of each element in the collection.
+ *
+ * @param {String} [value]
+ * @return {Object} The wrapped collection
+ * @chainable
+ * @example
+ *     $('.item').text('New content');
+ */
+
 function text(value) {
-  if (value == null) {
+  if (value === undefined) {
     return this[0].textContent;
   }
-  each(this, function(element) {
-    element.textContent = '' + value;
+
+  each(this, function (element) {
+    element.textContent = "" + value;
   });
+
   return this;
 }
+
+/**
+ * Get the `value` from the first, or set the `value` of each element in the collection.
+ *
+ * @param {String} [value]
+ * @return {Object} The wrapped collection
+ * @chainable
+ * @example
+ *     $('input.firstName').value('New value');
+ */
+
 function val(value) {
-  if (value == null) {
+  if (value === undefined) {
     return this[0].value;
   }
-  each(this, function(element) {
+
+  each(this, function (element) {
     element.value = value;
   });
+
   return this;
 }
-;
-module.exports = {
-  get appendTo() {
-    return appendTo;
-  },
-  get empty() {
-    return empty;
-  },
-  get remove() {
-    return remove;
-  },
-  get replaceWith() {
-    return replaceWith;
-  },
-  get text() {
-    return text;
-  },
-  get val() {
-    return val;
-  },
-  __esModule: true
-};
+
+exports.appendTo = appendTo;
+exports.empty = empty;
+exports.remove = remove;
+exports.replaceWith = replaceWith;
+exports.text = text;
+exports.val = val;

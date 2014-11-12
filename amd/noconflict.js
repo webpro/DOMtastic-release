@@ -1,19 +1,32 @@
-define(['./util'], function($__0) {
+/**
+ * @module noConflict
+ */
+
+define(["exports", "./util"], function (exports, _util) {
   "use strict";
-  var __moduleName = "noconflict";
-  if (!$__0 || !$__0.__esModule)
-    $__0 = {'default': $__0};
-  var global = ($__0).global;
+
+  var global = _util.global;
+
+  /*
+   * Save the previous value of the global `$` variable, so that it can be restored later on.
+   * @private
+   */
+
   var previousLib = global.$;
+
+  /**
+   * In case another library sets the global `$` variable before DOMtastic does,
+   * this method can be used to return the global `$` to that other library.
+   *
+   * @return {Object} Reference to DOMtastic.
+   * @example
+   *     var $E = $.noConflict();
+   */
+
   function noConflict() {
     global.$ = previousLib;
     return this;
   }
-  ;
-  return {
-    get noConflict() {
-      return noConflict;
-    },
-    __esModule: true
-  };
+
+  exports.noConflict = noConflict;
 });
