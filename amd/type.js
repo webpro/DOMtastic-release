@@ -1,22 +1,22 @@
-/**
- * @module Type
- */
-
-/*
- * Determine if the argument passed is a Javascript function object.
- *
- * @param {Object} [obj] Object to test whether or not it is a function.
- * @return {boolean} 
- * @example
- *     $.isFunction(function(){});
- *     ➤ true
- * @example
- *     $.isFunction({});
- *     ➤ false
- */
-
-define(["exports"], function (exports) {
+define("src/type", ["exports"], function (exports) {
   "use strict";
+
+  /**
+   * @module Type
+   */
+
+  /*
+   * Determine if the argument passed is a Javascript function object.
+   *
+   * @param {Object} [obj] Object to test whether or not it is a function.
+   * @return {boolean} 
+   * @example
+   *     $.isFunction(function(){});
+   *     // true
+   * @example
+   *     $.isFunction({});
+   *     // false
+   */
 
   function isFunction(obj) {
     return (typeof obj === "function");
@@ -29,14 +29,14 @@ define(["exports"], function (exports) {
    * @return {boolean} 
    * @example
    *     $.isArray([]);
-   *     ➤ true
+   *     // true
    * @example
    *     $.isArray({});
-   *     ➤ false
+   *     // false
    */
 
   var isArray = Array.isArray;
 
-  exports.isFunction = isFunction;
   exports.isArray = isArray;
+  exports.isFunction = isFunction;
 });

@@ -1,10 +1,7 @@
-/**
- * @module API
- */
-
 "use strict";
 
 var extend = require('./util').extend;
+
 
 var api = {}, apiNodeList = {}, $ = {};
 
@@ -55,7 +52,7 @@ extend(apiNodeList, array);
 
 // Version
 
-$.version = "0.8.1";
+$.version = "0.8.2";
 
 // Util
 
@@ -66,4 +63,4 @@ $.extend = extend;
 $.fn = api;
 $.fnList = apiNodeList;
 
-exports.default = $;
+exports["default"] = $;

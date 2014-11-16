@@ -1,12 +1,9 @@
-/**
- * @module Events
- */
-
-define(["exports", "./util", "./selector"], function (exports, _util, _selector) {
+define("src/event", ["exports", "./util", "./selector"], function (exports, _util, _selector) {
   "use strict";
 
   var each = _util.each;
   var closest = _selector.closest;
+
 
   /**
    * Shorthand for `addEventListener`. Supports event delegation if a filter (`selector`) is provided.
@@ -74,6 +71,7 @@ define(["exports", "./util", "./selector"], function (exports, _util, _selector)
 
   function off(eventNames, selector, handler, useCapture) {
     if (eventNames === undefined) eventNames = "";
+
 
     if (typeof selector === "function") {
       handler = selector;

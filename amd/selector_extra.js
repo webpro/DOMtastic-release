@@ -1,14 +1,11 @@
-/**
- * @module Selector (extra)
- */
-
-define(["exports", "./util", "./selector"], function (exports, _util, _selector) {
+define("src/selector_extra", ["exports", "./util", "./selector"], function (exports, _util, _selector) {
   "use strict";
 
   var each = _util.each;
   var toArray = _util.toArray;
   var $ = _selector.$;
   var matches = _selector.matches;
+
 
   /**
    * Return children of each element in the collection, optionally filtered by a selector.
@@ -59,7 +56,7 @@ define(["exports", "./util", "./selector"], function (exports, _util, _selector)
    * @chainable
    * @example
    *     $('.items').eq(1)
-   *     ➤ The second item; result is the same as doing $($('.items')[1]);
+   *     // The second item; result is the same as doing $($('.items')[1]);
    */
 
   function eq(index) {
@@ -73,7 +70,7 @@ define(["exports", "./util", "./selector"], function (exports, _util, _selector)
    * @return {Node} Element at the specified index
    * @example
    *     $('.items').get(1)
-   *     ➤ The second element; result is the same as doing $('.items')[1];
+   *     // The second element; result is the same as doing $('.items')[1];
    */
 
   function get(index) {
@@ -109,7 +106,7 @@ define(["exports", "./util", "./selector"], function (exports, _util, _selector)
    * @return {Object} New wrapped collection
    * @example
    *     $('.items').slice(1, 3)
-   *     ➤ New wrapped collection containing the second, third, and fourth element.
+   *     // New wrapped collection containing the second, third, and fourth element.
    */
 
   function slice(start, end) {

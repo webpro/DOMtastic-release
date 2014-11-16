@@ -1,39 +1,13 @@
-/*
- * # Opt-in to Native Mode
- *
- * The default, non-intrusive mode is similar to how jQuery operates: working with static, array-like `$` objects:
- *
- *     $('.items').append('<span>foo</span>);
- *     $(document.body).on('click', '.tab', handler);
- *
- * However, you can opt-in to work with live NodeList objects.
- * In this "native" mode, the `Node` and `NodeList` prototypes are augmented (in a safe and reversible manner) to fill up the chainable API,
- * to enable working with `Node` and `NodeList` objects directly:
- *
- *     var collection = document.querySelectorAll('.items');
- *     collection.append('<span>foo</span>);
- *     collection.addClass('bar');
- *     collection.forEach(iteratorFn);
- *     collection.find('.more');
- *
- *     document.body.on('click', '.tab', handler)
- *
- * Note that in native mode, `$(selector)` can stil be used. It returns a NodeList.
- *
- * Build the lib with `mode` included.
- * Use `$.native()` to activate this behavior. The API is the same in both modes.
- */
-
-define(["exports", "./util"], function (exports, _util) {
+define("src/mode", ["exports", "./util"], function (exports, _util) {
   "use strict";
 
   var global = _util.global;
+
 
   var isNative = false;
 
   function native(goNative) {
     if (goNative === undefined) goNative = true;
-
     var wasNative = isNative;
     isNative = goNative;
     if (global.$) {

@@ -1,13 +1,9 @@
-/**
- * @module trigger
- */
-
 "use strict";
 
 var global = require('./util').global;
 var each = require('./util').each;
-var $ = require('./selector').$;
-var closest = require('./selector').closest;
+var contains = require('./contains').contains;
+
 
 var reMouseEvent = /^(?:mouse|pointer|contextmenu)|click/, reKeyEvent = /^key/;
 
@@ -28,6 +24,7 @@ var reMouseEvent = /^(?:mouse|pointer|contextmenu)|click/, reKeyEvent = /^key/;
 
 function trigger(type, data, params) {
   if (params === undefined) params = {};
+
 
   params.bubbles = typeof params.bubbles === "boolean" ? params.bubbles : true;
   params.cancelable = typeof params.cancelable === "boolean" ? params.cancelable : true;
@@ -83,7 +80,7 @@ function isAttachedToDocument(element) {
   if (element === window || element === document) {
     return true;
   }
-  return $.contains(element.ownerDocument.documentElement, element);
+  return contains(element.ownerDocument.documentElement, element);
 }
 
 /**
@@ -102,7 +99,6 @@ function isAttachedToDocument(element) {
 
 function triggerForPath(element, type, params) {
   if (params === undefined) params = {};
-
   params.bubbles = false;
   var event = new CustomEvent(type, params);
   event._target = element;
@@ -138,7 +134,6 @@ function dispatchEvent(element, event) {
 (function () {
   function CustomEvent(event, params) {
     if (params === undefined) params = { bubbles: false, cancelable: false, detail: undefined };
-
     var customEvent = document.createEvent("CustomEvent");
     customEvent.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
     return customEvent;

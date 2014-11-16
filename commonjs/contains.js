@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * @module contains
  */
@@ -10,10 +12,8 @@
  * @return {Boolean} Whether the `container` element contains the `element`.
  * @example
  *     $.contains(parentElement, childElement);
- *     ➤ true/false
+ *     // true/false
  */
-
-"use strict";
 
 function contains(container, element) {
   if (!container || !element || container === element) {
@@ -25,5 +25,6 @@ function contains(container, element) {
   }
   return false;
 }
+
 
 exports.contains = contains;

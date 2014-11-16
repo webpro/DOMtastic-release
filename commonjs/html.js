@@ -1,10 +1,7 @@
-/**
- * @module HTML
- */
-
 "use strict";
 
 var each = require('./util').each;
+
 
 /*
  * Get the HTML contents of the first element, or set the HTML contents for each element in the collection.

@@ -1,13 +1,10 @@
-/**
- * @module Array
- */
-
 "use strict";
 
 var _each = require('./util').each;
 var toArray = require('./util').toArray;
 var $ = require('./selector').$;
 var matches = require('./selector').matches;
+
 
 var ArrayProto = Array.prototype;
 
@@ -21,7 +18,7 @@ var ArrayProto = Array.prototype;
  *     $('.items').every(function(element) {
  *         return element.hasAttribute('active')
  *     });
- *     ➤ true/false
+ *     // true/false
  */
 
 var every = ArrayProto.every;
@@ -74,7 +71,7 @@ var each = forEach;
  * @return {Number} The zero-based index, -1 if not found.
  * @example
  *     $('.items').indexOf(element);
- *     ➤ 2
+ *     // 2
  */
 
 var indexOf = ArrayProto.indexOf;
@@ -89,7 +86,7 @@ var indexOf = ArrayProto.indexOf;
  *     $('.items').map(function(element) {
  *         return element.getAttribute('name')
  *     });
- *     ➤ ['ever', 'green']
+ *     // ['ever', 'green']
  */
 
 var map = ArrayProto.map;
@@ -147,7 +144,7 @@ var shift = ArrayProto.shift;
  *     $('.items').some(function(element) {
  *         return element.hasAttribute('active')
  *     });
- *     ➤ true/false
+ *     // true/false
  */
 
 var some = ArrayProto.some;

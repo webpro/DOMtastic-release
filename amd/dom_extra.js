@@ -1,8 +1,4 @@
-/**
- * @module DOM (extra)
- */
-
-define(["exports", "./util", "./dom", "./selector"], function (exports, _util, _dom, _selector) {
+define("src/dom_extra", ["exports", "./util", "./dom", "./selector"], function (exports, _util, _dom, _selector) {
   "use strict";
 
   var each = _util.each;
@@ -10,6 +6,7 @@ define(["exports", "./util", "./dom", "./selector"], function (exports, _util, _
   var before = _dom.before;
   var after = _dom.after;
   var $ = _selector.$;
+
 
   /**
    * Append each element in the collection to the specified element(s).

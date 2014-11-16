@@ -1,12 +1,9 @@
-/**
- * @module Class
- */
-
-define(["exports", "./util"], function (exports, _util) {
+define("src/class", ["exports", "./util"], function (exports, _util) {
   "use strict";
 
   var makeIterable = _util.makeIterable;
   var each = _util.each;
+
 
   /**
    * Add a class to the element(s)
@@ -85,7 +82,7 @@ define(["exports", "./util"], function (exports, _util) {
    */
 
   function hasClass(value) {
-    return makeIterable(this).some(function (element) {
+    return (this.nodeType ? [this] : this).some(function (element) {
       return element.classList.contains(value);
     });
   }

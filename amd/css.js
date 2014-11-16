@@ -1,11 +1,8 @@
-/**
- * @module Attr
- */
-
-define(["exports", "./util"], function (exports, _util) {
+define("src/css", ["exports", "./util"], function (exports, _util) {
   "use strict";
 
   var each = _util.each;
+
 
   function isNumeric(value) {
     return !isNaN(parseFloat(value)) && isFinite(value);

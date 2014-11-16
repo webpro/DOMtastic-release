@@ -1,11 +1,8 @@
-/**
- * @module Events
- */
-
 "use strict";
 
 var each = require('./util').each;
 var closest = require('./selector').closest;
+
 
 /**
  * Shorthand for `addEventListener`. Supports event delegation if a filter (`selector`) is provided.
@@ -73,6 +70,7 @@ function on(eventNames, selector, handler, useCapture) {
 
 function off(eventNames, selector, handler, useCapture) {
   if (eventNames === undefined) eventNames = "";
+
 
   if (typeof selector === "function") {
     handler = selector;

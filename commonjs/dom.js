@@ -1,11 +1,8 @@
-/**
- * @module DOM
- */
-
 "use strict";
 
 var toArray = require('./util').toArray;
 var $ = require('./selector').$;
+
 
 /**
  * Append element(s) to each element in the collection.

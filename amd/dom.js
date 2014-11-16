@@ -1,12 +1,9 @@
-/**
- * @module DOM
- */
-
-define(["exports", "./util", "./selector"], function (exports, _util, _selector) {
+define("src/dom", ["exports", "./util", "./selector"], function (exports, _util, _selector) {
   "use strict";
 
   var toArray = _util.toArray;
   var $ = _selector.$;
+
 
   /**
    * Append element(s) to each element in the collection.

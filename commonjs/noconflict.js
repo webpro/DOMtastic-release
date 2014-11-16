@@ -1,10 +1,7 @@
-/**
- * @module noConflict
- */
-
 "use strict";
 
 var global = require('./util').global;
+
 
 /*
  * Save the previous value of the global `$` variable, so that it can be restored later on.

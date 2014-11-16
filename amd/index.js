@@ -1,11 +1,8 @@
-/**
- * @module API
- */
-
-define(["exports", "./util", "./array", "./attr", "./class", "./contains", "./css", "./data", "./dom", "./dom_extra", "./event", "./html", "./mode", "./noconflict", "./ready", "./selector", "./selector_extra", "./trigger", "./type"], function (exports, _util, _array, _attr, _class, _contains, _css, _data, _dom, _domExtra, _event, _html, _mode, _noconflict, _ready, _selector, _selectorExtra, _trigger, _type) {
+define("src/index", ["exports", "./util", "./array", "./attr", "./class", "./contains", "./css", "./data", "./dom", "./dom_extra", "./event", "./html", "./mode", "./noconflict", "./ready", "./selector", "./selector_extra", "./trigger", "./type"], function (exports, _util, _array, _attr, _class, _contains, _css, _data, _dom, _domExtra, _event, _html, _mode, _noconflict, _ready, _selector, _selectorExtra, _trigger, _type) {
   "use strict";
 
   var extend = _util.extend;
+
 
   var api = {}, apiNodeList = {}, $ = {};
 
@@ -27,6 +24,7 @@ define(["exports", "./util", "./array", "./attr", "./class", "./contains", "./cs
   var trigger = _trigger;
   var type = _type;
 
+
   if (typeof selector !== "undefined") {
     $ = selector.$;
     $.matches = selector.matches;
@@ -40,7 +38,7 @@ define(["exports", "./util", "./array", "./attr", "./class", "./contains", "./cs
 
   // Version
 
-  $.version = "0.8.1";
+  $.version = "0.8.2";
 
   // Util
 
@@ -51,5 +49,5 @@ define(["exports", "./util", "./array", "./attr", "./class", "./contains", "./cs
   $.fn = api;
   $.fnList = apiNodeList;
 
-  exports.default = $;
+  exports["default"] = $;
 });

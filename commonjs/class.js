@@ -1,11 +1,8 @@
-/**
- * @module Class
- */
-
 "use strict";
 
 var makeIterable = require('./util').makeIterable;
 var each = require('./util').each;
+
 
 /**
  * Add a class to the element(s)
@@ -84,7 +81,7 @@ function toggleClass(value) {
  */
 
 function hasClass(value) {
-  return makeIterable(this).some(function (element) {
+  return (this.nodeType ? [this] : this).some(function (element) {
     return element.classList.contains(value);
   });
 }

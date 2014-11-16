@@ -1,10 +1,7 @@
-/**
- * @module Attr
- */
-
 "use strict";
 
 var each = require('./util').each;
+
 
 /**
  * Get the value of an attribute for the first element, or set one or more attributes for each element in the collection.

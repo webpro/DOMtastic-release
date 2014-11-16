@@ -1,11 +1,8 @@
-/**
- * @module Data
- */
-
-define(["exports", "./util"], function (exports, _util) {
+define("src/data", ["exports", "./util"], function (exports, _util) {
   "use strict";
 
   var each = _util.each;
+
 
   var dataKeyProp = "__domtastic_data__";
 
@@ -59,6 +56,7 @@ define(["exports", "./util"], function (exports, _util) {
 
     return this;
   }
+
 
   exports.data = data;
   exports.prop = prop;

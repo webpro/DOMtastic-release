@@ -1,14 +1,11 @@
-/**
- * @module Array
- */
-
-define(["exports", "./util", "./selector"], function (exports, _util, _selector) {
+define("src/array", ["exports", "./util", "./selector"], function (exports, _util, _selector) {
   "use strict";
 
   var _each = _util.each;
   var toArray = _util.toArray;
   var $ = _selector.$;
   var matches = _selector.matches;
+
 
   var ArrayProto = Array.prototype;
 
@@ -22,7 +19,7 @@ define(["exports", "./util", "./selector"], function (exports, _util, _selector)
    *     $('.items').every(function(element) {
    *         return element.hasAttribute('active')
    *     });
-   *     ➤ true/false
+   *     // true/false
    */
 
   var every = ArrayProto.every;
@@ -75,7 +72,7 @@ define(["exports", "./util", "./selector"], function (exports, _util, _selector)
    * @return {Number} The zero-based index, -1 if not found.
    * @example
    *     $('.items').indexOf(element);
-   *     ➤ 2
+   *     // 2
    */
 
   var indexOf = ArrayProto.indexOf;
@@ -90,7 +87,7 @@ define(["exports", "./util", "./selector"], function (exports, _util, _selector)
    *     $('.items').map(function(element) {
    *         return element.getAttribute('name')
    *     });
-   *     ➤ ['ever', 'green']
+   *     // ['ever', 'green']
    */
 
   var map = ArrayProto.map;
@@ -148,7 +145,7 @@ define(["exports", "./util", "./selector"], function (exports, _util, _selector)
    *     $('.items').some(function(element) {
    *         return element.hasAttribute('active')
    *     });
-   *     ➤ true/false
+   *     // true/false
    */
 
   var some = ArrayProto.some;

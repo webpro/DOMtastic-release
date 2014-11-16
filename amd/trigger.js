@@ -1,14 +1,10 @@
-/**
- * @module trigger
- */
-
-define(["exports", "./util", "./selector"], function (exports, _util, _selector) {
+define("src/trigger", ["exports", "./util", "./contains"], function (exports, _util, _contains) {
   "use strict";
 
   var global = _util.global;
   var each = _util.each;
-  var $ = _selector.$;
-  var closest = _selector.closest;
+  var contains = _contains.contains;
+
 
   var reMouseEvent = /^(?:mouse|pointer|contextmenu)|click/, reKeyEvent = /^key/;
 
@@ -29,6 +25,7 @@ define(["exports", "./util", "./selector"], function (exports, _util, _selector)
 
   function trigger(type, data, params) {
     if (params === undefined) params = {};
+
 
     params.bubbles = typeof params.bubbles === "boolean" ? params.bubbles : true;
     params.cancelable = typeof params.cancelable === "boolean" ? params.cancelable : true;
@@ -84,7 +81,7 @@ define(["exports", "./util", "./selector"], function (exports, _util, _selector)
     if (element === window || element === document) {
       return true;
     }
-    return $.contains(element.ownerDocument.documentElement, element);
+    return contains(element.ownerDocument.documentElement, element);
   }
 
   /**
@@ -103,7 +100,6 @@ define(["exports", "./util", "./selector"], function (exports, _util, _selector)
 
   function triggerForPath(element, type, params) {
     if (params === undefined) params = {};
-
     params.bubbles = false;
     var event = new CustomEvent(type, params);
     event._target = element;
@@ -139,7 +135,6 @@ define(["exports", "./util", "./selector"], function (exports, _util, _selector)
   (function () {
     function CustomEvent(event, params) {
       if (params === undefined) params = { bubbles: false, cancelable: false, detail: undefined };
-
       var customEvent = document.createEvent("CustomEvent");
       customEvent.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
       return customEvent;

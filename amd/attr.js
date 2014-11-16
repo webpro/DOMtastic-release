@@ -1,11 +1,8 @@
-/**
- * @module Attr
- */
-
-define(["exports", "./util"], function (exports, _util) {
+define("src/attr", ["exports", "./util"], function (exports, _util) {
   "use strict";
 
   var each = _util.each;
+
 
   /**
    * Get the value of an attribute for the first element, or set one or more attributes for each element in the collection.

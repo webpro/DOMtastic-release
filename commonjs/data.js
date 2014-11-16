@@ -1,10 +1,7 @@
-/**
- * @module Data
- */
-
 "use strict";
 
 var each = require('./util').each;
+
 
 var dataKeyProp = "__domtastic_data__";
 
@@ -58,6 +55,7 @@ function prop(key, value) {
 
   return this;
 }
+
 
 exports.data = data;
 exports.prop = prop;

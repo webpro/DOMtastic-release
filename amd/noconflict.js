@@ -1,11 +1,8 @@
-/**
- * @module noConflict
- */
-
-define(["exports", "./util"], function (exports, _util) {
+define("src/noconflict", ["exports", "./util"], function (exports, _util) {
   "use strict";
 
   var global = _util.global;
+
 
   /*
    * Save the previous value of the global `$` variable, so that it can be restored later on.

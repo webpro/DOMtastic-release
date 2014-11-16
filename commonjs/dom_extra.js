@@ -1,7 +1,3 @@
-/**
- * @module DOM (extra)
- */
-
 "use strict";
 
 var each = require('./util').each;
@@ -9,6 +5,7 @@ var append = require('./dom').append;
 var before = require('./dom').before;
 var after = require('./dom').after;
 var $ = require('./selector').$;
+
 
 /**
  * Append each element in the collection to the specified element(s).

@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * @module Type
  */
@@ -9,13 +11,11 @@
  * @return {boolean} 
  * @example
  *     $.isFunction(function(){});
- *     ➤ true
+ *     // true
  * @example
  *     $.isFunction({});
- *     ➤ false
+ *     // false
  */
-
-"use strict";
 
 function isFunction(obj) {
   return (typeof obj === "function");
@@ -28,13 +28,13 @@ function isFunction(obj) {
  * @return {boolean} 
  * @example
  *     $.isArray([]);
- *     ➤ true
+ *     // true
  * @example
  *     $.isArray({});
- *     ➤ false
+ *     // false
  */
 
 var isArray = Array.isArray;
 
-exports.isFunction = isFunction;
 exports.isArray = isArray;
+exports.isFunction = isFunction;

@@ -1,10 +1,7 @@
-/**
- * @module Attr
- */
-
 "use strict";
 
 var each = require('./util').each;
+
 
 function isNumeric(value) {
   return !isNaN(parseFloat(value)) && isFinite(value);

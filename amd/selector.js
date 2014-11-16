@@ -1,12 +1,9 @@
-/**
- * @module Selector
- */
-
-define(["exports", "./util"], function (exports, _util) {
+define("src/selector", ["exports", "./util"], function (exports, _util) {
   "use strict";
 
   var global = _util.global;
   var makeIterable = _util.makeIterable;
+
 
   var isPrototypeSet = false, reFragment = /^\s*<(\w+|!)[^>]*>/, reSingleTag = /^<(\w+)\s*\/?>(?:<\/\1>|)$/, reSimpleSelector = /^[\.#]?[\w-]*$/;
 
@@ -30,6 +27,7 @@ define(["exports", "./util"], function (exports, _util) {
   function $(selector, context) {
     if (context === undefined) context = document;
 
+
     var collection;
 
     if (!selector) {
@@ -37,7 +35,7 @@ define(["exports", "./util"], function (exports, _util) {
     } else if (selector instanceof Wrapper) {
       return selector;
     } else if (typeof selector !== "string") {
-      collection = makeIterable(selector);
+      collection = selector.nodeType || selector === window ? [selector] : selector;
     } else if (reFragment.test(selector)) {
       collection = createFragment(selector);
     } else {
@@ -73,15 +71,28 @@ define(["exports", "./util"], function (exports, _util) {
    *     $('.selector').closest('.container');
    */
 
-  function closest(selector, context) {
-    var node = this[0];
-    for (; node.nodeType !== node.DOCUMENT_NODE && node !== context; node = node.parentNode) {
-      if (matches(node, selector)) {
-        return $(node);
+  var closest = (function () {
+    function closest(selector, context) {
+      var node = this[0];
+      while (node && node !== context) {
+        if (matches(node, selector)) {
+          return $(node);
+        } else {
+          node = node.parentElement;
+        }
       }
+      return $();
     }
-    return $();
-  }
+
+    return !Element.prototype.closest ? closest : function (selector, context) {
+      if (!context) {
+        var node = this[0];
+        return $(node.closest(selector));
+      } else {
+        return closest.call(this, selector, context);
+      }
+    };
+  })();
 
   /*
    * Returns `true` if the element would be selected by the specified selector string; otherwise, returns `false`.
