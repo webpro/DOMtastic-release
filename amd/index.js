@@ -1,4 +1,4 @@
-define("src/index", ["exports", "./util", "./array", "./attr", "./class", "./contains", "./css", "./data", "./dom", "./dom_extra", "./event", "./html", "./mode", "./noconflict", "./ready", "./selector", "./selector_extra", "./trigger", "./type"], function (exports, _util, _array, _attr, _class, _contains, _css, _data, _dom, _domExtra, _event, _html, _mode, _noconflict, _ready, _selector, _selectorExtra, _trigger, _type) {
+define(["exports", "./util", "./array", "./attr", "./class", "./contains", "./css", "./data", "./dom", "./dom_extra", "./event", "./html", "./mode", "./noconflict", "./ready", "./selector", "./selector_extra", "./trigger", "./type"], function (exports, _util, _array, _attr, _class, _contains, _css, _data, _dom, _domExtra, _event, _html, _mode, _noconflict, _ready, _selector, _selectorExtra, _trigger, _type) {
   "use strict";
 
   var extend = _util.extend;
@@ -36,15 +36,9 @@ define("src/index", ["exports", "./util", "./array", "./attr", "./class", "./con
   extend(api, array, attr, class_, css, data, dom, dom_extra, event, html, ready, selector_extra, trigger);
   extend(apiNodeList, array);
 
-  // Version
-
-  $.version = "0.8.2";
-
-  // Util
+  $.version = "0.8.3";
 
   $.extend = extend;
-
-  // Internal properties to switch between default and native mode
 
   $.fn = api;
   $.fnList = apiNodeList;

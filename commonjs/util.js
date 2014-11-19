@@ -1,24 +1,9 @@
 "use strict";
 
 var _slice = Array.prototype.slice;
-/*
- * @module Util
- */
 
-/*
- * Reference to the global scope
- * @private
- */
 
 var global = new Function("return this")();
-
-/**
- * Convert `NodeList` to `Array`.
- *
- * @param {NodeList|Array} collection
- * @return {Array}
- * @private
- */
 
 function toArray(collection) {
   var length = collection.length, result = new Array(length);
@@ -27,15 +12,6 @@ function toArray(collection) {
   }
   return result;
 }
-
-/**
- * Faster alternative to [].forEach method
- *
- * @param {Node|NodeList|Array} collection
- * @param {Function} callback
- * @return {Node|NodeList|Array}
- * @private
- */
 
 function each(collection, callback, thisArg) {
   var length = collection.length;
@@ -48,21 +24,6 @@ function each(collection, callback, thisArg) {
   }
   return collection;
 }
-
-/**
- * Assign enumerable properties from source object(s) to target object
- *
- * @method extend
- * @param {Object} target Object to extend
- * @param {Object} [source] Object to extend from
- * @return {Object} Extended object
- * @example
- *     $.extend({a: 1}, {b: 2});
- *     // {a: 1, b: 2}
- * @example
- *     $.extend({a: 1}, {b: 2}, {a: 3});
- *     // {a: 3, b: 2}
- */
 
 function extend(target) {
   var sources = _slice.call(arguments, 1);

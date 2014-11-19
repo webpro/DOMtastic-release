@@ -50,15 +50,9 @@ extend($, contains, mode, noconflict, type);
 extend(api, array, attr, class_, css, data, dom, dom_extra, event, html, ready, selector_extra, trigger);
 extend(apiNodeList, array);
 
-// Version
-
-$.version = "0.8.2";
-
-// Util
+$.version = "0.8.3";
 
 $.extend = extend;
-
-// Internal properties to switch between default and native mode
 
 $.fn = api;
 $.fnList = apiNodeList;

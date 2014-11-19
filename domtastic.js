@@ -9,35 +9,7 @@ var matches = require('./selector').matches;
 
 var ArrayProto = Array.prototype;
 
-/**
- * Checks if the given callback returns a true(-ish) value for each element in the collection.
- *
- * @param {Function} callback Function to execute for each element, invoked with `element` as argument.
- * @param {Object} [thisArg] Value to use as `this` when executing `callback`.
- * @return {Boolean} Whether each element passed the callback check.
- * @example
- *     $('.items').every(function(element) {
- *         return element.hasAttribute('active')
- *     });
- *     // true/false
- */
-
 var every = ArrayProto.every;
-
-/**
- * Filter the collection by selector or function, and return a new collection with the result.
- *
- * @param {String|Function} selector Selector or function to filter the collection.
- * @param {Object} [thisArg] Value to use as `this` when executing `callback`.
- * @return {Object} A new wrapped collection
- * @chainable
- * @example
- *     $('.items').filter('.active');
- * @example
- *     $('.items').filter(function(element) {
- *         return element.hasAttribute('active')
- *     });
- */
 
 function filter(selector, thisArg) {
   var callback = typeof selector === "function" ? selector : function (element) {
@@ -46,118 +18,27 @@ function filter(selector, thisArg) {
   return $(ArrayProto.filter.call(this, callback, thisArg));
 }
 
-/**
- * Execute a function for each element in the collection.
- *
- * @param {Function} callback Function to execute for each element, invoked with `element` as argument.
- * @param {Object} [thisArg] Value to use as `this` when executing `callback`.
- * @return {Object} The wrapped collection
- * @chainable
- * @example
- *     $('.items').forEach(function(element) {
- *         element.style.color = 'evergreen';
- *     );
- */
-
 function forEach(callback, thisArg) {
   return _each(this, callback, thisArg);
 }
 
 var each = forEach;
 
-/**
- * Returns the index of an element in the collection.
- *
- * @param {Node} element
- * @return {Number} The zero-based index, -1 if not found.
- * @example
- *     $('.items').indexOf(element);
- *     // 2
- */
-
 var indexOf = ArrayProto.indexOf;
-
-/**
- * Create a new collection by executing the callback for each element in the collection.
- *
- * @param {Function} callback Function to execute for each element, invoked with `element` as argument.
- * @param {Object} [thisArg] Value to use as `this` when executing `callback`.
- * @return {Array} Collection with the return value of the executed callback for each element.
- * @example
- *     $('.items').map(function(element) {
- *         return element.getAttribute('name')
- *     });
- *     // ['ever', 'green']
- */
 
 var map = ArrayProto.map;
 
-/**
- * Removes the last element from the collection, and returns that element.
- *
- * @return {Object} The last element from the collection.
- * @example
- *     var lastElement = $('.items').pop();
- */
-
 var pop = ArrayProto.pop;
 
-/**
- * Adds one or more elements to the end of the collection, and returns the new length of the collection.
- *
- * @param {Object} element Element(s) to add to the collection
- * @return {Number} The new length of the collection
- * @example
- *     $('.items').push(element);
- */
-
 var push = ArrayProto.push;
-
-/**
- * Reverses an array in place. The first array element becomes the last and the last becomes the first.
- *
- * @return {Object} The wrapped collection, reversed
- * @chainable
- * @example
- *     $('.items').reverse();
- */
 
 function reverse() {
   return $(toArray(this).reverse());
 }
 
-/**
- * Removes the first element from the collection, and returns that element.
- *
- * @return {Object} The first element from the collection.
- * @example
- *     var firstElement = $('.items').shift();
- */
-
 var shift = ArrayProto.shift;
 
-/**
- * Checks if the given callback returns a true(-ish) value for any of the elements in the collection.
- *
- * @param {Function} callback Function to execute for each element, invoked with `element` as argument.
- * @return {Boolean} Whether any element passed the callback check.
- * @example
- *     $('.items').some(function(element) {
- *         return element.hasAttribute('active')
- *     });
- *     // true/false
- */
-
 var some = ArrayProto.some;
-
-/**
- * Adds one or more elements to the beginning of the collection, and returns the new length of the collection.
- *
- * @param {Object} element Element(s) to add to the collection
- * @return {Number} The new length of the collection
- * @example
- *     $('.items').unshift(element);
- */
 
 var unshift = ArrayProto.unshift;
 
@@ -180,19 +61,6 @@ exports.unshift = unshift;
 var each = require('./util').each;
 
 
-/**
- * Get the value of an attribute for the first element, or set one or more attributes for each element in the collection.
- *
- * @param {String|Object} key The name of the attribute to get or set. Or an object containing key-value pairs to set as attributes.
- * @param {String} [value] The value of the attribute to set.
- * @return {Object} The wrapped collection
- * @chainable
- * @example
- *     $('.item').attr('attrName'); // get
- *     $('.item').attr('attrName', 'attrValue'); // set
- *     $('.item').attr({'attr1', 'value1'}, {'attr2', 'value2}); // set multiple
- */
-
 function attr(key, value) {
   if (typeof key === "string" && typeof value === "undefined") {
     var element = this.nodeType ? this : this[0];
@@ -212,16 +80,6 @@ function attr(key, value) {
   return this;
 }
 
-/**
- * Remove attribute from each element in the collection.
- *
- * @param {String} key Attribute name
- * @return {Object} The wrapped collection
- * @chainable
- * @example
- *     $('.items').removeAttr('attrName');
- */
-
 function removeAttr(key) {
   each(this, function (element) {
     element.removeAttribute(key);
@@ -239,17 +97,6 @@ var makeIterable = require('./util').makeIterable;
 var each = require('./util').each;
 
 
-/**
- * Add a class to the element(s)
- *
- * @param {String} value Space-separated class name(s) to add to the element(s).
- * @return {Object} The wrapped collection
- * @chainable
- * @example
- *     $('.item').addClass('bar');
- *     $('.item').addClass('bar foo');
- */
-
 function addClass(value) {
   if (value && value.length) {
     each(value.split(" "), function (className) {
@@ -260,17 +107,6 @@ function addClass(value) {
   }
   return this;
 }
-
-/**
- * Remove a class from the element(s)
- *
- * @param {String} value Space-separated class name(s) to remove from the element(s).
- * @return {Object} The wrapped collection
- * @chainable
- * @example
- *     $('.items').removeClass('bar');
- *     $('.items').removeClass('bar foo');
- */
 
 function removeClass(value) {
   if (value && value.length) {
@@ -283,17 +119,6 @@ function removeClass(value) {
   return this;
 }
 
-/**
- * Toggle a class at the element(s)
- *
- * @param {String} value Space-separated class name(s) to toggle at the element(s).
- * @return {Object} The wrapped collection
- * @chainable
- * @example
- *     $('.item').toggleClass('bar');
- *     $('.item').toggleClass('bar foo');
- */
-
 function toggleClass(value) {
   if (value && value.length) {
     each(value.split(" "), function (className) {
@@ -304,16 +129,6 @@ function toggleClass(value) {
   }
   return this;
 }
-
-/**
- * Check if the element(s) have a class.
- *
- * @param {String} value Check if the DOM element contains the class name. When applied to multiple elements,
- * returns `true` if _any_ of them contains the class name.
- * @return {Boolean} Whether the element's class attribute contains the class name.
- * @example
- *     $('.item').hasClass('bar');
- */
 
 function hasClass(value) {
   return (this.nodeType ? [this] : this).some(function (element) {
@@ -328,21 +143,6 @@ exports.hasClass = hasClass;
 
 },{"./util":18}],4:[function(require,module,exports){
 "use strict";
-
-/**
- * @module contains
- */
-
-/**
- * Test whether an element contains another element in the DOM.
- *
- * @param {Element} container The element that may contain the other element.
- * @param {Element} element The element that may be a descendant of the other element.
- * @return {Boolean} Whether the `container` element contains the `element`.
- * @example
- *     $.contains(parentElement, childElement);
- *     // true/false
- */
 
 function contains(container, element) {
   if (!container || !element || container === element) {
@@ -377,19 +177,6 @@ function camelize(value) {
 function dasherize(value) {
   return value.replace(/([a-z\d])([A-Z])/g, "$1-$2").toLowerCase();
 }
-
-/**
- * Get the value of a style property for the first element, or set one or more style properties for each element in the collection.
- *
- * @param {String|Object} key The name of the style property to get or set. Or an object containing key-value pairs to set as style properties.
- * @param {String} [value] The value of the style property to set.
- * @return {Object} The wrapped collection
- * @chainable
- * @example
- *     $('.item').css('padding-left'); // get
- *     $('.item').css('color', '#f00'); // set
- *     $('.item').css({'border-width', '1px'}, {'display', 'inline-block}); // set multiple
- */
 
 function css(key, value) {
   var styleProps, prop, val;
@@ -440,18 +227,6 @@ var each = require('./util').each;
 
 var dataKeyProp = "__domtastic_data__";
 
-/**
- * Get data from first element, or set data for each element in the collection.
- *
- * @param {String} key The key for the data to get or set.
- * @param {String} [value] The data to set.
- * @return {Object} The wrapped collection
- * @chainable
- * @example
- *     $('.item').data('attrName'); // get
- *     $('.item').data('attrName', {any: 'data'}); // set
- */
-
 function data(key, value) {
   if (typeof key === "string" && typeof value === "undefined") {
     var element = this.nodeType ? this : this[0];
@@ -465,18 +240,6 @@ function data(key, value) {
 
   return this;
 }
-
-/**
- * Get property from first element, or set property on each element in the collection.
- *
- * @param {String} key The name of the property to get or set.
- * @param {String} [value] The value of the property to set.
- * @return {Object} The wrapped collection
- * @chainable
- * @example
- *     $('.item').prop('attrName'); // get
- *     $('.item').prop('attrName', 'attrValue'); // set
- */
 
 function prop(key, value) {
   if (typeof key === "string" && typeof value === "undefined") {
@@ -502,17 +265,6 @@ var toArray = require('./util').toArray;
 var $ = require('./selector').$;
 
 
-/**
- * Append element(s) to each element in the collection.
- *
- * @param {String|Node|NodeList|Object} element What to append to the element(s).
- * Clones elements as necessary.
- * @return {Object} The wrapped collection
- * @chainable
- * @example
- *     $('.item').append('<p>more</p>');
- */
-
 function append(element) {
   if (this instanceof Node) {
     if (typeof element === "string") {
@@ -534,17 +286,6 @@ function append(element) {
   }
   return this;
 }
-
-/**
- * Place element(s) at the beginning of each element in the collection.
- *
- * @param {String|Node|NodeList|Object} element What to place at the beginning of the element(s).
- * Clones elements as necessary.
- * @return {Object} The wrapped collection
- * @chainable
- * @example
- *     $('.item').prepend('<span>start</span>');
- */
 
 function prepend(element) {
   if (this instanceof Node) {
@@ -568,17 +309,6 @@ function prepend(element) {
   return this;
 }
 
-/**
- * Place element(s) before each element in the collection.
- *
- * @param {String|Node|NodeList|Object} element What to place as sibling(s) before to the element(s).
- * Clones elements as necessary.
- * @return {Object} The wrapped collection
- * @chainable
- * @example
- *     $('.items').before('<p>prefix</p>');
- */
-
 function before(element) {
   if (this instanceof Node) {
     if (typeof element === "string") {
@@ -600,16 +330,6 @@ function before(element) {
   }
   return this;
 }
-
-/**
- * Place element(s) after each element in the collection.
- *
- * @param {String|Node|NodeList|Object} element What to place as sibling(s) after to the element(s). Clones elements as necessary.
- * @return {Object} The wrapped collection
- * @chainable
- * @example
- *     $('.items').after('<span>suf</span><span>fix</span>');
- */
 
 function after(element) {
   if (this instanceof Node) {
@@ -633,25 +353,9 @@ function after(element) {
   return this;
 }
 
-/**
- * Clone a wrapped object.
- *
- * @return {Object} Wrapped collection of cloned nodes.
- * @example
- *     $(element).clone();
- */
-
 function clone() {
   return $(_clone(this));
 }
-
-/**
- * Clone an object
- *
- * @param {String|Node|NodeList|Array} element The element(s) to clone.
- * @return {String|Node|NodeList|Array} The cloned element(s)
- * @private
- */
 
 function _clone(element) {
   if (typeof element === "string") {
@@ -682,44 +386,17 @@ var after = require('./dom').after;
 var $ = require('./selector').$;
 
 
-/**
- * Append each element in the collection to the specified element(s).
- *
- * @param {Node|NodeList|Object} element What to append the element(s) to. Clones elements as necessary.
- * @return {Object} The wrapped collection
- * @chainable
- * @example
- *     $('.item').appendTo(container);
- */
-
 function appendTo(element) {
   var context = typeof element === "string" ? $(element) : element;
   append.call(context, this);
   return this;
 }
 
-/*
- * Empty each element in the collection.
- *
- * @return {Object} The wrapped collection
- * @chainable
- * @example
- *     $('.item').empty();
- */
-
 function empty() {
   return each(this, function (element) {
     element.innerHTML = "";
   });
 }
-
-/**
- * Remove the collection from the DOM.
- *
- * @return {Array} Array containing the removed elements
- * @example
- *     $('.item').remove();
- */
 
 function remove() {
   return each(this, function (element) {
@@ -729,25 +406,9 @@ function remove() {
   });
 }
 
-/**
- * Replace each element in the collection with the provided new content, and return the array of elements that were replaced.
- *
- * @return {Array} Array containing the replaced elements
- */
-
 function replaceWith() {
   return before.apply(this, arguments).remove();
 }
-
-/**
- * Get the `textContent` from the first, or set the `textContent` of each element in the collection.
- *
- * @param {String} [value]
- * @return {Object} The wrapped collection
- * @chainable
- * @example
- *     $('.item').text('New content');
- */
 
 function text(value) {
   if (value === undefined) {
@@ -760,16 +421,6 @@ function text(value) {
 
   return this;
 }
-
-/**
- * Get the `value` from the first, or set the `value` of each element in the collection.
- *
- * @param {String} [value]
- * @return {Object} The wrapped collection
- * @chainable
- * @example
- *     $('input.firstName').value('New value');
- */
 
 function val(value) {
   if (value === undefined) {
@@ -796,20 +447,6 @@ exports.val = val;
 var each = require('./util').each;
 var closest = require('./selector').closest;
 
-
-/**
- * Shorthand for `addEventListener`. Supports event delegation if a filter (`selector`) is provided.
- *
- * @param {String} eventNames List of space-separated event types to be added to the element(s)
- * @param {String} [selector] Selector to filter descendants that delegate the event to this element.
- * @param {Function} handler Event handler
- * @param {Boolean} useCapture=false
- * @return {Object} The wrapped collection
- * @chainable
- * @example
- *     $('.item').on('click', callback);
- *     $('.container').on('click focus', '.item', handler);
- */
 
 function on(eventNames, selector, handler, useCapture) {
   if (typeof selector === "function") {
@@ -845,21 +482,6 @@ function on(eventNames, selector, handler, useCapture) {
 
   return this;
 }
-
-/**
- * Shorthand for `removeEventListener`. Delegates to `undelegate` if that signature is used.
- *
- * @param {String} eventNames List of space-separated event types to be removed from the element(s)
- * @param {String} [selector] Selector to filter descendants that undelegate the event to this element.
- * @param {Function} handler Event handler
- * @param {Boolean} useCapture=false
- * @return {Object} The wrapped collection
- * @chainable
- * @example
- *     $('.item').off('click', callback);
- *     $('#my-element').off('myEvent myOtherEvent');
- *     $('.item').off();
- */
 
 function off(eventNames, selector, handler, useCapture) {
   if (eventNames === undefined) eventNames = "";
@@ -906,14 +528,6 @@ function undelegate(selector, eventName, handler) {
   return off.call(this, eventName, selector, handler);
 }
 
-/**
- * Get event handlers from an element
- *
- * @private
- * @param {Node} element
- * @return {Array}
- */
-
 var eventKeyProp = "__domtastic_event__";
 var id = 1;
 var handlers = {};
@@ -927,13 +541,6 @@ function getHandlers(element) {
   return handlers[key] || (handlers[key] = []);
 }
 
-/**
- * Clear event handlers for an element
- *
- * @private
- * @param {Node} element
- */
-
 function clearHandlers(element) {
   var key = element[eventKeyProp];
   if (handlers[key]) {
@@ -943,28 +550,11 @@ function clearHandlers(element) {
   }
 }
 
-/**
- * Function to create a handler that augments the event object with some extra methods,
- * and executes the callback with the event and the event data (i.e. `event.detail`).
- *
- * @private
- * @param handler Callback to execute as `handler(event, data)`
- * @return {Function}
- */
-
 function proxyHandler(handler) {
   return function (event) {
     handler.call(this, augmentEvent(event), event.detail);
   };
 }
-
-/**
- * Attempt to augment events and implement something closer to DOM Level 3 Events.
- *
- * @private
- * @param {Object} event
- * @return {Function}
- */
 
 var augmentEvent = (function () {
   var methodName, eventMethods = {
@@ -996,17 +586,6 @@ var augmentEvent = (function () {
   };
 })();
 
-/**
- * Function to test whether delegated events match the provided `selector` (filter),
- * if the event propagation was stopped, and then actually call the provided event handler.
- * Use `this` instead of `event.currentTarget` on the event object.
- *
- * @private
- * @param {String} selector Selector to filter descendants that undelegate the event to this element.
- * @param {Function} handler Event handler
- * @param {Event} event
- */
-
 function delegateHandler(selector, handler, event) {
   var eventTarget = event._target || event.target, currentTarget = closest.call([eventTarget], selector, this)[0];
   if (currentTarget && currentTarget !== this) {
@@ -1030,17 +609,6 @@ exports.unbind = unbind;
 
 var each = require('./util').each;
 
-
-/*
- * Get the HTML contents of the first element, or set the HTML contents for each element in the collection.
- *
- * @param {String} [fragment] HTML fragment to set for the element. If this argument is omitted, the HTML contents are returned.
- * @return {Object} The wrapped collection
- * @chainable
- * @example
- *     $('.item').html();
- *     $('.item').html('<span>more</span>');
- */
 
 function html(fragment) {
   if (typeof fragment !== "string") {
@@ -1083,13 +651,6 @@ function native(goNative) {
 
 var NodeProto = typeof Node !== "undefined" && Node.prototype, NodeListProto = typeof NodeList !== "undefined" && NodeList.prototype;
 
-/*
- * Add a property (i.e. method) to an object in a safe and reversible manner.
- * Only add the method if object not already had it (non-inherited).
- *
- * @private
- */
-
 function augment(obj, key, value) {
   if (!obj.hasOwnProperty(key)) {
     Object.defineProperty(obj, key, {
@@ -1100,21 +661,9 @@ function augment(obj, key, value) {
   }
 }
 
-/*
- * Remove property from object (only inherited properties will be removed).
- *
- * @private
- */
-
 var unaugment = function (obj, key) {
   delete obj[key];
 };
-
-/*
- * Augment native `Node` and `NodeList` objects in native mode.
- *
- * @private
- */
 
 function augmentNativePrototypes(methodsNode, methodsNodeList) {
   var key;
@@ -1128,13 +677,6 @@ function augmentNativePrototypes(methodsNode, methodsNodeList) {
     augment(NodeListProto, key, methodsNodeList[key]);
   }
 }
-
-/*
- * Unaugment native `Node` and `NodeList` objects to switch back to default mode.
- * Mainly used for tests.
- *
- * @private
- */
 
 function unaugmentNativePrototypes(methodsNode, methodsNodeList) {
   var key;
@@ -1158,21 +700,7 @@ exports.native = native;
 var global = require('./util').global;
 
 
-/*
- * Save the previous value of the global `$` variable, so that it can be restored later on.
- * @private
- */
-
 var previousLib = global.$;
-
-/**
- * In case another library sets the global `$` variable before DOMtastic does,
- * this method can be used to return the global `$` to that other library.
- *
- * @return {Object} Reference to DOMtastic.
- * @example
- *     var $E = $.noConflict();
- */
 
 function noConflict() {
   global.$ = previousLib;
@@ -1183,20 +711,6 @@ exports.noConflict = noConflict;
 
 },{"./util":18}],13:[function(require,module,exports){
 "use strict";
-
-/**
- * @module Ready
- */
-
-/**
- * Execute callback when `DOMContentLoaded` fires for `document`, or immediately if called afterwards.
- *
- * @param handler Callback to execute when initial DOM content is loaded.
- * @return {Object} The wrapped collection
- * @chainable
- * @example
- *     $(document).ready(callback);
- */
 
 function ready(handler) {
   if (/complete|loaded|interactive/.test(document.readyState) && document.body) {
@@ -1217,23 +731,6 @@ var makeIterable = require('./util').makeIterable;
 
 
 var isPrototypeSet = false, reFragment = /^\s*<(\w+|!)[^>]*>/, reSingleTag = /^<(\w+)\s*\/?>(?:<\/\1>|)$/, reSimpleSelector = /^[\.#]?[\w-]*$/;
-
-/*
- * Versatile wrapper for `querySelectorAll`.
- *
- * @param {String|Node|NodeList|Array} selector Query selector, `Node`, `NodeList`, array of elements, or HTML fragment string.
- * @param {String|Node|NodeList} context=document The context for the selector to query elements.
- * @return {Object} The wrapped collection
- * @chainable
- * @example
- *     var $items = $(.items');
- * @example
- *     var $element = $(domElement);
- * @example
- *     var $list = $(nodeList, document.body);
- * @example
- *     var $element = $('<p>evergreen</p>');
- */
 
 function $(selector, context) {
   if (context === undefined) context = document;
@@ -1258,29 +755,9 @@ function $(selector, context) {
   return $.isNative ? collection : wrap(collection);
 }
 
-/*
- * Chaining for the `$` wrapper (aliasing `find` for `$`).
- *
- * @param {String|Node|NodeList|Array} selector Query selector, `Node`, `NodeList`, array of elements, or HTML fragment string.
- * @return {Object} The wrapped collection
- * @example
- *     $('.selector').find('.deep').$('.deepest');
- */
-
 function find(selector) {
   return $(selector, this);
 }
-
-/**
- * Return the closest element matching the selector (starting by itself).
- *
- * @param {String} selector Filter
- * @param {Object} [context] If provided, matching elements must be a descendant of this element
- * @return {Object} New wrapped collection (containing zero or one element)
- * @chainable
- * @example
- *     $('.selector').closest('.container');
- */
 
 var closest = (function () {
   function closest(selector, context) {
@@ -1305,32 +782,12 @@ var closest = (function () {
   };
 })();
 
-/*
- * Returns `true` if the element would be selected by the specified selector string; otherwise, returns `false`.
- *
- * @param {Node} element Element to test
- * @param {String} selector Selector to match against element
- * @return {Boolean}
- *
- * @example
- *     $.matches(element, '.match');
- */
-
 var matches = (function () {
   var context = typeof Element !== "undefined" ? Element.prototype : global, _matches = context.matches || context.matchesSelector || context.mozMatchesSelector || context.msMatchesSelector || context.oMatchesSelector || context.webkitMatchesSelector;
   return function (element, selector) {
     return _matches.call(element, selector);
   };
 })();
-
-/*
- * Use the faster `getElementById`, `getElementsByClassName` or `getElementsByTagName` over `querySelectorAll` if possible.
- *
- * @private
- * @param {String} selector Query selector.
- * @param {Node} context The context for the selector to query elements.
- * @return {Object} NodeList, HTMLCollection, or Array of matching elements (depending on method used).
- */
 
 function querySelector(selector, context) {
   var isSimpleSelector = reSimpleSelector.test(selector);
@@ -1349,14 +806,6 @@ function querySelector(selector, context) {
   return context.querySelectorAll(selector);
 }
 
-/*
- * Create DOM fragment from an HTML string
- *
- * @private
- * @param {String} html String representing HTML.
- * @return {NodeList}
- */
-
 function createFragment(html) {
   if (reSingleTag.test(html)) {
     return [document.createElement(RegExp.$1)];
@@ -1373,14 +822,6 @@ function createFragment(html) {
   return elements;
 }
 
-/*
- * Calling `$(selector)` returns a wrapped collection of elements.
- *
- * @private
- * @param {NodeList|Array} collection Element(s) to wrap.
- * @return (Object) The wrapped collection
- */
-
 function wrap(collection) {
   if (!isPrototypeSet) {
     Wrapper.prototype = $.fn;
@@ -1390,14 +831,6 @@ function wrap(collection) {
 
   return new Wrapper(collection);
 }
-
-/*
- * Constructor for the Object.prototype strategy
- *
- * @constructor
- * @private
- * @param {NodeList|Array} collection Element(s) to wrap.
- */
 
 function Wrapper(collection) {
   var i = 0, length = collection.length;
@@ -1421,17 +854,6 @@ var $ = require('./selector').$;
 var matches = require('./selector').matches;
 
 
-/**
- * Return children of each element in the collection, optionally filtered by a selector.
- *
- * @param {String} [selector] Filter
- * @return {Object} New wrapped collection
- * @chainable
- * @example
- *     $('.selector').children();
- *     $('.selector').children('.filter');
- */
-
 function children(selector) {
   var nodes = [];
   each(this, function (element) {
@@ -1446,14 +868,6 @@ function children(selector) {
   return $(nodes);
 }
 
-/**
- * Return child nodes of each element in the collection, including text and comment nodes.
- *
- * @return {Object} New wrapped collection
- * @example
- *     $('.selector').contents();
- */
-
 function contents() {
   var nodes = [];
   each(this, function (element) {
@@ -1462,45 +876,13 @@ function contents() {
   return $(nodes);
 }
 
-/**
- * Return a collection containing only the one at the specified index.
- *
- * @param {Number} index
- * @return {Object} New wrapped collection
- * @chainable
- * @example
- *     $('.items').eq(1)
- *     // The second item; result is the same as doing $($('.items')[1]);
- */
-
 function eq(index) {
   return slice.call(this, index, index + 1);
 }
 
-/**
- * Return the DOM element at the specified index.
- *
- * @param {Number} index
- * @return {Node} Element at the specified index
- * @example
- *     $('.items').get(1)
- *     // The second element; result is the same as doing $('.items')[1];
- */
-
 function get(index) {
   return this[index];
 }
-
-/**
- * Return the parent elements of each element in the collection, optionally filtered by a selector.
- *
- * @param {String} [selector] Filter
- * @return {Object} New wrapped collection
- * @chainable
- * @example
- *     $('.selector').parent();
- *     $('.selector').parent('.filter');
- */
 
 function parent(selector) {
   var nodes = [];
@@ -1511,17 +893,6 @@ function parent(selector) {
   });
   return $(nodes);
 }
-
-/**
- * Create a new, sliced collection.
- *
- * @param {Number} start
- * @param {Number} end
- * @return {Object} New wrapped collection
- * @example
- *     $('.items').slice(1, 3)
- *     // New wrapped collection containing the second, third, and fourth element.
- */
 
 function slice(start, end) {
   return $([].slice.apply(this, arguments));
@@ -1543,21 +914,6 @@ var contains = require('./contains').contains;
 
 
 var reMouseEvent = /^(?:mouse|pointer|contextmenu)|click/, reKeyEvent = /^key/;
-
-/**
- * Trigger event at element(s)
- *
- * @param {String} type Type of the event
- * @param {Object} data Data to be sent with the event (`params.detail` will be set to this).
- * @param {Object} [params] Event parameters (optional)
- * @param {Boolean} params.bubbles=true Does the event bubble up through the DOM or not.
- * @param {Boolean} params.cancelable=true Is the event cancelable or not.
- * @param {Mixed} params.detail=undefined Additional information about the event.
- * @return {Object} The wrapped collection
- * @chainable
- * @example
- *     $('.item').trigger('anyEventType');
- */
 
 function trigger(type, data, params) {
   if (params === undefined) params = {};
@@ -1586,32 +942,11 @@ function getEventConstructor(type) {
   return supportsOtherEventConstructors ? (reMouseEvent.test(type) ? MouseEvent : (reKeyEvent.test(type) ? KeyboardEvent : CustomEvent)) : CustomEvent;
 }
 
-/**
- * Trigger event at first element in the collection. Similar to `trigger()`, except:
- *
- * - Event does not bubble
- * - Default event behavior is prevented
- * - Only triggers handler for first matching element
- *
- * @param {String} type Type of the event
- * @param {Object} data Data to be sent with the event
- * @example
- *     $('form').triggerHandler('submit');
- */
-
 function triggerHandler(type, data) {
   if (this[0]) {
     trigger.call(this[0], type, data, { bubbles: false, preventDefault: true });
   }
 }
-
-/**
- * Check whether the element is attached to (or detached from) the document
- *
- * @private
- * @param {Node} element Element to test
- * @return {Boolean}
- */
 
 function isAttachedToDocument(element) {
   if (element === window || element === document) {
@@ -1619,20 +954,6 @@ function isAttachedToDocument(element) {
   }
   return contains(element.ownerDocument.documentElement, element);
 }
-
-/**
- * Dispatch the event at the element and its ancestors.
- * Required to support delegated events in browsers that don't bubble events in detached DOM trees.
- *
- * @private
- * @param {Node} element First element to dispatch the event at
- * @param {String} type Type of the event
- * @param {Object} [params] Event parameters (optional)
- * @param {Boolean} params.bubbles=true Does the event bubble up through the DOM or not.
- * Will be set to false (but shouldn't matter since events don't bubble anyway).
- * @param {Boolean} params.cancelable=true Is the event cancelable or not.
- * @param {Mixed} params.detail=undefined Additional information about the event.
- */
 
 function triggerForPath(element, type, params) {
   if (params === undefined) params = {};
@@ -1644,15 +965,6 @@ function triggerForPath(element, type, params) {
   } while (element = element.parentNode);
 }
 
-/**
- * Dispatch event to element, but call direct event methods instead if available
- * (e.g. "blur()", "submit()") and if the event is non-cancelable.
- *
- * @private
- * @param {Node} element Element to dispatch the event at
- * @param {Object} event Event to dispatch
- */
-
 var directEventMethods = ["blur", "focus", "select", "submit"];
 
 function dispatchEvent(element, event) {
@@ -1662,11 +974,6 @@ function dispatchEvent(element, event) {
     element.dispatchEvent(event);
   }
 }
-
-/**
- * Polyfill for CustomEvent, borrowed from [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent#Polyfill).
- * Needed to support IE (9, 10, 11) & PhantomJS
- */
 
 (function () {
   function CustomEvent(event, params) {
@@ -1679,11 +986,6 @@ function dispatchEvent(element, event) {
   CustomEvent.prototype = global.CustomEvent && global.CustomEvent.prototype;
   global.CustomEvent = CustomEvent;
 })();
-
-/*
- * Are events bubbling in detached DOM trees?
- * @private
- */
 
 var isEventBubblingInDetachedTree = (function () {
   var isBubbling = false, doc = global.document;
@@ -1713,39 +1015,9 @@ exports.triggerHandler = triggerHandler;
 },{"./contains":4,"./util":18}],17:[function(require,module,exports){
 "use strict";
 
-/**
- * @module Type
- */
-
-/*
- * Determine if the argument passed is a Javascript function object.
- *
- * @param {Object} [obj] Object to test whether or not it is a function.
- * @return {boolean} 
- * @example
- *     $.isFunction(function(){});
- *     // true
- * @example
- *     $.isFunction({});
- *     // false
- */
-
 function isFunction(obj) {
   return (typeof obj === "function");
 }
-
-/*
- * Determine whether the argument is an array.
- *
- * @param {Object} [obj] Object to test whether or not it is an array.
- * @return {boolean} 
- * @example
- *     $.isArray([]);
- *     // true
- * @example
- *     $.isArray({});
- *     // false
- */
 
 var isArray = Array.isArray;
 
@@ -1756,24 +1028,9 @@ exports.isFunction = isFunction;
 "use strict";
 
 var _slice = Array.prototype.slice;
-/*
- * @module Util
- */
 
-/*
- * Reference to the global scope
- * @private
- */
 
 var global = new Function("return this")();
-
-/**
- * Convert `NodeList` to `Array`.
- *
- * @param {NodeList|Array} collection
- * @return {Array}
- * @private
- */
 
 function toArray(collection) {
   var length = collection.length, result = new Array(length);
@@ -1782,15 +1039,6 @@ function toArray(collection) {
   }
   return result;
 }
-
-/**
- * Faster alternative to [].forEach method
- *
- * @param {Node|NodeList|Array} collection
- * @param {Function} callback
- * @return {Node|NodeList|Array}
- * @private
- */
 
 function each(collection, callback, thisArg) {
   var length = collection.length;
@@ -1803,21 +1051,6 @@ function each(collection, callback, thisArg) {
   }
   return collection;
 }
-
-/**
- * Assign enumerable properties from source object(s) to target object
- *
- * @method extend
- * @param {Object} target Object to extend
- * @param {Object} [source] Object to extend from
- * @return {Object} Extended object
- * @example
- *     $.extend({a: 1}, {b: 2});
- *     // {a: 1, b: 2}
- * @example
- *     $.extend({a: 1}, {b: 2}, {a: 3});
- *     // {a: 3, b: 2}
- */
 
 function extend(target) {
   var sources = _slice.call(arguments, 1);
@@ -1888,15 +1121,9 @@ extend($, contains, mode, noconflict, type);
 extend(api, array, attr, class_, css, data, dom, dom_extra, event, html, ready, selector_extra, trigger);
 extend(apiNodeList, array);
 
-// Version
-
-$.version = "0.8.2";
-
-// Util
+$.version = "0.8.3";
 
 $.extend = extend;
-
-// Internal properties to switch between default and native mode
 
 $.fn = api;
 $.fnList = apiNodeList;

@@ -1,21 +1,8 @@
-define("src/attr", ["exports", "./util"], function (exports, _util) {
+define(["exports", "./util"], function (exports, _util) {
   "use strict";
 
   var each = _util.each;
 
-
-  /**
-   * Get the value of an attribute for the first element, or set one or more attributes for each element in the collection.
-   *
-   * @param {String|Object} key The name of the attribute to get or set. Or an object containing key-value pairs to set as attributes.
-   * @param {String} [value] The value of the attribute to set.
-   * @return {Object} The wrapped collection
-   * @chainable
-   * @example
-   *     $('.item').attr('attrName'); // get
-   *     $('.item').attr('attrName', 'attrValue'); // set
-   *     $('.item').attr({'attr1', 'value1'}, {'attr2', 'value2}); // set multiple
-   */
 
   function attr(key, value) {
     if (typeof key === "string" && typeof value === "undefined") {
@@ -35,16 +22,6 @@ define("src/attr", ["exports", "./util"], function (exports, _util) {
 
     return this;
   }
-
-  /**
-   * Remove attribute from each element in the collection.
-   *
-   * @param {String} key Attribute name
-   * @return {Object} The wrapped collection
-   * @chainable
-   * @example
-   *     $('.items').removeAttr('attrName');
-   */
 
   function removeAttr(key) {
     each(this, function (element) {
