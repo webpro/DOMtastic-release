@@ -77,14 +77,6 @@ define(["exports", "./util", "./selector"], function (exports, _util, _selector)
     return this;
   }
 
-  function delegate(selector, eventName, handler) {
-    return on.call(this, eventName, selector, handler);
-  }
-
-  function undelegate(selector, eventName, handler) {
-    return off.call(this, eventName, selector, handler);
-  }
-
   var eventKeyProp = "__domtastic_event__";
   var id = 1;
   var handlers = {};
@@ -156,8 +148,6 @@ define(["exports", "./util", "./selector"], function (exports, _util, _selector)
 
   exports.on = on;
   exports.off = off;
-  exports.delegate = delegate;
-  exports.undelegate = undelegate;
   exports.bind = bind;
   exports.unbind = unbind;
 });

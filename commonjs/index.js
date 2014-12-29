@@ -3,7 +3,7 @@
 var extend = require("./util").extend;
 
 
-var api = {}, apiNodeList = {}, $ = {};
+var api = {}, $ = {};
 
 var array = require("./array");
 
@@ -25,8 +25,6 @@ var event = require("./event");
 
 var html = require("./html");
 
-var mode = require("./mode");
-
 var noconflict = require("./noconflict");
 
 var ready = require("./ready");
@@ -46,15 +44,13 @@ if (typeof selector !== "undefined") {
   api.closest = selector.closest;
 }
 
-extend($, contains, mode, noconflict, type);
+extend($, contains, noconflict, type);
 extend(api, array, attr, class_, css, data, dom, dom_extra, event, html, ready, selector_extra, trigger);
-extend(apiNodeList, array);
-
-$.version = "0.8.4";
-
-$.extend = extend;
 
 $.fn = api;
-$.fnList = apiNodeList;
+
+$.version = "0.9.0";
+
+$.extend = extend;
 
 module.exports = $;

@@ -5,33 +5,21 @@ var each = require("./util").each;
 
 function addClass(value) {
   if (value && value.length) {
-    each(value.split(" "), (function (className) {
-      each(this, function (element) {
-        element.classList.add(className);
-      });
-    }).bind(this));
+    each(value.split(" "), _each.bind(this, "add"));
   }
   return this;
 }
 
 function removeClass(value) {
   if (value && value.length) {
-    each(value.split(" "), (function (className) {
-      each(this, function (element) {
-        element.classList.remove(className);
-      });
-    }).bind(this));
+    each(value.split(" "), _each.bind(this, "remove"));
   }
   return this;
 }
 
 function toggleClass(value) {
   if (value && value.length) {
-    each(value.split(" "), (function (className) {
-      each(this, function (element) {
-        element.classList.toggle(className);
-      });
-    }).bind(this));
+    each(value.split(" "), _each.bind(this, "toggle"));
   }
   return this;
 }
@@ -39,6 +27,12 @@ function toggleClass(value) {
 function hasClass(value) {
   return (this.nodeType ? [this] : this).some(function (element) {
     return element.classList.contains(value);
+  });
+}
+
+function _each(fnName, className) {
+  each(this, function (element) {
+    element.classList[fnName](className);
   });
 }
 

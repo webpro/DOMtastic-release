@@ -55,7 +55,7 @@ exports.shift = shift;
 exports.some = some;
 exports.unshift = unshift;
 
-},{"./selector":14,"./util":18}],2:[function(require,module,exports){
+},{"./selector":13,"./util":17}],2:[function(require,module,exports){
 "use strict";
 
 var each = require('./util').each;
@@ -90,7 +90,7 @@ function removeAttr(key) {
 exports.attr = attr;
 exports.removeAttr = removeAttr;
 
-},{"./util":18}],3:[function(require,module,exports){
+},{"./util":17}],3:[function(require,module,exports){
 "use strict";
 
 var each = require('./util').each;
@@ -98,33 +98,21 @@ var each = require('./util').each;
 
 function addClass(value) {
   if (value && value.length) {
-    each(value.split(" "), function (className) {
-      each(this, function (element) {
-        element.classList.add(className);
-      });
-    }.bind(this));
+    each(value.split(" "), _each.bind(this, "add"));
   }
   return this;
 }
 
 function removeClass(value) {
   if (value && value.length) {
-    each(value.split(" "), function (className) {
-      each(this, function (element) {
-        element.classList.remove(className);
-      });
-    }.bind(this));
+    each(value.split(" "), _each.bind(this, "remove"));
   }
   return this;
 }
 
 function toggleClass(value) {
   if (value && value.length) {
-    each(value.split(" "), function (className) {
-      each(this, function (element) {
-        element.classList.toggle(className);
-      });
-    }.bind(this));
+    each(value.split(" "), _each.bind(this, "toggle"));
   }
   return this;
 }
@@ -135,12 +123,18 @@ function hasClass(value) {
   });
 }
 
+function _each(fnName, className) {
+  each(this, function (element) {
+    element.classList[fnName](className);
+  });
+}
+
 exports.addClass = addClass;
 exports.removeClass = removeClass;
 exports.toggleClass = toggleClass;
 exports.hasClass = hasClass;
 
-},{"./util":18}],4:[function(require,module,exports){
+},{"./util":17}],4:[function(require,module,exports){
 "use strict";
 
 function contains(container, element) {
@@ -218,7 +212,7 @@ function css(key, value) {
 
 exports.css = css;
 
-},{"./util":18}],6:[function(require,module,exports){
+},{"./util":17}],6:[function(require,module,exports){
 "use strict";
 
 var each = require('./util').each;
@@ -257,7 +251,7 @@ function prop(key, value) {
 exports.data = data;
 exports.prop = prop;
 
-},{"./util":18}],7:[function(require,module,exports){
+},{"./util":17}],7:[function(require,module,exports){
 "use strict";
 
 var toArray = require('./util').toArray;
@@ -277,11 +271,7 @@ function append(element) {
       }
     }
   } else {
-    var l = this.length;
-    while (l--) {
-      var elm = l === 0 ? element : _clone(element);
-      append.call(this[l], elm);
-    }
+    _each(this, append, element);
   }
   return this;
 }
@@ -299,11 +289,7 @@ function prepend(element) {
       }
     }
   } else {
-    var l = this.length;
-    while (l--) {
-      var elm = l === 0 ? element : _clone(element);
-      prepend.call(this[l], elm);
-    }
+    _each(this, prepend, element);
   }
   return this;
 }
@@ -321,11 +307,7 @@ function before(element) {
       }
     }
   } else {
-    var l = this.length;
-    while (l--) {
-      var elm = l === 0 ? element : _clone(element);
-      before.call(this[l], elm);
-    }
+    _each(this, before, element);
   }
   return this;
 }
@@ -343,11 +325,7 @@ function after(element) {
       }
     }
   } else {
-    var l = this.length;
-    while (l--) {
-      var elm = l === 0 ? element : _clone(element);
-      after.call(this[l], elm);
-    }
+    _each(this, after, element);
   }
   return this;
 }
@@ -369,13 +347,21 @@ function _clone(element) {
   return element;
 }
 
+function _each(collection, fn, element) {
+  var l = collection.length;
+  while (l--) {
+    var elm = l === 0 ? element : _clone(element);
+    fn.call(collection[l], elm);
+  }
+}
+
 exports.append = append;
 exports.prepend = prepend;
 exports.before = before;
 exports.after = after;
 exports.clone = clone;
 
-},{"./selector":14,"./util":18}],8:[function(require,module,exports){
+},{"./selector":13,"./util":17}],8:[function(require,module,exports){
 "use strict";
 
 var each = require('./util').each;
@@ -440,7 +426,7 @@ exports.replaceWith = replaceWith;
 exports.text = text;
 exports.val = val;
 
-},{"./dom":7,"./selector":14,"./util":18}],9:[function(require,module,exports){
+},{"./dom":7,"./selector":13,"./util":17}],9:[function(require,module,exports){
 "use strict";
 
 var each = require('./util').each;
@@ -519,14 +505,6 @@ function off(eventNames, selector, handler, useCapture) {
   return this;
 }
 
-function delegate(selector, eventName, handler) {
-  return on.call(this, eventName, selector, handler);
-}
-
-function undelegate(selector, eventName, handler) {
-  return off.call(this, eventName, selector, handler);
-}
-
 var eventKeyProp = "__domtastic_event__";
 var id = 1;
 var handlers = {};
@@ -598,12 +576,10 @@ var bind = on, unbind = off;
 
 exports.on = on;
 exports.off = off;
-exports.delegate = delegate;
-exports.undelegate = undelegate;
 exports.bind = bind;
 exports.unbind = unbind;
 
-},{"./selector":14,"./util":18}],10:[function(require,module,exports){
+},{"./selector":13,"./util":17}],10:[function(require,module,exports){
 "use strict";
 
 var each = require('./util').each;
@@ -624,76 +600,7 @@ function html(fragment) {
 
 exports.html = html;
 
-},{"./util":18}],11:[function(require,module,exports){
-"use strict";
-
-var global = require('./util').global;
-
-
-var isNative = false;
-
-function native(goNative) {
-  if (goNative === undefined) goNative = true;
-  var wasNative = isNative;
-  isNative = goNative;
-  if (global.$) {
-    global.$.isNative = isNative;
-  }
-  if (!wasNative && isNative) {
-    augmentNativePrototypes(this.fn, this.fnList);
-  }
-  if (wasNative && !isNative) {
-    unaugmentNativePrototypes(this.fn, this.fnList);
-  }
-  return isNative;
-}
-
-var NodeProto = typeof Node !== "undefined" && Node.prototype, NodeListProto = typeof NodeList !== "undefined" && NodeList.prototype;
-
-function augment(obj, key, value) {
-  if (!obj.hasOwnProperty(key)) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      configurable: true,
-      enumerable: false
-    });
-  }
-}
-
-var unaugment = function (obj, key) {
-  delete obj[key];
-};
-
-function augmentNativePrototypes(methodsNode, methodsNodeList) {
-  var key;
-
-  for (key in methodsNode) {
-    augment(NodeProto, key, methodsNode[key]);
-    augment(NodeListProto, key, methodsNode[key]);
-  }
-
-  for (key in methodsNodeList) {
-    augment(NodeListProto, key, methodsNodeList[key]);
-  }
-}
-
-function unaugmentNativePrototypes(methodsNode, methodsNodeList) {
-  var key;
-
-  for (key in methodsNode) {
-    unaugment(NodeProto, key);
-    unaugment(NodeListProto, key);
-  }
-
-  for (key in methodsNodeList) {
-    unaugment(NodeListProto, key);
-  }
-}
-
-exports.isNative = isNative;
-exports.native = native;
-
-},{"./util":18}],12:[function(require,module,exports){
+},{"./util":17}],11:[function(require,module,exports){
 "use strict";
 
 var global = require('./util').global;
@@ -708,7 +615,7 @@ function noConflict() {
 
 exports.noConflict = noConflict;
 
-},{"./util":18}],13:[function(require,module,exports){
+},{"./util":17}],12:[function(require,module,exports){
 "use strict";
 
 function ready(handler) {
@@ -722,7 +629,7 @@ function ready(handler) {
 
 exports.ready = ready;
 
-},{}],14:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 "use strict";
 
 var global = require('./util').global;
@@ -843,7 +750,7 @@ exports.find = find;
 exports.closest = closest;
 exports.matches = matches;
 
-},{"./util":18}],15:[function(require,module,exports){
+},{"./util":17}],14:[function(require,module,exports){
 "use strict";
 
 var each = require('./util').each;
@@ -903,7 +810,7 @@ exports.get = get;
 exports.parent = parent;
 exports.slice = slice;
 
-},{"./selector":14,"./util":18}],16:[function(require,module,exports){
+},{"./selector":13,"./util":17}],15:[function(require,module,exports){
 "use strict";
 
 var global = require('./util').global;
@@ -1012,7 +919,7 @@ var supportsOtherEventConstructors = (function () {
 exports.trigger = trigger;
 exports.triggerHandler = triggerHandler;
 
-},{"./contains":4,"./util":18}],17:[function(require,module,exports){
+},{"./contains":4,"./util":17}],16:[function(require,module,exports){
 "use strict";
 
 function isFunction(obj) {
@@ -1024,7 +931,7 @@ var isArray = Array.isArray;
 exports.isArray = isArray;
 exports.isFunction = isFunction;
 
-},{}],18:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 "use strict";
 
 var _slice = Array.prototype.slice;
@@ -1068,13 +975,13 @@ exports.toArray = toArray;
 exports.each = each;
 exports.extend = extend;
 
-},{}],19:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 "use strict";
 
 var extend = require('./util').extend;
 
 
-var api = {}, apiNodeList = {}, $ = {};
+var api = {}, $ = {};
 
 var array = require('./array');
 
@@ -1096,8 +1003,6 @@ var event = require('./event');
 
 var html = require('./html');
 
-var mode = require('./mode');
-
 var noconflict = require('./noconflict');
 
 var ready = require('./ready');
@@ -1117,20 +1022,18 @@ if (typeof selector !== "undefined") {
   api.closest = selector.closest;
 }
 
-extend($, contains, mode, noconflict, type);
+extend($, contains, noconflict, type);
 extend(api, array, attr, class_, css, data, dom, dom_extra, event, html, ready, selector_extra, trigger);
-extend(apiNodeList, array);
 
-$.version = "0.8.4";
+$.fn = api;
+
+$.version = "0.9.0";
 
 $.extend = extend;
 
-$.fn = api;
-$.fnList = apiNodeList;
-
 exports["default"] = $;
 
-},{"./array":1,"./attr":2,"./class":3,"./contains":4,"./css":5,"./data":6,"./dom":7,"./dom_extra":8,"./event":9,"./html":10,"./mode":11,"./noconflict":12,"./ready":13,"./selector":14,"./selector_extra":15,"./trigger":16,"./type":17,"./util":18}]},{},[19])(19)
+},{"./array":1,"./attr":2,"./class":3,"./contains":4,"./css":5,"./data":6,"./dom":7,"./dom_extra":8,"./event":9,"./html":10,"./noconflict":11,"./ready":12,"./selector":13,"./selector_extra":14,"./trigger":15,"./type":16,"./util":17}]},{},[18])(18)
 });
 
 

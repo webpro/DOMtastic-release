@@ -1,10 +1,10 @@
-define(["exports", "./util", "./array", "./attr", "./class", "./contains", "./css", "./data", "./dom", "./dom_extra", "./event", "./html", "./mode", "./noconflict", "./ready", "./selector", "./selector_extra", "./trigger", "./type"], function (exports, _util, _array, _attr, _class, _contains, _css, _data, _dom, _domExtra, _event, _html, _mode, _noconflict, _ready, _selector, _selectorExtra, _trigger, _type) {
+define(["exports", "./util", "./array", "./attr", "./class", "./contains", "./css", "./data", "./dom", "./dom_extra", "./event", "./html", "./noconflict", "./ready", "./selector", "./selector_extra", "./trigger", "./type"], function (exports, _util, _array, _attr, _class, _contains, _css, _data, _dom, _domExtra, _event, _html, _noconflict, _ready, _selector, _selectorExtra, _trigger, _type) {
   "use strict";
 
   var extend = _util.extend;
 
 
-  var api = {}, apiNodeList = {}, $ = {};
+  var api = {}, $ = {};
 
   var array = _array;
   var attr = _attr;
@@ -16,7 +16,6 @@ define(["exports", "./util", "./array", "./attr", "./class", "./contains", "./cs
   var dom_extra = _domExtra;
   var event = _event;
   var html = _html;
-  var mode = _mode;
   var noconflict = _noconflict;
   var ready = _ready;
   var selector = _selector;
@@ -32,16 +31,14 @@ define(["exports", "./util", "./array", "./attr", "./class", "./contains", "./cs
     api.closest = selector.closest;
   }
 
-  extend($, contains, mode, noconflict, type);
+  extend($, contains, noconflict, type);
   extend(api, array, attr, class_, css, data, dom, dom_extra, event, html, ready, selector_extra, trigger);
-  extend(apiNodeList, array);
-
-  $.version = "0.8.4";
-
-  $.extend = extend;
 
   $.fn = api;
-  $.fnList = apiNodeList;
+
+  $.version = "0.9.0";
+
+  $.extend = extend;
 
   exports["default"] = $;
 });
