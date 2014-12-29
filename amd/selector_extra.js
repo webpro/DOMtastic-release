@@ -12,7 +12,7 @@ define(["exports", "./util", "./selector"], function (exports, _util, _selector)
     each(this, function (element) {
       if (element.children) {
         each(element.children, function (child) {
-          if (!selector || (selector && matches(child, selector))) {
+          if (!selector || selector && matches(child, selector)) {
             nodes.push(child);
           }
         });
@@ -40,7 +40,7 @@ define(["exports", "./util", "./selector"], function (exports, _util, _selector)
   function parent(selector) {
     var nodes = [];
     each(this, function (element) {
-      if (!selector || (selector && matches(element.parentNode, selector))) {
+      if (!selector || selector && matches(element.parentNode, selector)) {
         nodes.push(element.parentNode);
       }
     });

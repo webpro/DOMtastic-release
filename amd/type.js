@@ -2,7 +2,7 @@ define(["exports"], function (exports) {
   "use strict";
 
   function isFunction(obj) {
-    return (typeof obj === "function");
+    return typeof obj === "function";
   }
 
   var isArray = Array.isArray;

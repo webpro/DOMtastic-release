@@ -1,39 +1,38 @@
 define(["exports", "./util"], function (exports, _util) {
   "use strict";
 
-  var makeIterable = _util.makeIterable;
   var each = _util.each;
 
 
   function addClass(value) {
     if (value && value.length) {
-      each(value.split(" "), function (className) {
+      each(value.split(" "), (function (className) {
         each(this, function (element) {
           element.classList.add(className);
         });
-      }.bind(this));
+      }).bind(this));
     }
     return this;
   }
 
   function removeClass(value) {
     if (value && value.length) {
-      each(value.split(" "), function (className) {
+      each(value.split(" "), (function (className) {
         each(this, function (element) {
           element.classList.remove(className);
         });
-      }.bind(this));
+      }).bind(this));
     }
     return this;
   }
 
   function toggleClass(value) {
     if (value && value.length) {
-      each(value.split(" "), function (className) {
+      each(value.split(" "), (function (className) {
         each(this, function (element) {
           element.classList.toggle(className);
         });
-      }.bind(this));
+      }).bind(this));
     }
     return this;
   }

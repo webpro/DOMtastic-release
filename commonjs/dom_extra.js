@@ -1,10 +1,10 @@
 "use strict";
 
-var each = require('./util').each;
-var append = require('./dom').append;
-var before = require('./dom').before;
-var after = require('./dom').after;
-var $ = require('./selector').$;
+var each = require("./util").each;
+var append = require("./dom").append;
+var before = require("./dom").before;
+var after = require("./dom").after;
+var $ = require("./selector").$;
 
 
 function appendTo(element) {

@@ -1,43 +1,43 @@
 "use strict";
 
-var extend = require('./util').extend;
+var extend = require("./util").extend;
 
 
 var api = {}, apiNodeList = {}, $ = {};
 
-var array = require('./array');
+var array = require("./array");
 
-var attr = require('./attr');
+var attr = require("./attr");
 
-var class_ = require('./class');
+var class_ = require("./class");
 
-var contains = require('./contains');
+var contains = require("./contains");
 
-var css = require('./css');
+var css = require("./css");
 
-var data = require('./data');
+var data = require("./data");
 
-var dom = require('./dom');
+var dom = require("./dom");
 
-var dom_extra = require('./dom_extra');
+var dom_extra = require("./dom_extra");
 
-var event = require('./event');
+var event = require("./event");
 
-var html = require('./html');
+var html = require("./html");
 
-var mode = require('./mode');
+var mode = require("./mode");
 
-var noconflict = require('./noconflict');
+var noconflict = require("./noconflict");
 
-var ready = require('./ready');
+var ready = require("./ready");
 
-var selector = require('./selector');
+var selector = require("./selector");
 
-var selector_extra = require('./selector_extra');
+var selector_extra = require("./selector_extra");
 
-var trigger = require('./trigger');
+var trigger = require("./trigger");
 
-var type = require('./type');
+var type = require("./type");
 
 if (typeof selector !== "undefined") {
   $ = selector.$;
@@ -50,11 +50,11 @@ extend($, contains, mode, noconflict, type);
 extend(api, array, attr, class_, css, data, dom, dom_extra, event, html, ready, selector_extra, trigger);
 extend(apiNodeList, array);
 
-$.version = "0.8.3";
+$.version = "0.8.4";
 
 $.extend = extend;
 
 $.fn = api;
 $.fnList = apiNodeList;
 
-exports["default"] = $;
+module.exports = $;

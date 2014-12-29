@@ -1,6 +1,6 @@
 "use strict";
 
-var each = require('./util').each;
+var each = require("./util").each;
 
 
 function html(fragment) {

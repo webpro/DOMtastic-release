@@ -36,7 +36,7 @@ define(["exports", "./util", "./array", "./attr", "./class", "./contains", "./cs
   extend(api, array, attr, class_, css, data, dom, dom_extra, event, html, ready, selector_extra, trigger);
   extend(apiNodeList, array);
 
-  $.version = "0.8.3";
+  $.version = "0.8.4";
 
   $.extend = extend;
 

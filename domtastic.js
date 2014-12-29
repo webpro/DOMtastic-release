@@ -93,7 +93,6 @@ exports.removeAttr = removeAttr;
 },{"./util":18}],3:[function(require,module,exports){
 "use strict";
 
-var makeIterable = require('./util').makeIterable;
 var each = require('./util').each;
 
 
@@ -727,32 +726,31 @@ exports.ready = ready;
 "use strict";
 
 var global = require('./util').global;
-var makeIterable = require('./util').makeIterable;
 
 
 var isPrototypeSet = false, reFragment = /^\s*<(\w+|!)[^>]*>/, reSingleTag = /^<(\w+)\s*\/?>(?:<\/\1>|)$/, reSimpleSelector = /^[\.#]?[\w-]*$/;
 
 function $(selector, context) {
   if (context === undefined) context = document;
+  return (function () {
+    var collection;
 
+    if (!selector) {
+      collection = document.querySelectorAll(null);
+    } else if (selector instanceof Wrapper) {
+      return selector;
+    } else if (typeof selector !== "string") {
+      collection = selector.nodeType || selector === window ? [selector] : selector;
+    } else if (reFragment.test(selector)) {
+      collection = createFragment(selector);
+    } else {
+      context = typeof context === "string" ? document.querySelector(context) : context.length ? context[0] : context;
 
-  var collection;
+      collection = querySelector(selector, context);
+    }
 
-  if (!selector) {
-    collection = document.querySelectorAll(null);
-  } else if (selector instanceof Wrapper) {
-    return selector;
-  } else if (typeof selector !== "string") {
-    collection = selector.nodeType || selector === window ? [selector] : selector;
-  } else if (reFragment.test(selector)) {
-    collection = createFragment(selector);
-  } else {
-    context = typeof context === "string" ? document.querySelector(context) : context.length ? context[0] : context;
-
-    collection = querySelector(selector, context);
-  }
-
-  return $.isNative ? collection : wrap(collection);
+    return $.isNative ? collection : wrap(collection);
+  })();
 }
 
 function find(selector) {
@@ -978,9 +976,11 @@ function dispatchEvent(element, event) {
 (function () {
   function CustomEvent(event, params) {
     if (params === undefined) params = { bubbles: false, cancelable: false, detail: undefined };
-    var customEvent = document.createEvent("CustomEvent");
-    customEvent.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
-    return customEvent;
+    return (function () {
+      var customEvent = document.createEvent("CustomEvent");
+      customEvent.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
+      return customEvent;
+    })();
   }
 
   CustomEvent.prototype = global.CustomEvent && global.CustomEvent.prototype;
@@ -1121,7 +1121,7 @@ extend($, contains, mode, noconflict, type);
 extend(api, array, attr, class_, css, data, dom, dom_extra, event, html, ready, selector_extra, trigger);
 extend(apiNodeList, array);
 
-$.version = "0.8.3";
+$.version = "0.8.4";
 
 $.extend = extend;
 

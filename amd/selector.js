@@ -2,32 +2,31 @@ define(["exports", "./util"], function (exports, _util) {
   "use strict";
 
   var global = _util.global;
-  var makeIterable = _util.makeIterable;
 
 
   var isPrototypeSet = false, reFragment = /^\s*<(\w+|!)[^>]*>/, reSingleTag = /^<(\w+)\s*\/?>(?:<\/\1>|)$/, reSimpleSelector = /^[\.#]?[\w-]*$/;
 
   function $(selector, context) {
     if (context === undefined) context = document;
+    return (function () {
+      var collection;
 
+      if (!selector) {
+        collection = document.querySelectorAll(null);
+      } else if (selector instanceof Wrapper) {
+        return selector;
+      } else if (typeof selector !== "string") {
+        collection = selector.nodeType || selector === window ? [selector] : selector;
+      } else if (reFragment.test(selector)) {
+        collection = createFragment(selector);
+      } else {
+        context = typeof context === "string" ? document.querySelector(context) : context.length ? context[0] : context;
 
-    var collection;
+        collection = querySelector(selector, context);
+      }
 
-    if (!selector) {
-      collection = document.querySelectorAll(null);
-    } else if (selector instanceof Wrapper) {
-      return selector;
-    } else if (typeof selector !== "string") {
-      collection = selector.nodeType || selector === window ? [selector] : selector;
-    } else if (reFragment.test(selector)) {
-      collection = createFragment(selector);
-    } else {
-      context = typeof context === "string" ? document.querySelector(context) : context.length ? context[0] : context;
-
-      collection = querySelector(selector, context);
-    }
-
-    return $.isNative ? collection : wrap(collection);
+      return $.isNative ? collection : wrap(collection);
+    })();
   }
 
   function find(selector) {

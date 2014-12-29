@@ -1,7 +1,7 @@
 "use strict";
 
-var each = require('./util').each;
-var closest = require('./selector').closest;
+var each = require("./util").each;
+var closest = require("./selector").closest;
 
 
 function on(eventNames, selector, handler, useCapture) {
@@ -59,7 +59,7 @@ function off(eventNames, selector, handler, useCapture) {
       handlers = getHandlers(element);
 
       each(handlers.filter(function (item) {
-        return ((!eventName || item.eventName === eventName) && (!namespace || item.namespace === namespace) && (!handler || item.handler === handler) && (!selector || item.selector === selector));
+        return (!eventName || item.eventName === eventName) && (!namespace || item.namespace === namespace) && (!handler || item.handler === handler) && (!selector || item.selector === selector);
       }), function (item) {
         element.removeEventListener(item.eventName, item.eventListener, useCapture || false);
         handlers.splice(handlers.indexOf(item), 1);
@@ -132,7 +132,7 @@ var augmentEvent = (function () {
             return originalMethod && originalMethod.apply(this, arguments);
           };
           event[testMethodName] = returnFalse;
-        }(methodName, eventMethods[methodName], event[methodName]));
+        })(methodName, eventMethods[methodName], event[methodName]);
       }
       if (event._preventDefault) {
         event.preventDefault();

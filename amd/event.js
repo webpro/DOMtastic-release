@@ -60,7 +60,7 @@ define(["exports", "./util", "./selector"], function (exports, _util, _selector)
         handlers = getHandlers(element);
 
         each(handlers.filter(function (item) {
-          return ((!eventName || item.eventName === eventName) && (!namespace || item.namespace === namespace) && (!handler || item.handler === handler) && (!selector || item.selector === selector));
+          return (!eventName || item.eventName === eventName) && (!namespace || item.namespace === namespace) && (!handler || item.handler === handler) && (!selector || item.selector === selector);
         }), function (item) {
           element.removeEventListener(item.eventName, item.eventListener, useCapture || false);
           handlers.splice(handlers.indexOf(item), 1);
@@ -133,7 +133,7 @@ define(["exports", "./util", "./selector"], function (exports, _util, _selector)
               return originalMethod && originalMethod.apply(this, arguments);
             };
             event[testMethodName] = returnFalse;
-          }(methodName, eventMethods[methodName], event[methodName]));
+          })(methodName, eventMethods[methodName], event[methodName]);
         }
         if (event._preventDefault) {
           event.preventDefault();

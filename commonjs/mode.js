@@ -1,6 +1,6 @@
 "use strict";
 
-var global = require('./util').global;
+var global = require("./util").global;
 
 
 var isNative = false;

@@ -1,7 +1,7 @@
 "use strict";
 
-var toArray = require('./util').toArray;
-var $ = require('./selector').$;
+var toArray = require("./util").toArray;
+var $ = require("./selector").$;
 
 
 function append(element) {

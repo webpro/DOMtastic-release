@@ -1,9 +1,9 @@
 "use strict";
 
-var each = require('./util').each;
-var toArray = require('./util').toArray;
-var $ = require('./selector').$;
-var matches = require('./selector').matches;
+var each = require("./util").each;
+var toArray = require("./util").toArray;
+var $ = require("./selector").$;
+var matches = require("./selector").matches;
 
 
 function children(selector) {
@@ -11,7 +11,7 @@ function children(selector) {
   each(this, function (element) {
     if (element.children) {
       each(element.children, function (child) {
-        if (!selector || (selector && matches(child, selector))) {
+        if (!selector || selector && matches(child, selector)) {
           nodes.push(child);
         }
       });
@@ -39,7 +39,7 @@ function get(index) {
 function parent(selector) {
   var nodes = [];
   each(this, function (element) {
-    if (!selector || (selector && matches(element.parentNode, selector))) {
+    if (!selector || selector && matches(element.parentNode, selector)) {
       nodes.push(element.parentNode);
     }
   });

@@ -1,9 +1,9 @@
 "use strict";
 
-var _each = require('./util').each;
-var toArray = require('./util').toArray;
-var $ = require('./selector').$;
-var matches = require('./selector').matches;
+var _each = require("./util").each;
+var toArray = require("./util").toArray;
+var $ = require("./selector").$;
+var matches = require("./selector").matches;
 
 
 var ArrayProto = Array.prototype;
