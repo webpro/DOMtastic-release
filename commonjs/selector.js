@@ -24,7 +24,7 @@ function $(selector, context) {
       collection = querySelector(selector, context);
     }
 
-    return $.isNative ? collection : wrap(collection);
+    return wrap(collection);
   })();
 }
 
@@ -65,7 +65,7 @@ var matches = (function () {
 function querySelector(selector, context) {
   var isSimpleSelector = reSimpleSelector.test(selector);
 
-  if (isSimpleSelector && !$.isNative) {
+  if (isSimpleSelector) {
     if (selector[0] === "#") {
       var element = (context.getElementById ? context : document).getElementById(selector.slice(1));
       return element ? [element] : [];

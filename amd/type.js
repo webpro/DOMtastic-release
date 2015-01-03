@@ -1,6 +1,6 @@
-define(["exports"], function (exports) {
-  "use strict";
+"use strict";
 
+define(["exports"], function (exports) {
   function isFunction(obj) {
     return typeof obj === "function";
   }

@@ -1,6 +1,6 @@
-define(["exports", "./util"], function (exports, _util) {
-  "use strict";
+"use strict";
 
+define(["exports", "./util"], function (exports, _util) {
   var each = _util.each;
 
 

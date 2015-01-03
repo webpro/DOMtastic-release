@@ -1,6 +1,6 @@
-define(["exports", "./util", "./selector"], function (exports, _util, _selector) {
-  "use strict";
+"use strict";
 
+define(["exports", "./util", "./selector"], function (exports, _util, _selector) {
   var toArray = _util.toArray;
   var $ = _selector.$;
 

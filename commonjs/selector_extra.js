@@ -46,6 +46,18 @@ function parent(selector) {
   return $(nodes);
 }
 
+function siblings(selector) {
+  var nodes = [];
+  each(this, function (element) {
+    each(element.parentNode.children, function (sibling) {
+      if (sibling !== element && (!selector || selector && matches(sibling, selector))) {
+        nodes.push(sibling);
+      }
+    });
+  });
+  return $(nodes);
+}
+
 function slice(start, end) {
   return $([].slice.apply(this, arguments));
 }
@@ -55,4 +67,5 @@ exports.contents = contents;
 exports.eq = eq;
 exports.get = get;
 exports.parent = parent;
+exports.siblings = siblings;
 exports.slice = slice;

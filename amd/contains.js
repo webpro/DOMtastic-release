@@ -1,6 +1,6 @@
-define(["exports"], function (exports) {
-  "use strict";
+"use strict";
 
+define(["exports"], function (exports) {
   function contains(container, element) {
     if (!container || !element || container === element) {
       return false;

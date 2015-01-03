@@ -31,6 +31,10 @@ var pop = ArrayProto.pop;
 
 var push = ArrayProto.push;
 
+var reduce = ArrayProto.reduce;
+
+var reduceRight = ArrayProto.reduceRight;
+
 function reverse() {
   return $(toArray(this).reverse());
 }
@@ -49,6 +53,8 @@ exports.indexOf = indexOf;
 exports.map = map;
 exports.pop = pop;
 exports.push = push;
+exports.reduce = reduce;
+exports.reduceRight = reduceRight;
 exports.reverse = reverse;
 exports.shift = shift;
 exports.some = some;

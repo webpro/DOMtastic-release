@@ -1,6 +1,6 @@
-define(["exports", "./util", "./selector"], function (exports, _util, _selector) {
-  "use strict";
+"use strict";
 
+define(["exports", "./util", "./selector"], function (exports, _util, _selector) {
   var each = _util.each;
   var toArray = _util.toArray;
   var $ = _selector.$;
@@ -47,6 +47,18 @@ define(["exports", "./util", "./selector"], function (exports, _util, _selector)
     return $(nodes);
   }
 
+  function siblings(selector) {
+    var nodes = [];
+    each(this, function (element) {
+      each(element.parentNode.children, function (sibling) {
+        if (sibling !== element && (!selector || selector && matches(sibling, selector))) {
+          nodes.push(sibling);
+        }
+      });
+    });
+    return $(nodes);
+  }
+
   function slice(start, end) {
     return $([].slice.apply(this, arguments));
   }
@@ -56,5 +68,6 @@ define(["exports", "./util", "./selector"], function (exports, _util, _selector)
   exports.eq = eq;
   exports.get = get;
   exports.parent = parent;
+  exports.siblings = siblings;
   exports.slice = slice;
 });

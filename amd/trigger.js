@@ -1,6 +1,6 @@
-define(["exports", "./util", "./contains"], function (exports, _util, _contains) {
-  "use strict";
+"use strict";
 
+define(["exports", "./util", "./contains"], function (exports, _util, _contains) {
   var global = _util.global;
   var each = _util.each;
   var contains = _contains.contains;

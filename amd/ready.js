@@ -1,6 +1,6 @@
-define(["exports"], function (exports) {
-  "use strict";
+"use strict";
 
+define(["exports"], function (exports) {
   function ready(handler) {
     if (/complete|loaded|interactive/.test(document.readyState) && document.body) {
       handler();

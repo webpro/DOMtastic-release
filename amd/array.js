@@ -1,6 +1,6 @@
-define(["exports", "./util", "./selector"], function (exports, _util, _selector) {
-  "use strict";
+"use strict";
 
+define(["exports", "./util", "./selector"], function (exports, _util, _selector) {
   var _each = _util.each;
   var toArray = _util.toArray;
   var $ = _selector.$;
@@ -32,6 +32,10 @@ define(["exports", "./util", "./selector"], function (exports, _util, _selector)
 
   var push = ArrayProto.push;
 
+  var reduce = ArrayProto.reduce;
+
+  var reduceRight = ArrayProto.reduceRight;
+
   function reverse() {
     return $(toArray(this).reverse());
   }
@@ -50,6 +54,8 @@ define(["exports", "./util", "./selector"], function (exports, _util, _selector)
   exports.map = map;
   exports.pop = pop;
   exports.push = push;
+  exports.reduce = reduce;
+  exports.reduceRight = reduceRight;
   exports.reverse = reverse;
   exports.shift = shift;
   exports.some = some;

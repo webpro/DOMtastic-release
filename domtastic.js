@@ -1,10 +1,10 @@
-!function(_e){function e(){return _e()["default"]};if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.$=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+!function(e){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.$=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";
 
-var _each = require('./util').each;
-var toArray = require('./util').toArray;
-var $ = require('./selector').$;
-var matches = require('./selector').matches;
+var _each = require("./util").each;
+var toArray = require("./util").toArray;
+var $ = require("./selector").$;
+var matches = require("./selector").matches;
 
 
 var ArrayProto = Array.prototype;
@@ -32,6 +32,10 @@ var pop = ArrayProto.pop;
 
 var push = ArrayProto.push;
 
+var reduce = ArrayProto.reduce;
+
+var reduceRight = ArrayProto.reduceRight;
+
 function reverse() {
   return $(toArray(this).reverse());
 }
@@ -50,6 +54,8 @@ exports.indexOf = indexOf;
 exports.map = map;
 exports.pop = pop;
 exports.push = push;
+exports.reduce = reduce;
+exports.reduceRight = reduceRight;
 exports.reverse = reverse;
 exports.shift = shift;
 exports.some = some;
@@ -58,7 +64,7 @@ exports.unshift = unshift;
 },{"./selector":13,"./util":17}],2:[function(require,module,exports){
 "use strict";
 
-var each = require('./util').each;
+var each = require("./util").each;
 
 
 function attr(key, value) {
@@ -93,7 +99,7 @@ exports.removeAttr = removeAttr;
 },{"./util":17}],3:[function(require,module,exports){
 "use strict";
 
-var each = require('./util').each;
+var each = require("./util").each;
 
 
 function addClass(value) {
@@ -154,7 +160,7 @@ exports.contains = contains;
 },{}],5:[function(require,module,exports){
 "use strict";
 
-var each = require('./util').each;
+var each = require("./util").each;
 
 
 function isNumeric(value) {
@@ -215,7 +221,7 @@ exports.css = css;
 },{"./util":17}],6:[function(require,module,exports){
 "use strict";
 
-var each = require('./util').each;
+var each = require("./util").each;
 
 
 var dataKeyProp = "__domtastic_data__";
@@ -254,8 +260,8 @@ exports.prop = prop;
 },{"./util":17}],7:[function(require,module,exports){
 "use strict";
 
-var toArray = require('./util').toArray;
-var $ = require('./selector').$;
+var toArray = require("./util").toArray;
+var $ = require("./selector").$;
 
 
 function append(element) {
@@ -364,11 +370,11 @@ exports.clone = clone;
 },{"./selector":13,"./util":17}],8:[function(require,module,exports){
 "use strict";
 
-var each = require('./util').each;
-var append = require('./dom').append;
-var before = require('./dom').before;
-var after = require('./dom').after;
-var $ = require('./selector').$;
+var each = require("./util").each;
+var append = require("./dom").append;
+var before = require("./dom").before;
+var after = require("./dom").after;
+var $ = require("./selector").$;
 
 
 function appendTo(element) {
@@ -429,8 +435,8 @@ exports.val = val;
 },{"./dom":7,"./selector":13,"./util":17}],9:[function(require,module,exports){
 "use strict";
 
-var each = require('./util').each;
-var closest = require('./selector').closest;
+var each = require("./util").each;
+var closest = require("./selector").closest;
 
 
 function on(eventNames, selector, handler, useCapture) {
@@ -488,7 +494,7 @@ function off(eventNames, selector, handler, useCapture) {
       handlers = getHandlers(element);
 
       each(handlers.filter(function (item) {
-        return ((!eventName || item.eventName === eventName) && (!namespace || item.namespace === namespace) && (!handler || item.handler === handler) && (!selector || item.selector === selector));
+        return (!eventName || item.eventName === eventName) && (!namespace || item.namespace === namespace) && (!handler || item.handler === handler) && (!selector || item.selector === selector);
       }), function (item) {
         element.removeEventListener(item.eventName, item.eventListener, useCapture || false);
         handlers.splice(handlers.indexOf(item), 1);
@@ -553,7 +559,7 @@ var augmentEvent = (function () {
             return originalMethod && originalMethod.apply(this, arguments);
           };
           event[testMethodName] = returnFalse;
-        }(methodName, eventMethods[methodName], event[methodName]));
+        })(methodName, eventMethods[methodName], event[methodName]);
       }
       if (event._preventDefault) {
         event.preventDefault();
@@ -582,7 +588,7 @@ exports.unbind = unbind;
 },{"./selector":13,"./util":17}],10:[function(require,module,exports){
 "use strict";
 
-var each = require('./util').each;
+var each = require("./util").each;
 
 
 function html(fragment) {
@@ -603,7 +609,7 @@ exports.html = html;
 },{"./util":17}],11:[function(require,module,exports){
 "use strict";
 
-var global = require('./util').global;
+var global = require("./util").global;
 
 
 var previousLib = global.$;
@@ -632,7 +638,7 @@ exports.ready = ready;
 },{}],13:[function(require,module,exports){
 "use strict";
 
-var global = require('./util').global;
+var global = require("./util").global;
 
 
 var isPrototypeSet = false, reFragment = /^\s*<(\w+|!)[^>]*>/, reSingleTag = /^<(\w+)\s*\/?>(?:<\/\1>|)$/, reSimpleSelector = /^[\.#]?[\w-]*$/;
@@ -656,7 +662,7 @@ function $(selector, context) {
       collection = querySelector(selector, context);
     }
 
-    return $.isNative ? collection : wrap(collection);
+    return wrap(collection);
   })();
 }
 
@@ -697,7 +703,7 @@ var matches = (function () {
 function querySelector(selector, context) {
   var isSimpleSelector = reSimpleSelector.test(selector);
 
-  if (isSimpleSelector && !$.isNative) {
+  if (isSimpleSelector) {
     if (selector[0] === "#") {
       var element = (context.getElementById ? context : document).getElementById(selector.slice(1));
       return element ? [element] : [];
@@ -753,10 +759,10 @@ exports.matches = matches;
 },{"./util":17}],14:[function(require,module,exports){
 "use strict";
 
-var each = require('./util').each;
-var toArray = require('./util').toArray;
-var $ = require('./selector').$;
-var matches = require('./selector').matches;
+var each = require("./util").each;
+var toArray = require("./util").toArray;
+var $ = require("./selector").$;
+var matches = require("./selector").matches;
 
 
 function children(selector) {
@@ -764,7 +770,7 @@ function children(selector) {
   each(this, function (element) {
     if (element.children) {
       each(element.children, function (child) {
-        if (!selector || (selector && matches(child, selector))) {
+        if (!selector || selector && matches(child, selector)) {
           nodes.push(child);
         }
       });
@@ -792,9 +798,21 @@ function get(index) {
 function parent(selector) {
   var nodes = [];
   each(this, function (element) {
-    if (!selector || (selector && matches(element.parentNode, selector))) {
+    if (!selector || selector && matches(element.parentNode, selector)) {
       nodes.push(element.parentNode);
     }
+  });
+  return $(nodes);
+}
+
+function siblings(selector) {
+  var nodes = [];
+  each(this, function (element) {
+    each(element.parentNode.children, function (sibling) {
+      if (sibling !== element && (!selector || selector && matches(sibling, selector))) {
+        nodes.push(sibling);
+      }
+    });
   });
   return $(nodes);
 }
@@ -808,14 +826,15 @@ exports.contents = contents;
 exports.eq = eq;
 exports.get = get;
 exports.parent = parent;
+exports.siblings = siblings;
 exports.slice = slice;
 
 },{"./selector":13,"./util":17}],15:[function(require,module,exports){
 "use strict";
 
-var global = require('./util').global;
-var each = require('./util').each;
-var contains = require('./contains').contains;
+var global = require("./util").global;
+var each = require("./util").each;
+var contains = require("./contains").contains;
 
 
 var reMouseEvent = /^(?:mouse|pointer|contextmenu)|click/, reKeyEvent = /^key/;
@@ -844,7 +863,7 @@ function trigger(type, data, params) {
 }
 
 function getEventConstructor(type) {
-  return supportsOtherEventConstructors ? (reMouseEvent.test(type) ? MouseEvent : (reKeyEvent.test(type) ? KeyboardEvent : CustomEvent)) : CustomEvent;
+  return supportsOtherEventConstructors ? reMouseEvent.test(type) ? MouseEvent : reKeyEvent.test(type) ? KeyboardEvent : CustomEvent : CustomEvent;
 }
 
 function triggerHandler(type, data) {
@@ -923,7 +942,7 @@ exports.triggerHandler = triggerHandler;
 "use strict";
 
 function isFunction(obj) {
-  return (typeof obj === "function");
+  return typeof obj === "function";
 }
 
 var isArray = Array.isArray;
@@ -978,42 +997,42 @@ exports.extend = extend;
 },{}],18:[function(require,module,exports){
 "use strict";
 
-var extend = require('./util').extend;
+var extend = require("./util").extend;
 
 
 var api = {}, $ = {};
 
-var array = require('./array');
+var array = require("./array");
 
-var attr = require('./attr');
+var attr = require("./attr");
 
-var class_ = require('./class');
+var class_ = require("./class");
 
-var contains = require('./contains');
+var contains = require("./contains");
 
-var css = require('./css');
+var css = require("./css");
 
-var data = require('./data');
+var data = require("./data");
 
-var dom = require('./dom');
+var dom = require("./dom");
 
-var dom_extra = require('./dom_extra');
+var dom_extra = require("./dom_extra");
 
-var event = require('./event');
+var event = require("./event");
 
-var html = require('./html');
+var html = require("./html");
 
-var noconflict = require('./noconflict');
+var noconflict = require("./noconflict");
 
-var ready = require('./ready');
+var ready = require("./ready");
 
-var selector = require('./selector');
+var selector = require("./selector");
 
-var selector_extra = require('./selector_extra');
+var selector_extra = require("./selector_extra");
 
-var trigger = require('./trigger');
+var trigger = require("./trigger");
 
-var type = require('./type');
+var type = require("./type");
 
 if (typeof selector !== "undefined") {
   $ = selector.$;
@@ -1027,11 +1046,11 @@ extend(api, array, attr, class_, css, data, dom, dom_extra, event, html, ready, 
 
 $.fn = api;
 
-$.version = "0.9.0";
+$.version = "0.9.1";
 
 $.extend = extend;
 
-exports["default"] = $;
+module.exports = $;
 
 },{"./array":1,"./attr":2,"./class":3,"./contains":4,"./css":5,"./data":6,"./dom":7,"./dom_extra":8,"./event":9,"./html":10,"./noconflict":11,"./ready":12,"./selector":13,"./selector_extra":14,"./trigger":15,"./type":16,"./util":17}]},{},[18])(18)
 });
