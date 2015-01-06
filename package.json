@@ -27,6 +27,6 @@
   "bugs": {
     "url": "https://github.com/webpro/DOMtastic/issues"
   },
-  "main": "commonjs",
+  "main": "commonjs/index.js",
   "license": "MIT"
 }
