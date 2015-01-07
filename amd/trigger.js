@@ -1,6 +1,6 @@
-"use strict";
-
 define(["exports", "./util", "./contains"], function (exports, _util, _contains) {
+  "use strict";
+
   var global = _util.global;
   var each = _util.each;
   var contains = _contains.contains;
@@ -8,8 +8,8 @@ define(["exports", "./util", "./contains"], function (exports, _util, _contains)
 
   var reMouseEvent = /^(?:mouse|pointer|contextmenu)|click/, reKeyEvent = /^key/;
 
-  function trigger(type, data, params) {
-    if (params === undefined) params = {};
+  function trigger(type, data) {
+    var params = arguments[2] === undefined ? {} : arguments[2];
 
 
     params.bubbles = typeof params.bubbles === "boolean" ? params.bubbles : true;
@@ -48,8 +48,8 @@ define(["exports", "./util", "./contains"], function (exports, _util, _contains)
     return contains(element.ownerDocument.documentElement, element);
   }
 
-  function triggerForPath(element, type, params) {
-    if (params === undefined) params = {};
+  function triggerForPath(element, type) {
+    var params = arguments[2] === undefined ? {} : arguments[2];
     params.bubbles = false;
     var event = new CustomEvent(type, params);
     event._target = element;
@@ -69,8 +69,8 @@ define(["exports", "./util", "./contains"], function (exports, _util, _contains)
   }
 
   (function () {
-    function CustomEvent(event, params) {
-      if (params === undefined) params = { bubbles: false, cancelable: false, detail: undefined };
+    function CustomEvent(event) {
+      var params = arguments[1] === undefined ? { bubbles: false, cancelable: false, detail: undefined } : arguments[1];
       return (function () {
         var customEvent = document.createEvent("CustomEvent");
         customEvent.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);

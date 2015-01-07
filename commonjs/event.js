@@ -40,7 +40,7 @@ function on(eventNames, selector, handler, useCapture) {
 }
 
 function off(eventNames, selector, handler, useCapture) {
-  if (eventNames === undefined) eventNames = "";
+  var eventNames = arguments[0] === undefined ? "" : arguments[0];
 
 
   if (typeof selector === "function") {

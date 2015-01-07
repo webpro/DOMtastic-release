@@ -1,13 +1,13 @@
-"use strict";
-
 define(["exports", "./util"], function (exports, _util) {
+  "use strict";
+
   var global = _util.global;
 
 
   var isPrototypeSet = false, reFragment = /^\s*<(\w+|!)[^>]*>/, reSingleTag = /^<(\w+)\s*\/?>(?:<\/\1>|)$/, reSimpleSelector = /^[\.#]?[\w-]*$/;
 
-  function $(selector, context) {
-    if (context === undefined) context = document;
+  function $(selector) {
+    var context = arguments[1] === undefined ? document : arguments[1];
     return (function () {
       var collection;
 

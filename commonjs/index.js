@@ -1,41 +1,47 @@
 "use strict";
 
+var _interopRequireWildcard = function (obj) {
+  return obj && obj.constructor === Object ? obj : {
+    "default": obj
+  };
+};
+
 var extend = require("./util").extend;
 
 
 var api = {}, $ = {};
 
-var array = require("./array");
+var array = _interopRequireWildcard(require("./array"));
 
-var attr = require("./attr");
+var attr = _interopRequireWildcard(require("./attr"));
 
-var class_ = require("./class");
+var class_ = _interopRequireWildcard(require("./class"));
 
-var contains = require("./contains");
+var contains = _interopRequireWildcard(require("./contains"));
 
-var css = require("./css");
+var css = _interopRequireWildcard(require("./css"));
 
-var data = require("./data");
+var data = _interopRequireWildcard(require("./data"));
 
-var dom = require("./dom");
+var dom = _interopRequireWildcard(require("./dom"));
 
-var dom_extra = require("./dom_extra");
+var dom_extra = _interopRequireWildcard(require("./dom_extra"));
 
-var event = require("./event");
+var event = _interopRequireWildcard(require("./event"));
 
-var html = require("./html");
+var html = _interopRequireWildcard(require("./html"));
 
-var noconflict = require("./noconflict");
+var noconflict = _interopRequireWildcard(require("./noconflict"));
 
-var ready = require("./ready");
+var ready = _interopRequireWildcard(require("./ready"));
 
-var selector = require("./selector");
+var selector = _interopRequireWildcard(require("./selector"));
 
-var selector_extra = require("./selector_extra");
+var selector_extra = _interopRequireWildcard(require("./selector_extra"));
 
-var trigger = require("./trigger");
+var trigger = _interopRequireWildcard(require("./trigger"));
 
-var type = require("./type");
+var type = _interopRequireWildcard(require("./type"));
 
 if (typeof selector !== "undefined") {
   $ = selector.$;
@@ -49,7 +55,7 @@ extend(api, array, attr, class_, css, data, dom, dom_extra, event, html, ready, 
 
 $.fn = api;
 
-$.version = "0.9.1";
+$.version = "0.9.2";
 
 $.extend = extend;
 

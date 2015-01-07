@@ -5,8 +5,8 @@ var global = require("./util").global;
 
 var isPrototypeSet = false, reFragment = /^\s*<(\w+|!)[^>]*>/, reSingleTag = /^<(\w+)\s*\/?>(?:<\/\1>|)$/, reSimpleSelector = /^[\.#]?[\w-]*$/;
 
-function $(selector, context) {
-  if (context === undefined) context = document;
+function $(selector) {
+  var context = arguments[1] === undefined ? document : arguments[1];
   return (function () {
     var collection;
 

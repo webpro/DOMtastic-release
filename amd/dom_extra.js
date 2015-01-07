@@ -1,6 +1,6 @@
-"use strict";
-
 define(["exports", "./util", "./dom", "./selector"], function (exports, _util, _dom, _selector) {
+  "use strict";
+
   var each = _util.each;
   var append = _dom.append;
   var before = _dom.before;

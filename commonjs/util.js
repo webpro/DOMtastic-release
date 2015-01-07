@@ -1,8 +1,5 @@
 "use strict";
 
-var _slice = Array.prototype.slice;
-
-
 var global = new Function("return this")();
 
 function toArray(collection) {
@@ -26,7 +23,11 @@ function each(collection, callback, thisArg) {
 }
 
 function extend(target) {
-  var sources = _slice.call(arguments, 1);
+  var sources = [];
+
+  for (var _key = 1; _key < arguments.length; _key++) {
+    sources[_key - 1] = arguments[_key];
+  }
 
   sources.forEach(function (src) {
     for (var prop in src) {

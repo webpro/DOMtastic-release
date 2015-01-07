@@ -1,8 +1,5 @@
-"use strict";
-
 define(["exports"], function (exports) {
-  var _slice = Array.prototype.slice;
-
+  "use strict";
 
   var global = new Function("return this")();
 
@@ -27,7 +24,11 @@ define(["exports"], function (exports) {
   }
 
   function extend(target) {
-    var sources = _slice.call(arguments, 1);
+    var sources = [];
+
+    for (var _key = 1; _key < arguments.length; _key++) {
+      sources[_key - 1] = arguments[_key];
+    }
 
     sources.forEach(function (src) {
       for (var prop in src) {

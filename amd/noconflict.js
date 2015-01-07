@@ -1,6 +1,6 @@
-"use strict";
-
 define(["exports", "./util"], function (exports, _util) {
+  "use strict";
+
   var global = _util.global;
 
 

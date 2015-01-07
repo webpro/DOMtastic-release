@@ -475,7 +475,7 @@ function on(eventNames, selector, handler, useCapture) {
 }
 
 function off(eventNames, selector, handler, useCapture) {
-  if (eventNames === undefined) eventNames = "";
+  var eventNames = arguments[0] === undefined ? "" : arguments[0];
 
 
   if (typeof selector === "function") {
@@ -643,8 +643,8 @@ var global = require("./util").global;
 
 var isPrototypeSet = false, reFragment = /^\s*<(\w+|!)[^>]*>/, reSingleTag = /^<(\w+)\s*\/?>(?:<\/\1>|)$/, reSimpleSelector = /^[\.#]?[\w-]*$/;
 
-function $(selector, context) {
-  if (context === undefined) context = document;
+function $(selector) {
+  var context = arguments[1] === undefined ? document : arguments[1];
   return (function () {
     var collection;
 
@@ -839,8 +839,8 @@ var contains = require("./contains").contains;
 
 var reMouseEvent = /^(?:mouse|pointer|contextmenu)|click/, reKeyEvent = /^key/;
 
-function trigger(type, data, params) {
-  if (params === undefined) params = {};
+function trigger(type, data) {
+  var params = arguments[2] === undefined ? {} : arguments[2];
 
 
   params.bubbles = typeof params.bubbles === "boolean" ? params.bubbles : true;
@@ -879,8 +879,8 @@ function isAttachedToDocument(element) {
   return contains(element.ownerDocument.documentElement, element);
 }
 
-function triggerForPath(element, type, params) {
-  if (params === undefined) params = {};
+function triggerForPath(element, type) {
+  var params = arguments[2] === undefined ? {} : arguments[2];
   params.bubbles = false;
   var event = new CustomEvent(type, params);
   event._target = element;
@@ -900,8 +900,8 @@ function dispatchEvent(element, event) {
 }
 
 (function () {
-  function CustomEvent(event, params) {
-    if (params === undefined) params = { bubbles: false, cancelable: false, detail: undefined };
+  function CustomEvent(event) {
+    var params = arguments[1] === undefined ? { bubbles: false, cancelable: false, detail: undefined } : arguments[1];
     return (function () {
       var customEvent = document.createEvent("CustomEvent");
       customEvent.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
@@ -953,9 +953,6 @@ exports.isFunction = isFunction;
 },{}],17:[function(require,module,exports){
 "use strict";
 
-var _slice = Array.prototype.slice;
-
-
 var global = new Function("return this")();
 
 function toArray(collection) {
@@ -979,7 +976,11 @@ function each(collection, callback, thisArg) {
 }
 
 function extend(target) {
-  var sources = _slice.call(arguments, 1);
+  var sources = [];
+
+  for (var _key = 1; _key < arguments.length; _key++) {
+    sources[_key - 1] = arguments[_key];
+  }
 
   sources.forEach(function (src) {
     for (var prop in src) {
@@ -997,42 +998,48 @@ exports.extend = extend;
 },{}],18:[function(require,module,exports){
 "use strict";
 
+var _interopRequireWildcard = function (obj) {
+  return obj && obj.constructor === Object ? obj : {
+    "default": obj
+  };
+};
+
 var extend = require("./util").extend;
 
 
 var api = {}, $ = {};
 
-var array = require("./array");
+var array = _interopRequireWildcard(require("./array"));
 
-var attr = require("./attr");
+var attr = _interopRequireWildcard(require("./attr"));
 
-var class_ = require("./class");
+var class_ = _interopRequireWildcard(require("./class"));
 
-var contains = require("./contains");
+var contains = _interopRequireWildcard(require("./contains"));
 
-var css = require("./css");
+var css = _interopRequireWildcard(require("./css"));
 
-var data = require("./data");
+var data = _interopRequireWildcard(require("./data"));
 
-var dom = require("./dom");
+var dom = _interopRequireWildcard(require("./dom"));
 
-var dom_extra = require("./dom_extra");
+var dom_extra = _interopRequireWildcard(require("./dom_extra"));
 
-var event = require("./event");
+var event = _interopRequireWildcard(require("./event"));
 
-var html = require("./html");
+var html = _interopRequireWildcard(require("./html"));
 
-var noconflict = require("./noconflict");
+var noconflict = _interopRequireWildcard(require("./noconflict"));
 
-var ready = require("./ready");
+var ready = _interopRequireWildcard(require("./ready"));
 
-var selector = require("./selector");
+var selector = _interopRequireWildcard(require("./selector"));
 
-var selector_extra = require("./selector_extra");
+var selector_extra = _interopRequireWildcard(require("./selector_extra"));
 
-var trigger = require("./trigger");
+var trigger = _interopRequireWildcard(require("./trigger"));
 
-var type = require("./type");
+var type = _interopRequireWildcard(require("./type"));
 
 if (typeof selector !== "undefined") {
   $ = selector.$;
@@ -1046,7 +1053,7 @@ extend(api, array, attr, class_, css, data, dom, dom_extra, event, html, ready, 
 
 $.fn = api;
 
-$.version = "0.9.1";
+$.version = "0.9.2";
 
 $.extend = extend;
 

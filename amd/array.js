@@ -1,6 +1,6 @@
-"use strict";
-
 define(["exports", "./util", "./selector"], function (exports, _util, _selector) {
+  "use strict";
+
   var _each = _util.each;
   var toArray = _util.toArray;
   var $ = _selector.$;
