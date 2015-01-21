@@ -1,6 +1,8 @@
 "use strict";
 
 var global = require("./util").global;
+var each = require("./util").each;
+var uniq = require("./util").uniq;
 
 
 var isPrototypeSet = false, reFragment = /^\s*<(\w+|!)[^>]*>/, reSingleTag = /^<(\w+)\s*\/?>(?:<\/\1>|)$/, reSimpleSelector = /^[\.#]?[\w-]*$/;
@@ -29,26 +31,42 @@ function $(selector) {
 }
 
 function find(selector) {
-  return $(selector, this);
+  var nodes = [];
+  each(this, function (node) {
+    each(querySelector(selector, node), function (child) {
+      if (nodes.indexOf(child) === -1) {
+        nodes.push(child);
+      }
+    });
+  });
+  return $(nodes);
 }
 
 var closest = (function () {
   function closest(selector, context) {
-    var node = this[0];
-    while (node && node !== context) {
-      if (matches(node, selector)) {
-        return $(node);
-      } else {
+    var nodes = [];
+    each(this, function (node) {
+      while (node && node !== context) {
+        if (matches(node, selector)) {
+          nodes.push(node);
+          break;
+        }
         node = node.parentElement;
       }
-    }
-    return $();
+    });
+    return $(uniq(nodes));
   }
 
   return !Element.prototype.closest ? closest : function (selector, context) {
     if (!context) {
-      var node = this[0];
-      return $(node.closest(selector));
+      var nodes = [];
+      each(this, function (node) {
+        var n = node.closest(selector);
+        if (n) {
+          nodes.push(n);
+        }
+      });
+      return $(uniq(nodes));
     } else {
       return closest.call(this, selector, context);
     }

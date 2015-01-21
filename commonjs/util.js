@@ -37,7 +37,14 @@ function extend(target) {
   return target;
 }
 
+function uniq(collection) {
+  return collection.filter(function (item, index) {
+    return collection.indexOf(item) === index;
+  });
+}
+
 exports.global = global;
 exports.toArray = toArray;
 exports.each = each;
 exports.extend = extend;
+exports.uniq = uniq;

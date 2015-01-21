@@ -639,6 +639,8 @@ exports.ready = ready;
 "use strict";
 
 var global = require("./util").global;
+var each = require("./util").each;
+var uniq = require("./util").uniq;
 
 
 var isPrototypeSet = false, reFragment = /^\s*<(\w+|!)[^>]*>/, reSingleTag = /^<(\w+)\s*\/?>(?:<\/\1>|)$/, reSimpleSelector = /^[\.#]?[\w-]*$/;
@@ -667,26 +669,42 @@ function $(selector) {
 }
 
 function find(selector) {
-  return $(selector, this);
+  var nodes = [];
+  each(this, function (node) {
+    each(querySelector(selector, node), function (child) {
+      if (nodes.indexOf(child) === -1) {
+        nodes.push(child);
+      }
+    });
+  });
+  return $(nodes);
 }
 
 var closest = (function () {
   function closest(selector, context) {
-    var node = this[0];
-    while (node && node !== context) {
-      if (matches(node, selector)) {
-        return $(node);
-      } else {
+    var nodes = [];
+    each(this, function (node) {
+      while (node && node !== context) {
+        if (matches(node, selector)) {
+          nodes.push(node);
+          break;
+        }
         node = node.parentElement;
       }
-    }
-    return $();
+    });
+    return $(uniq(nodes));
   }
 
   return !Element.prototype.closest ? closest : function (selector, context) {
     if (!context) {
-      var node = this[0];
-      return $(node.closest(selector));
+      var nodes = [];
+      each(this, function (node) {
+        var n = node.closest(selector);
+        if (n) {
+          nodes.push(n);
+        }
+      });
+      return $(uniq(nodes));
     } else {
       return closest.call(this, selector, context);
     }
@@ -990,10 +1008,17 @@ function extend(target) {
   return target;
 }
 
+function uniq(collection) {
+  return collection.filter(function (item, index) {
+    return collection.indexOf(item) === index;
+  });
+}
+
 exports.global = global;
 exports.toArray = toArray;
 exports.each = each;
 exports.extend = extend;
+exports.uniq = uniq;
 
 },{}],18:[function(require,module,exports){
 "use strict";
@@ -1053,7 +1078,7 @@ extend(api, array, attr, class_, css, data, dom, dom_extra, event, html, ready, 
 
 $.fn = api;
 
-$.version = "0.9.2";
+$.version = "0.9.3";
 
 $.extend = extend;
 
