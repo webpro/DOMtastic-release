@@ -1,62 +1,71 @@
 "use strict";
 
-var _interopRequireWildcard = function (obj) {
-  return obj && obj.constructor === Object ? obj : {
-    "default": obj
-  };
-};
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+
+/**
+ * @module API
+ */
 
 var extend = require("./util").extend;
 
+var api = {},
+    $ = {};
 
-var api = {}, $ = {};
+// Import modules to build up the API
 
 var array = _interopRequireWildcard(require("./array"));
 
-var attr = _interopRequireWildcard(require("./attr"));
+var attr = _interopRequireWildcard(require("./dom/attr"));
 
-var class_ = _interopRequireWildcard(require("./class"));
+var class_ = _interopRequireWildcard(require("./dom/class"));
 
-var contains = _interopRequireWildcard(require("./contains"));
+var contains = _interopRequireWildcard(require("./dom/contains"));
 
 var css = _interopRequireWildcard(require("./css"));
 
-var data = _interopRequireWildcard(require("./data"));
+var data = _interopRequireWildcard(require("./dom/data"));
 
 var dom = _interopRequireWildcard(require("./dom"));
 
-var dom_extra = _interopRequireWildcard(require("./dom_extra"));
+var dom_extra = _interopRequireWildcard(require("./dom/extra"));
 
 var event = _interopRequireWildcard(require("./event"));
 
-var html = _interopRequireWildcard(require("./html"));
+var html = _interopRequireWildcard(require("./dom/html"));
 
 var noconflict = _interopRequireWildcard(require("./noconflict"));
 
-var ready = _interopRequireWildcard(require("./ready"));
+var ready = _interopRequireWildcard(require("./event/ready"));
 
 var selector = _interopRequireWildcard(require("./selector"));
 
-var selector_extra = _interopRequireWildcard(require("./selector_extra"));
+var closest = _interopRequireWildcard(require("./selector/closest"));
 
-var trigger = _interopRequireWildcard(require("./trigger"));
+var selector_extra = _interopRequireWildcard(require("./selector/extra"));
+
+var trigger = _interopRequireWildcard(require("./event/trigger"));
 
 var type = _interopRequireWildcard(require("./type"));
 
 if (typeof selector !== "undefined") {
-  $ = selector.$;
-  $.matches = selector.matches;
-  api.find = selector.find;
-  api.closest = selector.closest;
+    $ = selector.$;
+    $.matches = selector.matches;
+    api.find = selector.find;
 }
 
 extend($, contains, noconflict, type);
-extend(api, array, attr, class_, css, data, dom, dom_extra, event, html, ready, selector_extra, trigger);
+extend(api, array, attr, class_, closest, css, data, dom, dom_extra, event, html, ready, selector_extra, trigger);
 
 $.fn = api;
 
-$.version = "0.9.3";
+// Version
+
+$.version = "0.10.0";
+
+// Util
 
 $.extend = extend;
+
+// Export interface
 
 module.exports = $;
