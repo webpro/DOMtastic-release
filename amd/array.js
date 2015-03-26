@@ -1,4 +1,4 @@
-define(["exports", "./util", "./selector"], function (exports, _util, _selector) {
+define(["exports", "./util", "./selector/index"], function (exports, _util, _selectorIndex) {
   "use strict";
 
   Object.defineProperty(exports, "__esModule", {
@@ -10,8 +10,8 @@ define(["exports", "./util", "./selector"], function (exports, _util, _selector)
 
   var _each = _util.each;
   var toArray = _util.toArray;
-  var $ = _selector.$;
-  var matches = _selector.matches;
+  var $ = _selectorIndex.$;
+  var matches = _selectorIndex.matches;
 
   var ArrayProto = Array.prototype;
 

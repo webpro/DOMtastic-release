@@ -1,4 +1,4 @@
-define(["exports", ".", "../util"], function (exports, _, _util) {
+define(["exports", "./index", "../util"], function (exports, _index, _util) {
     "use strict";
 
     Object.defineProperty(exports, "__esModule", {
@@ -8,7 +8,7 @@ define(["exports", ".", "../util"], function (exports, _, _util) {
      * @module closest
      */
 
-    var matches = _.matches;
+    var matches = _index.matches;
     var each = _util.each;
     var uniq = _util.uniq;
 

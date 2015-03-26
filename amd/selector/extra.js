@@ -1,4 +1,4 @@
-define(["exports", "../util", "."], function (exports, _util, _) {
+define(["exports", "../util", "./index"], function (exports, _util, _index) {
     "use strict";
 
     Object.defineProperty(exports, "__esModule", {
@@ -10,8 +10,8 @@ define(["exports", "../util", "."], function (exports, _util, _) {
 
     var each = _util.each;
     var toArray = _util.toArray;
-    var $ = _.$;
-    var matches = _.matches;
+    var $ = _index.$;
+    var matches = _index.matches;
 
     /**
      * Return children of each element in the collection, optionally filtered by a selector.

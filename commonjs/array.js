@@ -12,10 +12,10 @@ var _util = require("./util");
 var _each = _util.each;
 var toArray = _util.toArray;
 
-var _selector = require("./selector");
+var _selectorIndex = require("./selector/index");
 
-var $ = _selector.$;
-var matches = _selector.matches;
+var $ = _selectorIndex.$;
+var matches = _selectorIndex.matches;
 
 var ArrayProto = Array.prototype;
 

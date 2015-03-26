@@ -25,11 +25,11 @@ var css = _interopRequireWildcard(require("./css"));
 
 var data = _interopRequireWildcard(require("./dom/data"));
 
-var dom = _interopRequireWildcard(require("./dom"));
+var dom = _interopRequireWildcard(require("./dom/index"));
 
 var dom_extra = _interopRequireWildcard(require("./dom/extra"));
 
-var event = _interopRequireWildcard(require("./event"));
+var event = _interopRequireWildcard(require("./event/index"));
 
 var html = _interopRequireWildcard(require("./dom/html"));
 
@@ -37,7 +37,7 @@ var noconflict = _interopRequireWildcard(require("./noconflict"));
 
 var ready = _interopRequireWildcard(require("./event/ready"));
 
-var selector = _interopRequireWildcard(require("./selector"));
+var selector = _interopRequireWildcard(require("./selector/index"));
 
 var closest = _interopRequireWildcard(require("./selector/closest"));
 
@@ -60,7 +60,7 @@ $.fn = api;
 
 // Version
 
-$.version = "0.10.0";
+$.version = "0.10.1";
 
 // Util
 

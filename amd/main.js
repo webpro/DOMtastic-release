@@ -1,4 +1,4 @@
-define(["exports", "module", "./util", "./array", "./dom/attr", "./dom/class", "./dom/contains", "./css", "./dom/data", "./dom", "./dom/extra", "./event", "./dom/html", "./noconflict", "./event/ready", "./selector", "./selector/closest", "./selector/extra", "./event/trigger", "./type"], function (exports, module, _util, _array, _domAttr, _domClass, _domContains, _css, _domData, _dom, _domExtra, _event, _domHtml, _noconflict, _eventReady, _selector, _selectorClosest, _selectorExtra, _eventTrigger, _type) {
+define(["exports", "module", "./util", "./array", "./dom/attr", "./dom/class", "./dom/contains", "./css", "./dom/data", "./dom/index", "./dom/extra", "./event/index", "./dom/html", "./noconflict", "./event/ready", "./selector/index", "./selector/closest", "./selector/extra", "./event/trigger", "./type"], function (exports, module, _util, _array, _domAttr, _domClass, _domContains, _css, _domData, _domIndex, _domExtra, _eventIndex, _domHtml, _noconflict, _eventReady, _selectorIndex, _selectorClosest, _selectorExtra, _eventTrigger, _type) {
     "use strict";
 
     /**
@@ -18,13 +18,13 @@ define(["exports", "module", "./util", "./array", "./dom/attr", "./dom/class", "
     var contains = _domContains;
     var css = _css;
     var data = _domData;
-    var dom = _dom;
+    var dom = _domIndex;
     var dom_extra = _domExtra;
-    var event = _event;
+    var event = _eventIndex;
     var html = _domHtml;
     var noconflict = _noconflict;
     var ready = _eventReady;
-    var selector = _selector;
+    var selector = _selectorIndex;
     var closest = _selectorClosest;
     var selector_extra = _selectorExtra;
     var trigger = _eventTrigger;
@@ -43,7 +43,7 @@ define(["exports", "module", "./util", "./array", "./dom/attr", "./dom/class", "
 
     // Version
 
-    $.version = "0.10.0";
+    $.version = "0.10.1";
 
     // Util
 

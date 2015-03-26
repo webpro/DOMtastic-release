@@ -9,7 +9,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var toArray = require("../util").toArray;
 
-var $ = require("../selector").$;
+var $ = require("../selector/index").$;
 
 var forEach = Array.prototype.forEach;
 

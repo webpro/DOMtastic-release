@@ -9,13 +9,13 @@ Object.defineProperty(exports, "__esModule", {
 
 var each = require("../util").each;
 
-var _ = require(".");
+var _index = require("./index");
 
-var append = _.append;
-var before = _.before;
-var after = _.after;
+var append = _index.append;
+var before = _index.before;
+var after = _index.after;
 
-var $ = require("../selector").$;
+var $ = require("../selector/index").$;
 
 /**
  * Append each element in the collection to the specified element(s).

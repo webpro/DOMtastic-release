@@ -7,7 +7,7 @@ Object.defineProperty(exports, "__esModule", {
  * @module closest
  */
 
-var matches = require(".").matches;
+var matches = require("./index").matches;
 
 var _util = require("../util");
 

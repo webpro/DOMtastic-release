@@ -10,10 +10,10 @@ var _util = require(18);
 var _each = _util.each;
 var toArray = _util.toArray;
 
-var _selector = require(16);
+var _selectorIndex = require(16);
 
-var $ = _selector.$;
-var matches = _selector.matches;
+var $ = _selectorIndex.$;
+var matches = _selectorIndex.matches;
 
 var ArrayProto = Array.prototype;
 
@@ -292,11 +292,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var each = require(18).each;
 
-var _ = require(9);
+var _index = require(9);
 
-var append = _.append;
-var before = _.before;
-var after = _.after;
+var append = _index.append;
+var before = _index.before;
+var after = _index.after;
 
 var $ = require(16).$;
 
@@ -879,10 +879,10 @@ var _util = require(18);
 var each = _util.each;
 var toArray = _util.toArray;
 
-var _ = require(16);
+var _index = require(16);
 
-var $ = _.$;
-var matches = _.matches;
+var $ = _index.$;
+var matches = _index.matches;
 
 function children(selector) {
     var nodes = [];
@@ -1199,7 +1199,7 @@ extend(api, array, attr, class_, closest, css, data, dom, dom_extra, event, html
 
 $.fn = api;
 
-$.version = "0.10.0";
+$.version = "0.10.1";
 
 $.extend = extend;
 

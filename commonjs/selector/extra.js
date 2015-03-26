@@ -12,10 +12,10 @@ var _util = require("../util");
 var each = _util.each;
 var toArray = _util.toArray;
 
-var _ = require(".");
+var _index = require("./index");
 
-var $ = _.$;
-var matches = _.matches;
+var $ = _index.$;
+var matches = _index.matches;
 
 /**
  * Return children of each element in the collection, optionally filtered by a selector.

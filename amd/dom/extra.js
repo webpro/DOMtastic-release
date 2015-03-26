@@ -1,4 +1,4 @@
-define(["exports", "../util", ".", "../selector"], function (exports, _util, _, _selector) {
+define(["exports", "../util", "./index", "../selector/index"], function (exports, _util, _index, _selectorIndex) {
     "use strict";
 
     Object.defineProperty(exports, "__esModule", {
@@ -9,10 +9,10 @@ define(["exports", "../util", ".", "../selector"], function (exports, _util, _, 
      */
 
     var each = _util.each;
-    var append = _.append;
-    var before = _.before;
-    var after = _.after;
-    var $ = _selector.$;
+    var append = _index.append;
+    var before = _index.before;
+    var after = _index.after;
+    var $ = _selectorIndex.$;
 
     /**
      * Append each element in the collection to the specified element(s).
