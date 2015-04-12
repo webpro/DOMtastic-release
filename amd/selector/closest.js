@@ -1,16 +1,9 @@
-define(["exports", "./index", "../util"], function (exports, _index, _util) {
-    "use strict";
+define(['exports', './index', '../util'], function (exports, _index, _util) {
+    'use strict';
 
-    Object.defineProperty(exports, "__esModule", {
+    Object.defineProperty(exports, '__esModule', {
         value: true
     });
-    /**
-     * @module closest
-     */
-
-    var matches = _index.matches;
-    var each = _util.each;
-    var uniq = _util.uniq;
 
     /**
      * Return the closest element matching the selector (starting by itself) for each element in the collection.
@@ -27,28 +20,28 @@ define(["exports", "./index", "../util"], function (exports, _index, _util) {
 
         function closest(selector, context) {
             var nodes = [];
-            each(this, function (node) {
+            _util.each(this, function (node) {
                 while (node && node !== context) {
-                    if (matches(node, selector)) {
+                    if (_index.matches(node, selector)) {
                         nodes.push(node);
                         break;
                     }
                     node = node.parentElement;
                 }
             });
-            return $(uniq(nodes));
+            return _index.$(_util.uniq(nodes));
         }
 
         return !Element.prototype.closest ? closest : function (selector, context) {
             if (!context) {
                 var nodes = [];
-                each(this, function (node) {
+                _util.each(this, function (node) {
                     var n = node.closest(selector);
                     if (n) {
                         nodes.push(n);
                     }
                 });
-                return $(uniq(nodes));
+                return _index.$(_util.uniq(nodes));
             } else {
                 return closest.call(this, selector, context);
             }
@@ -61,3 +54,6 @@ define(["exports", "./index", "../util"], function (exports, _index, _util) {
 
     exports.closest = closest;
 });
+/**
+ * @module closest
+ */

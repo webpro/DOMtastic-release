@@ -1,15 +1,9 @@
-define(["exports", "../util", "../selector/index"], function (exports, _util, _selectorIndex) {
-    "use strict";
+define(['exports', '../util', '../selector/index'], function (exports, _util, _selectorIndex) {
+    'use strict';
 
-    Object.defineProperty(exports, "__esModule", {
+    Object.defineProperty(exports, '__esModule', {
         value: true
     });
-    /**
-     * @module DOM
-     */
-
-    var toArray = _util.toArray;
-    var $ = _selectorIndex.$;
 
     var forEach = Array.prototype.forEach;
 
@@ -26,13 +20,13 @@ define(["exports", "../util", "../selector/index"], function (exports, _util, _s
 
     function append(element) {
         if (this instanceof Node) {
-            if (typeof element === "string") {
-                this.insertAdjacentHTML("beforeend", element);
+            if (typeof element === 'string') {
+                this.insertAdjacentHTML('beforeend', element);
             } else {
                 if (element instanceof Node) {
                     this.appendChild(element);
                 } else {
-                    var elements = element instanceof NodeList ? toArray(element) : element;
+                    var elements = element instanceof NodeList ? _util.toArray(element) : element;
                     forEach.call(elements, this.appendChild.bind(this));
                 }
             }
@@ -55,13 +49,13 @@ define(["exports", "../util", "../selector/index"], function (exports, _util, _s
 
     function prepend(element) {
         if (this instanceof Node) {
-            if (typeof element === "string") {
-                this.insertAdjacentHTML("afterbegin", element);
+            if (typeof element === 'string') {
+                this.insertAdjacentHTML('afterbegin', element);
             } else {
                 if (element instanceof Node) {
                     this.insertBefore(element, this.firstChild);
                 } else {
-                    var elements = element instanceof NodeList ? toArray(element) : element;
+                    var elements = element instanceof NodeList ? _util.toArray(element) : element;
                     forEach.call(elements.reverse(), prepend.bind(this));
                 }
             }
@@ -84,13 +78,13 @@ define(["exports", "../util", "../selector/index"], function (exports, _util, _s
 
     function before(element) {
         if (this instanceof Node) {
-            if (typeof element === "string") {
-                this.insertAdjacentHTML("beforebegin", element);
+            if (typeof element === 'string') {
+                this.insertAdjacentHTML('beforebegin', element);
             } else {
                 if (element instanceof Node) {
                     this.parentNode.insertBefore(element, this);
                 } else {
-                    var elements = element instanceof NodeList ? toArray(element) : element;
+                    var elements = element instanceof NodeList ? _util.toArray(element) : element;
                     forEach.call(elements, before.bind(this));
                 }
             }
@@ -112,13 +106,13 @@ define(["exports", "../util", "../selector/index"], function (exports, _util, _s
 
     function after(element) {
         if (this instanceof Node) {
-            if (typeof element === "string") {
-                this.insertAdjacentHTML("afterend", element);
+            if (typeof element === 'string') {
+                this.insertAdjacentHTML('afterend', element);
             } else {
                 if (element instanceof Node) {
                     this.parentNode.insertBefore(element, this.nextSibling);
                 } else {
-                    var elements = element instanceof NodeList ? toArray(element) : element;
+                    var elements = element instanceof NodeList ? _util.toArray(element) : element;
                     forEach.call(elements.reverse(), after.bind(this));
                 }
             }
@@ -137,7 +131,7 @@ define(["exports", "../util", "../selector/index"], function (exports, _util, _s
      */
 
     function clone() {
-        return $(_clone(this));
+        return _selectorIndex.$(_clone(this));
     }
 
     /**
@@ -149,11 +143,11 @@ define(["exports", "../util", "../selector/index"], function (exports, _util, _s
      */
 
     function _clone(element) {
-        if (typeof element === "string") {
+        if (typeof element === 'string') {
             return element;
         } else if (element instanceof Node) {
             return element.cloneNode(true);
-        } else if ("length" in element) {
+        } else if ('length' in element) {
             return [].map.call(element, function (el) {
                 return el.cloneNode(true);
             });
@@ -188,3 +182,6 @@ define(["exports", "../util", "../selector/index"], function (exports, _util, _s
     exports.after = after;
     exports.clone = clone;
 });
+/**
+ * @module DOM
+ */

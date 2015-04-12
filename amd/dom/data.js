@@ -1,16 +1,11 @@
-define(["exports", "../util"], function (exports, _util) {
-    "use strict";
+define(['exports', '../util'], function (exports, _util) {
+    'use strict';
 
-    Object.defineProperty(exports, "__esModule", {
+    Object.defineProperty(exports, '__esModule', {
         value: true
     });
-    /**
-     * @module Data
-     */
 
-    var each = _util.each;
-
-    var dataKeyProp = "__domtastic_data__";
+    var dataKeyProp = '__domtastic_data__';
 
     /**
      * Get data from first element, or set data for each element in the collection.
@@ -26,12 +21,12 @@ define(["exports", "../util"], function (exports, _util) {
 
     function data(key, value) {
 
-        if (typeof key === "string" && typeof value === "undefined") {
+        if (typeof key === 'string' && typeof value === 'undefined') {
             var element = this.nodeType ? this : this[0];
             return element && element[dataKeyProp] ? element[dataKeyProp][key] : undefined;
         }
 
-        each(this, function (element) {
+        _util.each(this, function (element) {
             element[dataKeyProp] = element[dataKeyProp] || {};
             element[dataKeyProp][key] = value;
         });
@@ -53,12 +48,12 @@ define(["exports", "../util"], function (exports, _util) {
 
     function prop(key, value) {
 
-        if (typeof key === "string" && typeof value === "undefined") {
+        if (typeof key === 'string' && typeof value === 'undefined') {
             var element = this.nodeType ? this : this[0];
             return element && element ? element[key] : undefined;
         }
 
-        each(this, function (element) {
+        _util.each(this, function (element) {
             element[key] = value;
         });
 
@@ -72,3 +67,6 @@ define(["exports", "../util"], function (exports, _util) {
     exports.data = data;
     exports.prop = prop;
 });
+/**
+ * @module Data
+ */

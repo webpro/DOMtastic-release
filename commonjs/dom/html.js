@@ -1,13 +1,13 @@
-"use strict";
+'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
   value: true
 });
 /**
  * @module HTML
  */
 
-var each = require("../util").each;
+var _each = require('../util');
 
 /*
  * Get the HTML contents of the first element, or set the HTML contents for each element in the collection.
@@ -22,12 +22,12 @@ var each = require("../util").each;
 
 function html(fragment) {
 
-  if (typeof fragment !== "string") {
+  if (typeof fragment !== 'string') {
     var element = this.nodeType ? this : this[0];
     return element ? element.innerHTML : undefined;
   }
 
-  each(this, function (element) {
+  _each.each(this, function (element) {
     element.innerHTML = fragment;
   });
 

@@ -1,7 +1,7 @@
-define(["exports"], function (exports) {
-  "use strict";
+define(['exports'], function (exports) {
+  'use strict';
 
-  Object.defineProperty(exports, "__esModule", {
+  Object.defineProperty(exports, '__esModule', {
     value: true
   });
   /**
@@ -22,7 +22,7 @@ define(["exports"], function (exports) {
    */
 
   function isFunction(obj) {
-    return typeof obj === "function";
+    return typeof obj === 'function';
   }
 
   /*

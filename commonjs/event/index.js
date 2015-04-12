@@ -1,15 +1,15 @@
-"use strict";
+'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
     value: true
 });
 /**
  * @module Events
  */
 
-var each = require("../util").each;
+var _each = require('../util');
 
-var closest = require("../selector/closest").closest;
+var _closest = require('../selector/closest');
 
 /**
  * Shorthand for `addEventListener`. Supports event delegation if a filter (`selector`) is provided.
@@ -27,22 +27,22 @@ var closest = require("../selector/closest").closest;
 
 function on(eventNames, selector, handler, useCapture) {
 
-    if (typeof selector === "function") {
+    if (typeof selector === 'function') {
         handler = selector;
         selector = null;
     }
 
     var parts, namespace, eventListener;
 
-    eventNames.split(" ").forEach(function (eventName) {
+    eventNames.split(' ').forEach(function (eventName) {
 
-        parts = eventName.split(".");
+        parts = eventName.split('.');
         eventName = parts[0] || null;
         namespace = parts[1] || null;
 
         eventListener = proxyHandler(handler);
 
-        each(this, function (element) {
+        _each.each(this, function (element) {
 
             if (selector) {
                 eventListener = delegateHandler.bind(element, selector, eventListener);
@@ -79,26 +79,26 @@ function on(eventNames, selector, handler, useCapture) {
  */
 
 function off(_x, selector, handler, useCapture) {
-    var eventNames = arguments[0] === undefined ? "" : arguments[0];
+    var eventNames = arguments[0] === undefined ? '' : arguments[0];
 
-    if (typeof selector === "function") {
+    if (typeof selector === 'function') {
         handler = selector;
         selector = null;
     }
 
     var parts, namespace, handlers;
 
-    eventNames.split(" ").forEach(function (eventName) {
+    eventNames.split(' ').forEach(function (eventName) {
 
-        parts = eventName.split(".");
+        parts = eventName.split('.');
         eventName = parts[0] || null;
         namespace = parts[1] || null;
 
-        each(this, function (element) {
+        _each.each(this, function (element) {
 
             handlers = getHandlers(element);
 
-            each(handlers.filter(function (item) {
+            _each.each(handlers.filter(function (item) {
                 return (!eventName || item.eventName === eventName) && (!namespace || item.namespace === namespace) && (!handler || item.handler === handler) && (!selector || item.selector === selector);
             }), function (item) {
                 element.removeEventListener(item.eventName, item.eventListener, useCapture || false);
@@ -124,7 +124,7 @@ function off(_x, selector, handler, useCapture) {
  * @return {Array}
  */
 
-var eventKeyProp = "__domtastic_event__";
+var eventKeyProp = '__domtastic_event__';
 var id = 1;
 var handlers = {};
 var unusedKeys = [];
@@ -180,14 +180,14 @@ var augmentEvent = (function () {
 
     var methodName,
         eventMethods = {
-        preventDefault: "isDefaultPrevented",
-        stopImmediatePropagation: "isImmediatePropagationStopped",
-        stopPropagation: "isPropagationStopped"
+        preventDefault: 'isDefaultPrevented',
+        stopImmediatePropagation: 'isImmediatePropagationStopped',
+        stopPropagation: 'isPropagationStopped'
     },
-        returnTrue = function () {
+        returnTrue = function returnTrue() {
         return true;
     },
-        returnFalse = function () {
+        returnFalse = function returnFalse() {
         return false;
     };
 
@@ -223,7 +223,7 @@ var augmentEvent = (function () {
 
 function delegateHandler(selector, handler, event) {
     var eventTarget = event._target || event.target,
-        currentTarget = closest.call([eventTarget], selector, this)[0];
+        currentTarget = _closest.closest.call([eventTarget], selector, this)[0];
     if (currentTarget && currentTarget !== this) {
         if (currentTarget === eventTarget || !(event.isPropagationStopped && event.isPropagationStopped())) {
             handler.call(currentTarget, event);

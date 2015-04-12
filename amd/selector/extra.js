@@ -1,17 +1,9 @@
-define(["exports", "../util", "./index"], function (exports, _util, _index) {
-    "use strict";
+define(['exports', '../util', './index'], function (exports, _util, _index) {
+    'use strict';
 
-    Object.defineProperty(exports, "__esModule", {
+    Object.defineProperty(exports, '__esModule', {
         value: true
     });
-    /**
-     * @module Selector (extra)
-     */
-
-    var each = _util.each;
-    var toArray = _util.toArray;
-    var $ = _index.$;
-    var matches = _index.matches;
 
     /**
      * Return children of each element in the collection, optionally filtered by a selector.
@@ -26,16 +18,16 @@ define(["exports", "../util", "./index"], function (exports, _util, _index) {
 
     function children(selector) {
         var nodes = [];
-        each(this, function (element) {
+        _util.each(this, function (element) {
             if (element.children) {
-                each(element.children, function (child) {
-                    if (!selector || selector && matches(child, selector)) {
+                _util.each(element.children, function (child) {
+                    if (!selector || selector && _index.matches(child, selector)) {
                         nodes.push(child);
                     }
                 });
             }
         });
-        return $(nodes);
+        return _index.$(nodes);
     }
 
     /**
@@ -48,10 +40,10 @@ define(["exports", "../util", "./index"], function (exports, _util, _index) {
 
     function contents() {
         var nodes = [];
-        each(this, function (element) {
-            nodes.push.apply(nodes, toArray(element.childNodes));
+        _util.each(this, function (element) {
+            nodes.push.apply(nodes, _util.toArray(element.childNodes));
         });
-        return $(nodes);
+        return _index.$(nodes);
     }
 
     /**
@@ -96,12 +88,12 @@ define(["exports", "../util", "./index"], function (exports, _util, _index) {
 
     function parent(selector) {
         var nodes = [];
-        each(this, function (element) {
-            if (!selector || selector && matches(element.parentNode, selector)) {
+        _util.each(this, function (element) {
+            if (!selector || selector && _index.matches(element.parentNode, selector)) {
                 nodes.push(element.parentNode);
             }
         });
-        return $(nodes);
+        return _index.$(nodes);
     }
 
     /**
@@ -117,14 +109,14 @@ define(["exports", "../util", "./index"], function (exports, _util, _index) {
 
     function siblings(selector) {
         var nodes = [];
-        each(this, function (element) {
-            each(element.parentNode.children, function (sibling) {
-                if (sibling !== element && (!selector || selector && matches(sibling, selector))) {
+        _util.each(this, function (element) {
+            _util.each(element.parentNode.children, function (sibling) {
+                if (sibling !== element && (!selector || selector && _index.matches(sibling, selector))) {
                     nodes.push(sibling);
                 }
             });
         });
-        return $(nodes);
+        return _index.$(nodes);
     }
 
     /**
@@ -139,7 +131,7 @@ define(["exports", "../util", "./index"], function (exports, _util, _index) {
      */
 
     function slice(start, end) {
-        return $([].slice.apply(this, arguments));
+        return _index.$([].slice.apply(this, arguments));
     }
 
     /*
@@ -154,3 +146,6 @@ define(["exports", "../util", "./index"], function (exports, _util, _index) {
     exports.siblings = siblings;
     exports.slice = slice;
 });
+/**
+ * @module Selector (extra)
+ */

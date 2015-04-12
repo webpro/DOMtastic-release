@@ -1,18 +1,9 @@
-define(["exports", "../util", "./index", "../selector/index"], function (exports, _util, _index, _selectorIndex) {
-    "use strict";
+define(['exports', '../util', './index', '../selector/index'], function (exports, _util, _index, _selectorIndex) {
+    'use strict';
 
-    Object.defineProperty(exports, "__esModule", {
+    Object.defineProperty(exports, '__esModule', {
         value: true
     });
-    /**
-     * @module DOM (extra)
-     */
-
-    var each = _util.each;
-    var append = _index.append;
-    var before = _index.before;
-    var after = _index.after;
-    var $ = _selectorIndex.$;
 
     /**
      * Append each element in the collection to the specified element(s).
@@ -25,8 +16,8 @@ define(["exports", "../util", "./index", "../selector/index"], function (exports
      */
 
     function appendTo(element) {
-        var context = typeof element === "string" ? $(element) : element;
-        append.call(context, this);
+        var context = typeof element === 'string' ? _selectorIndex.$(element) : element;
+        _index.append.call(context, this);
         return this;
     }
 
@@ -40,8 +31,8 @@ define(["exports", "../util", "./index", "../selector/index"], function (exports
      */
 
     function empty() {
-        return each(this, function (element) {
-            element.innerHTML = "";
+        return _util.each(this, function (element) {
+            element.innerHTML = '';
         });
     }
 
@@ -54,7 +45,7 @@ define(["exports", "../util", "./index", "../selector/index"], function (exports
      */
 
     function remove() {
-        return each(this, function (element) {
+        return _util.each(this, function (element) {
             if (element.parentNode) {
                 element.parentNode.removeChild(element);
             }
@@ -68,7 +59,7 @@ define(["exports", "../util", "./index", "../selector/index"], function (exports
      */
 
     function replaceWith() {
-        return before.apply(this, arguments).remove();
+        return _index.before.apply(this, arguments).remove();
     }
 
     /**
@@ -87,8 +78,8 @@ define(["exports", "../util", "./index", "../selector/index"], function (exports
             return this[0].textContent;
         }
 
-        each(this, function (element) {
-            element.textContent = "" + value;
+        _util.each(this, function (element) {
+            element.textContent = '' + value;
         });
 
         return this;
@@ -110,7 +101,7 @@ define(["exports", "../util", "./index", "../selector/index"], function (exports
             return this[0].value;
         }
 
-        each(this, function (element) {
+        _util.each(this, function (element) {
             element.value = value;
         });
 
@@ -128,3 +119,6 @@ define(["exports", "../util", "./index", "../selector/index"], function (exports
     exports.text = text;
     exports.val = val;
 });
+/**
+ * @module DOM (extra)
+ */

@@ -1,16 +1,9 @@
-define(["exports", "../util", "../dom/contains"], function (exports, _util, _domContains) {
-    "use strict";
+define(['exports', '../util', '../dom/contains'], function (exports, _util, _domContains) {
+    'use strict';
 
-    Object.defineProperty(exports, "__esModule", {
+    Object.defineProperty(exports, '__esModule', {
         value: true
     });
-    /**
-     * @module trigger
-     */
-
-    var global = _util.global;
-    var each = _util.each;
-    var contains = _domContains.contains;
 
     var reMouseEvent = /^(?:mouse|pointer|contextmenu)|click/,
         reKeyEvent = /^key/;
@@ -33,9 +26,9 @@ define(["exports", "../util", "../dom/contains"], function (exports, _util, _dom
     function trigger(type, data) {
         var params = arguments[2] === undefined ? {} : arguments[2];
 
-        params.bubbles = typeof params.bubbles === "boolean" ? params.bubbles : true;
-        params.cancelable = typeof params.cancelable === "boolean" ? params.cancelable : true;
-        params.preventDefault = typeof params.preventDefault === "boolean" ? params.preventDefault : false;
+        params.bubbles = typeof params.bubbles === 'boolean' ? params.bubbles : true;
+        params.cancelable = typeof params.cancelable === 'boolean' ? params.cancelable : true;
+        params.preventDefault = typeof params.preventDefault === 'boolean' ? params.preventDefault : false;
         params.detail = data;
 
         var EventConstructor = getEventConstructor(type),
@@ -43,7 +36,7 @@ define(["exports", "../util", "../dom/contains"], function (exports, _util, _dom
 
         event._preventDefault = params.preventDefault;
 
-        each(this, function (element) {
+        _util.each(this, function (element) {
             if (!params.bubbles || isEventBubblingInDetachedTree || isAttachedToDocument(element)) {
                 dispatchEvent(element, event);
             } else {
@@ -88,7 +81,7 @@ define(["exports", "../util", "../dom/contains"], function (exports, _util, _dom
         if (element === window || element === document) {
             return true;
         }
-        return contains(element.ownerDocument.documentElement, element);
+        return _domContains.contains(element.ownerDocument.documentElement, element);
     }
 
     /**
@@ -125,10 +118,10 @@ define(["exports", "../util", "../dom/contains"], function (exports, _util, _dom
      * @param {Object} event Event to dispatch
      */
 
-    var directEventMethods = ["blur", "focus", "select", "submit"];
+    var directEventMethods = ['blur', 'focus', 'select', 'submit'];
 
     function dispatchEvent(element, event) {
-        if (directEventMethods.indexOf(event.type) !== -1 && typeof element[event.type] === "function" && !event._preventDefault && !event.cancelable) {
+        if (directEventMethods.indexOf(event.type) !== -1 && typeof element[event.type] === 'function' && !event._preventDefault && !event.cancelable) {
             element[event.type]();
         } else {
             element.dispatchEvent(event);
@@ -144,13 +137,13 @@ define(["exports", "../util", "../dom/contains"], function (exports, _util, _dom
         function CustomEvent(event) {
             var params = arguments[1] === undefined ? { bubbles: false, cancelable: false, detail: undefined } : arguments[1];
 
-            var customEvent = document.createEvent("CustomEvent");
+            var customEvent = document.createEvent('CustomEvent');
             customEvent.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
             return customEvent;
         }
 
-        CustomEvent.prototype = global.CustomEvent && global.CustomEvent.prototype;
-        global.CustomEvent = CustomEvent;
+        CustomEvent.prototype = _util.global.CustomEvent && _util.global.CustomEvent.prototype;
+        _util.global.CustomEvent = CustomEvent;
     })();
 
     /*
@@ -160,22 +153,22 @@ define(["exports", "../util", "../dom/contains"], function (exports, _util, _dom
 
     var isEventBubblingInDetachedTree = (function () {
         var isBubbling = false,
-            doc = global.document;
+            doc = _util.global.document;
         if (doc) {
-            var parent = doc.createElement("div"),
+            var parent = doc.createElement('div'),
                 child = parent.cloneNode();
             parent.appendChild(child);
-            parent.addEventListener("e", function () {
+            parent.addEventListener('e', function () {
                 isBubbling = true;
             });
-            child.dispatchEvent(new CustomEvent("e", { bubbles: true }));
+            child.dispatchEvent(new CustomEvent('e', { bubbles: true }));
         }
         return isBubbling;
     })();
 
     var supportsOtherEventConstructors = (function () {
         try {
-            new window.MouseEvent("click");
+            new window.MouseEvent('click');
         } catch (e) {
             return false;
         }
@@ -189,3 +182,6 @@ define(["exports", "../util", "../dom/contains"], function (exports, _util, _dom
     exports.trigger = trigger;
     exports.triggerHandler = triggerHandler;
 });
+/**
+ * @module trigger
+ */

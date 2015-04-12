@@ -1,21 +1,17 @@
-"use strict";
+'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
     value: true
 });
 /**
  * @module DOM (extra)
  */
 
-var each = require("../util").each;
+var _each = require('../util');
 
-var _index = require("./index");
+var _append$before$after = require('./index');
 
-var append = _index.append;
-var before = _index.before;
-var after = _index.after;
-
-var $ = require("../selector/index").$;
+var _$ = require('../selector/index');
 
 /**
  * Append each element in the collection to the specified element(s).
@@ -28,8 +24,8 @@ var $ = require("../selector/index").$;
  */
 
 function appendTo(element) {
-    var context = typeof element === "string" ? $(element) : element;
-    append.call(context, this);
+    var context = typeof element === 'string' ? _$.$(element) : element;
+    _append$before$after.append.call(context, this);
     return this;
 }
 
@@ -43,8 +39,8 @@ function appendTo(element) {
  */
 
 function empty() {
-    return each(this, function (element) {
-        element.innerHTML = "";
+    return _each.each(this, function (element) {
+        element.innerHTML = '';
     });
 }
 
@@ -57,7 +53,7 @@ function empty() {
  */
 
 function remove() {
-    return each(this, function (element) {
+    return _each.each(this, function (element) {
         if (element.parentNode) {
             element.parentNode.removeChild(element);
         }
@@ -71,7 +67,7 @@ function remove() {
  */
 
 function replaceWith() {
-    return before.apply(this, arguments).remove();
+    return _append$before$after.before.apply(this, arguments).remove();
 }
 
 /**
@@ -90,8 +86,8 @@ function text(value) {
         return this[0].textContent;
     }
 
-    each(this, function (element) {
-        element.textContent = "" + value;
+    _each.each(this, function (element) {
+        element.textContent = '' + value;
     });
 
     return this;
@@ -113,7 +109,7 @@ function val(value) {
         return this[0].value;
     }
 
-    each(this, function (element) {
+    _each.each(this, function (element) {
         element.value = value;
     });
 

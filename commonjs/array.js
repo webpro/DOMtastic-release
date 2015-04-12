@@ -1,21 +1,15 @@
-"use strict";
+'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
   value: true
 });
 /**
  * @module Array
  */
 
-var _util = require("./util");
+var _each$toArray = require('./util');
 
-var _each = _util.each;
-var toArray = _util.toArray;
-
-var _selectorIndex = require("./selector/index");
-
-var $ = _selectorIndex.$;
-var matches = _selectorIndex.matches;
+var _$$matches = require('./selector/index');
 
 var ArrayProto = Array.prototype;
 
@@ -50,10 +44,10 @@ var every = ArrayProto.every;
  */
 
 function filter(selector, thisArg) {
-  var callback = typeof selector === "function" ? selector : function (element) {
-    return matches(element, selector);
+  var callback = typeof selector === 'function' ? selector : function (element) {
+    return _$$matches.matches(element, selector);
   };
-  return $(ArrayProto.filter.call(this, callback, thisArg));
+  return _$$matches.$(ArrayProto.filter.call(this, callback, thisArg));
 }
 
 /**
@@ -70,7 +64,7 @@ function filter(selector, thisArg) {
  */
 
 function forEach(callback, thisArg) {
-  return _each(this, callback, thisArg);
+  return _each$toArray.each(this, callback, thisArg);
 }
 
 var each = forEach;
@@ -163,7 +157,7 @@ var reduceRight = ArrayProto.reduceRight;
  */
 
 function reverse() {
-  return $(toArray(this).reverse());
+  return _$$matches.$(_each$toArray.toArray(this).reverse());
 }
 
 /**

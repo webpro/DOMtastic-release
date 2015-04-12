@@ -1,15 +1,15 @@
-"use strict";
+'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
     value: true
 });
 /**
  * @module Data
  */
 
-var each = require("../util").each;
+var _each = require('../util');
 
-var dataKeyProp = "__domtastic_data__";
+var dataKeyProp = '__domtastic_data__';
 
 /**
  * Get data from first element, or set data for each element in the collection.
@@ -25,12 +25,12 @@ var dataKeyProp = "__domtastic_data__";
 
 function data(key, value) {
 
-    if (typeof key === "string" && typeof value === "undefined") {
+    if (typeof key === 'string' && typeof value === 'undefined') {
         var element = this.nodeType ? this : this[0];
         return element && element[dataKeyProp] ? element[dataKeyProp][key] : undefined;
     }
 
-    each(this, function (element) {
+    _each.each(this, function (element) {
         element[dataKeyProp] = element[dataKeyProp] || {};
         element[dataKeyProp][key] = value;
     });
@@ -52,12 +52,12 @@ function data(key, value) {
 
 function prop(key, value) {
 
-    if (typeof key === "string" && typeof value === "undefined") {
+    if (typeof key === 'string' && typeof value === 'undefined') {
         var element = this.nodeType ? this : this[0];
         return element && element ? element[key] : undefined;
     }
 
-    each(this, function (element) {
+    _each.each(this, function (element) {
         element[key] = value;
     });
 

@@ -1,18 +1,15 @@
-"use strict";
+'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
     value: true
 });
 /**
  * @module trigger
  */
 
-var _util = require("../util");
+var _global$each = require('../util');
 
-var global = _util.global;
-var each = _util.each;
-
-var contains = require("../dom/contains").contains;
+var _contains = require('../dom/contains');
 
 var reMouseEvent = /^(?:mouse|pointer|contextmenu)|click/,
     reKeyEvent = /^key/;
@@ -35,9 +32,9 @@ var reMouseEvent = /^(?:mouse|pointer|contextmenu)|click/,
 function trigger(type, data) {
     var params = arguments[2] === undefined ? {} : arguments[2];
 
-    params.bubbles = typeof params.bubbles === "boolean" ? params.bubbles : true;
-    params.cancelable = typeof params.cancelable === "boolean" ? params.cancelable : true;
-    params.preventDefault = typeof params.preventDefault === "boolean" ? params.preventDefault : false;
+    params.bubbles = typeof params.bubbles === 'boolean' ? params.bubbles : true;
+    params.cancelable = typeof params.cancelable === 'boolean' ? params.cancelable : true;
+    params.preventDefault = typeof params.preventDefault === 'boolean' ? params.preventDefault : false;
     params.detail = data;
 
     var EventConstructor = getEventConstructor(type),
@@ -45,7 +42,7 @@ function trigger(type, data) {
 
     event._preventDefault = params.preventDefault;
 
-    each(this, function (element) {
+    _global$each.each(this, function (element) {
         if (!params.bubbles || isEventBubblingInDetachedTree || isAttachedToDocument(element)) {
             dispatchEvent(element, event);
         } else {
@@ -90,7 +87,7 @@ function isAttachedToDocument(element) {
     if (element === window || element === document) {
         return true;
     }
-    return contains(element.ownerDocument.documentElement, element);
+    return _contains.contains(element.ownerDocument.documentElement, element);
 }
 
 /**
@@ -127,10 +124,10 @@ function triggerForPath(element, type) {
  * @param {Object} event Event to dispatch
  */
 
-var directEventMethods = ["blur", "focus", "select", "submit"];
+var directEventMethods = ['blur', 'focus', 'select', 'submit'];
 
 function dispatchEvent(element, event) {
-    if (directEventMethods.indexOf(event.type) !== -1 && typeof element[event.type] === "function" && !event._preventDefault && !event.cancelable) {
+    if (directEventMethods.indexOf(event.type) !== -1 && typeof element[event.type] === 'function' && !event._preventDefault && !event.cancelable) {
         element[event.type]();
     } else {
         element.dispatchEvent(event);
@@ -146,13 +143,13 @@ function dispatchEvent(element, event) {
     function CustomEvent(event) {
         var params = arguments[1] === undefined ? { bubbles: false, cancelable: false, detail: undefined } : arguments[1];
 
-        var customEvent = document.createEvent("CustomEvent");
+        var customEvent = document.createEvent('CustomEvent');
         customEvent.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
         return customEvent;
     }
 
-    CustomEvent.prototype = global.CustomEvent && global.CustomEvent.prototype;
-    global.CustomEvent = CustomEvent;
+    CustomEvent.prototype = _global$each.global.CustomEvent && _global$each.global.CustomEvent.prototype;
+    _global$each.global.CustomEvent = CustomEvent;
 })();
 
 /*
@@ -162,22 +159,22 @@ function dispatchEvent(element, event) {
 
 var isEventBubblingInDetachedTree = (function () {
     var isBubbling = false,
-        doc = global.document;
+        doc = _global$each.global.document;
     if (doc) {
-        var parent = doc.createElement("div"),
+        var parent = doc.createElement('div'),
             child = parent.cloneNode();
         parent.appendChild(child);
-        parent.addEventListener("e", function () {
+        parent.addEventListener('e', function () {
             isBubbling = true;
         });
-        child.dispatchEvent(new CustomEvent("e", { bubbles: true }));
+        child.dispatchEvent(new CustomEvent('e', { bubbles: true }));
     }
     return isBubbling;
 })();
 
 var supportsOtherEventConstructors = (function () {
     try {
-        new window.MouseEvent("click");
+        new window.MouseEvent('click');
     } catch (e) {
         return false;
     }

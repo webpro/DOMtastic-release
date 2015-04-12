@@ -1,15 +1,9 @@
-define(["exports", "../util"], function (exports, _util) {
-    "use strict";
+define(['exports', '../util'], function (exports, _util) {
+    'use strict';
 
-    Object.defineProperty(exports, "__esModule", {
+    Object.defineProperty(exports, '__esModule', {
         value: true
     });
-    /**
-     * @module Selector
-     */
-
-    var global = _util.global;
-    var each = _util.each;
 
     var isPrototypeSet = false,
         reFragment = /^\s*<(\w+|!)[^>]*>/,
@@ -44,7 +38,7 @@ define(["exports", "../util"], function (exports, _util) {
         } else if (selector instanceof Wrapper) {
 
             return selector;
-        } else if (typeof selector !== "string") {
+        } else if (typeof selector !== 'string') {
 
             collection = selector.nodeType || selector === window ? [selector] : selector;
         } else if (reFragment.test(selector)) {
@@ -52,7 +46,7 @@ define(["exports", "../util"], function (exports, _util) {
             collection = createFragment(selector);
         } else {
 
-            context = typeof context === "string" ? document.querySelector(context) : context.length ? context[0] : context;
+            context = typeof context === 'string' ? document.querySelector(context) : context.length ? context[0] : context;
 
             collection = querySelector(selector, context);
         }
@@ -71,8 +65,8 @@ define(["exports", "../util"], function (exports, _util) {
 
     function find(selector) {
         var nodes = [];
-        each(this, function (node) {
-            each(querySelector(selector, node), function (child) {
+        _util.each(this, function (node) {
+            _util.each(querySelector(selector, node), function (child) {
                 if (nodes.indexOf(child) === -1) {
                     nodes.push(child);
                 }
@@ -93,7 +87,7 @@ define(["exports", "../util"], function (exports, _util) {
      */
 
     var matches = (function () {
-        var context = typeof Element !== "undefined" ? Element.prototype : global,
+        var context = typeof Element !== 'undefined' ? Element.prototype : _util.global,
             _matches = context.matches || context.matchesSelector || context.mozMatchesSelector || context.msMatchesSelector || context.oMatchesSelector || context.webkitMatchesSelector;
         return function (element, selector) {
             return _matches.call(element, selector);
@@ -114,11 +108,11 @@ define(["exports", "../util"], function (exports, _util) {
         var isSimpleSelector = reSimpleSelector.test(selector);
 
         if (isSimpleSelector) {
-            if (selector[0] === "#") {
+            if (selector[0] === '#') {
                 var element = (context.getElementById ? context : document).getElementById(selector.slice(1));
                 return element ? [element] : [];
             }
-            if (selector[0] === ".") {
+            if (selector[0] === '.') {
                 return context.getElementsByClassName(selector.slice(1));
             }
             return context.getElementsByTagName(selector);
@@ -142,7 +136,7 @@ define(["exports", "../util"], function (exports, _util) {
         }
 
         var elements = [],
-            container = document.createElement("div"),
+            container = document.createElement('div'),
             children = container.childNodes;
 
         container.innerHTML = html;
@@ -198,3 +192,6 @@ define(["exports", "../util"], function (exports, _util) {
     exports.find = find;
     exports.matches = matches;
 });
+/**
+ * @module Selector
+ */

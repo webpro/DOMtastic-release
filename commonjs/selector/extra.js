@@ -1,21 +1,15 @@
-"use strict";
+'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
     value: true
 });
 /**
  * @module Selector (extra)
  */
 
-var _util = require("../util");
+var _each$toArray = require('../util');
 
-var each = _util.each;
-var toArray = _util.toArray;
-
-var _index = require("./index");
-
-var $ = _index.$;
-var matches = _index.matches;
+var _$$matches = require('./index');
 
 /**
  * Return children of each element in the collection, optionally filtered by a selector.
@@ -30,16 +24,16 @@ var matches = _index.matches;
 
 function children(selector) {
     var nodes = [];
-    each(this, function (element) {
+    _each$toArray.each(this, function (element) {
         if (element.children) {
-            each(element.children, function (child) {
-                if (!selector || selector && matches(child, selector)) {
+            _each$toArray.each(element.children, function (child) {
+                if (!selector || selector && _$$matches.matches(child, selector)) {
                     nodes.push(child);
                 }
             });
         }
     });
-    return $(nodes);
+    return _$$matches.$(nodes);
 }
 
 /**
@@ -52,10 +46,10 @@ function children(selector) {
 
 function contents() {
     var nodes = [];
-    each(this, function (element) {
-        nodes.push.apply(nodes, toArray(element.childNodes));
+    _each$toArray.each(this, function (element) {
+        nodes.push.apply(nodes, _each$toArray.toArray(element.childNodes));
     });
-    return $(nodes);
+    return _$$matches.$(nodes);
 }
 
 /**
@@ -100,12 +94,12 @@ function get(index) {
 
 function parent(selector) {
     var nodes = [];
-    each(this, function (element) {
-        if (!selector || selector && matches(element.parentNode, selector)) {
+    _each$toArray.each(this, function (element) {
+        if (!selector || selector && _$$matches.matches(element.parentNode, selector)) {
             nodes.push(element.parentNode);
         }
     });
-    return $(nodes);
+    return _$$matches.$(nodes);
 }
 
 /**
@@ -121,14 +115,14 @@ function parent(selector) {
 
 function siblings(selector) {
     var nodes = [];
-    each(this, function (element) {
-        each(element.parentNode.children, function (sibling) {
-            if (sibling !== element && (!selector || selector && matches(sibling, selector))) {
+    _each$toArray.each(this, function (element) {
+        _each$toArray.each(element.parentNode.children, function (sibling) {
+            if (sibling !== element && (!selector || selector && _$$matches.matches(sibling, selector))) {
                 nodes.push(sibling);
             }
         });
     });
-    return $(nodes);
+    return _$$matches.$(nodes);
 }
 
 /**
@@ -143,7 +137,7 @@ function siblings(selector) {
  */
 
 function slice(start, end) {
-    return $([].slice.apply(this, arguments));
+    return _$$matches.$([].slice.apply(this, arguments));
 }
 
 /*

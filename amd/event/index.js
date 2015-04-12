@@ -1,15 +1,9 @@
-define(["exports", "../util", "../selector/closest"], function (exports, _util, _selectorClosest) {
-    "use strict";
+define(['exports', '../util', '../selector/closest'], function (exports, _util, _selectorClosest) {
+    'use strict';
 
-    Object.defineProperty(exports, "__esModule", {
+    Object.defineProperty(exports, '__esModule', {
         value: true
     });
-    /**
-     * @module Events
-     */
-
-    var each = _util.each;
-    var closest = _selectorClosest.closest;
 
     /**
      * Shorthand for `addEventListener`. Supports event delegation if a filter (`selector`) is provided.
@@ -27,22 +21,22 @@ define(["exports", "../util", "../selector/closest"], function (exports, _util, 
 
     function on(eventNames, selector, handler, useCapture) {
 
-        if (typeof selector === "function") {
+        if (typeof selector === 'function') {
             handler = selector;
             selector = null;
         }
 
         var parts, namespace, eventListener;
 
-        eventNames.split(" ").forEach(function (eventName) {
+        eventNames.split(' ').forEach(function (eventName) {
 
-            parts = eventName.split(".");
+            parts = eventName.split('.');
             eventName = parts[0] || null;
             namespace = parts[1] || null;
 
             eventListener = proxyHandler(handler);
 
-            each(this, function (element) {
+            _util.each(this, function (element) {
 
                 if (selector) {
                     eventListener = delegateHandler.bind(element, selector, eventListener);
@@ -79,26 +73,26 @@ define(["exports", "../util", "../selector/closest"], function (exports, _util, 
      */
 
     function off(_x, selector, handler, useCapture) {
-        var eventNames = arguments[0] === undefined ? "" : arguments[0];
+        var eventNames = arguments[0] === undefined ? '' : arguments[0];
 
-        if (typeof selector === "function") {
+        if (typeof selector === 'function') {
             handler = selector;
             selector = null;
         }
 
         var parts, namespace, handlers;
 
-        eventNames.split(" ").forEach(function (eventName) {
+        eventNames.split(' ').forEach(function (eventName) {
 
-            parts = eventName.split(".");
+            parts = eventName.split('.');
             eventName = parts[0] || null;
             namespace = parts[1] || null;
 
-            each(this, function (element) {
+            _util.each(this, function (element) {
 
                 handlers = getHandlers(element);
 
-                each(handlers.filter(function (item) {
+                _util.each(handlers.filter(function (item) {
                     return (!eventName || item.eventName === eventName) && (!namespace || item.namespace === namespace) && (!handler || item.handler === handler) && (!selector || item.selector === selector);
                 }), function (item) {
                     element.removeEventListener(item.eventName, item.eventListener, useCapture || false);
@@ -124,7 +118,7 @@ define(["exports", "../util", "../selector/closest"], function (exports, _util, 
      * @return {Array}
      */
 
-    var eventKeyProp = "__domtastic_event__";
+    var eventKeyProp = '__domtastic_event__';
     var id = 1;
     var handlers = {};
     var unusedKeys = [];
@@ -180,14 +174,14 @@ define(["exports", "../util", "../selector/closest"], function (exports, _util, 
 
         var methodName,
             eventMethods = {
-            preventDefault: "isDefaultPrevented",
-            stopImmediatePropagation: "isImmediatePropagationStopped",
-            stopPropagation: "isPropagationStopped"
+            preventDefault: 'isDefaultPrevented',
+            stopImmediatePropagation: 'isImmediatePropagationStopped',
+            stopPropagation: 'isPropagationStopped'
         },
-            returnTrue = function () {
+            returnTrue = function returnTrue() {
             return true;
         },
-            returnFalse = function () {
+            returnFalse = function returnFalse() {
             return false;
         };
 
@@ -223,7 +217,7 @@ define(["exports", "../util", "../selector/closest"], function (exports, _util, 
 
     function delegateHandler(selector, handler, event) {
         var eventTarget = event._target || event.target,
-            currentTarget = closest.call([eventTarget], selector, this)[0];
+            currentTarget = _selectorClosest.closest.call([eventTarget], selector, this)[0];
         if (currentTarget && currentTarget !== this) {
             if (currentTarget === eventTarget || !(event.isPropagationStopped && event.isPropagationStopped())) {
                 handler.call(currentTarget, event);
@@ -243,3 +237,6 @@ define(["exports", "../util", "../selector/closest"], function (exports, _util, 
     exports.bind = bind;
     exports.unbind = unbind;
 });
+/**
+ * @module Events
+ */

@@ -1,14 +1,9 @@
-define(["exports", "../util"], function (exports, _util) {
-  "use strict";
+define(['exports', '../util'], function (exports, _util) {
+  'use strict';
 
-  Object.defineProperty(exports, "__esModule", {
+  Object.defineProperty(exports, '__esModule', {
     value: true
   });
-  /**
-   * @module HTML
-   */
-
-  var each = _util.each;
 
   /*
    * Get the HTML contents of the first element, or set the HTML contents for each element in the collection.
@@ -23,12 +18,12 @@ define(["exports", "../util"], function (exports, _util) {
 
   function html(fragment) {
 
-    if (typeof fragment !== "string") {
+    if (typeof fragment !== 'string') {
       var element = this.nodeType ? this : this[0];
       return element ? element.innerHTML : undefined;
     }
 
-    each(this, function (element) {
+    _util.each(this, function (element) {
       element.innerHTML = fragment;
     });
 
@@ -41,3 +36,6 @@ define(["exports", "../util"], function (exports, _util) {
 
   exports.html = html;
 });
+/**
+ * @module HTML
+ */

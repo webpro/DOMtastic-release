@@ -1,13 +1,13 @@
-"use strict";
+'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
     value: true
 });
 /**
  * @module Attr
  */
 
-var each = require("./util").each;
+var _each = require('./util');
 
 function isNumeric(value) {
     return !isNaN(parseFloat(value)) && isFinite(value);
@@ -20,7 +20,7 @@ function camelize(value) {
 }
 
 function dasherize(value) {
-    return value.replace(/([a-z\d])([A-Z])/g, "$1-$2").toLowerCase();
+    return value.replace(/([a-z\d])([A-Z])/g, '$1-$2').toLowerCase();
 }
 
 /**
@@ -40,10 +40,10 @@ function css(key, value) {
 
     var styleProps, prop, val;
 
-    if (typeof key === "string") {
+    if (typeof key === 'string') {
         key = camelize(key);
 
-        if (typeof value === "undefined") {
+        if (typeof value === 'undefined') {
             var element = this.nodeType ? this : this[0];
             if (element) {
                 val = element.style[key];
@@ -63,7 +63,7 @@ function css(key, value) {
         }
     }
 
-    each(this, function (element) {
+    _each.each(this, function (element) {
         for (prop in styleProps) {
             if (styleProps[prop] || styleProps[prop] === 0) {
                 element.style[prop] = styleProps[prop];

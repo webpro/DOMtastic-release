@@ -1,13 +1,13 @@
-"use strict";
+'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
     value: true
 });
 /**
  * @module Attr
  */
 
-var each = require("../util").each;
+var _each = require('../util');
 
 /**
  * Get the value of an attribute for the first element, or set one or more attributes for each element in the collection.
@@ -24,13 +24,13 @@ var each = require("../util").each;
 
 function attr(key, value) {
 
-    if (typeof key === "string" && typeof value === "undefined") {
+    if (typeof key === 'string' && typeof value === 'undefined') {
         var element = this.nodeType ? this : this[0];
         return element ? element.getAttribute(key) : undefined;
     }
 
-    each(this, function (element) {
-        if (typeof key === "object") {
+    _each.each(this, function (element) {
+        if (typeof key === 'object') {
             for (var attr in key) {
                 element.setAttribute(attr, key[attr]);
             }
@@ -53,7 +53,7 @@ function attr(key, value) {
  */
 
 function removeAttr(key) {
-    each(this, function (element) {
+    _each.each(this, function (element) {
         element.removeAttribute(key);
     });
     return this;

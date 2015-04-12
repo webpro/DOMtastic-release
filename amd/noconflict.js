@@ -1,21 +1,16 @@
-define(["exports", "./util"], function (exports, _util) {
-  "use strict";
+define(['exports', './util'], function (exports, _util) {
+  'use strict';
 
-  Object.defineProperty(exports, "__esModule", {
+  Object.defineProperty(exports, '__esModule', {
     value: true
   });
-  /**
-   * @module noConflict
-   */
-
-  var global = _util.global;
 
   /*
    * Save the previous value of the global `$` variable, so that it can be restored later on.
    * @private
    */
 
-  var previousLib = global.$;
+  var previousLib = _util.global.$;
 
   /**
    * In case another library sets the global `$` variable before DOMtastic does,
@@ -27,7 +22,7 @@ define(["exports", "./util"], function (exports, _util) {
    */
 
   function noConflict() {
-    global.$ = previousLib;
+    _util.global.$ = previousLib;
     return this;
   }
 
@@ -37,3 +32,6 @@ define(["exports", "./util"], function (exports, _util) {
 
   exports.noConflict = noConflict;
 });
+/**
+ * @module noConflict
+ */

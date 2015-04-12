@@ -1,7 +1,7 @@
-define(["exports"], function (exports) {
-  "use strict";
+define(['exports'], function (exports) {
+  'use strict';
 
-  Object.defineProperty(exports, "__esModule", {
+  Object.defineProperty(exports, '__esModule', {
     value: true
   });
   /**
@@ -22,7 +22,7 @@ define(["exports"], function (exports) {
     if (/complete|loaded|interactive/.test(document.readyState) && document.body) {
       handler();
     } else {
-      document.addEventListener("DOMContentLoaded", handler, false);
+      document.addEventListener('DOMContentLoaded', handler, false);
     }
     return this;
   }

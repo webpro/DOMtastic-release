@@ -1,13 +1,13 @@
-"use strict";
+'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
     value: true
 });
 /**
  * @module Class
  */
 
-var each = require("../util").each;
+var _each2 = require('../util');
 
 /**
  * Add a class to the element(s)
@@ -22,7 +22,7 @@ var each = require("../util").each;
 
 function addClass(value) {
     if (value && value.length) {
-        each(value.split(" "), _each.bind(this, "add"));
+        _each2.each(value.split(' '), _each.bind(this, 'add'));
     }
     return this;
 }
@@ -40,7 +40,7 @@ function addClass(value) {
 
 function removeClass(value) {
     if (value && value.length) {
-        each(value.split(" "), _each.bind(this, "remove"));
+        _each2.each(value.split(' '), _each.bind(this, 'remove'));
     }
     return this;
 }
@@ -58,7 +58,7 @@ function removeClass(value) {
 
 function toggleClass(value) {
     if (value && value.length) {
-        each(value.split(" "), _each.bind(this, "toggle"));
+        _each2.each(value.split(' '), _each.bind(this, 'toggle'));
     }
     return this;
 }
@@ -88,7 +88,7 @@ function hasClass(value) {
  */
 
 function _each(fnName, className) {
-    each(this, function (element) {
+    _each2.each(this, function (element) {
         element.classList[fnName](className);
     });
 }

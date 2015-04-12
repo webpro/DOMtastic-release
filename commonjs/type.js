@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
   value: true
 });
 /**
@@ -21,7 +21,7 @@ Object.defineProperty(exports, "__esModule", {
  */
 
 function isFunction(obj) {
-  return typeof obj === "function";
+  return typeof obj === 'function';
 }
 
 /*

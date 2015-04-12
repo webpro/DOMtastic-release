@@ -1,16 +1,13 @@
-"use strict";
+'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
     value: true
 });
 /**
  * @module Selector
  */
 
-var _util = require("../util");
-
-var global = _util.global;
-var each = _util.each;
+var _global$each = require('../util');
 
 var isPrototypeSet = false,
     reFragment = /^\s*<(\w+|!)[^>]*>/,
@@ -45,7 +42,7 @@ function $(selector) {
     } else if (selector instanceof Wrapper) {
 
         return selector;
-    } else if (typeof selector !== "string") {
+    } else if (typeof selector !== 'string') {
 
         collection = selector.nodeType || selector === window ? [selector] : selector;
     } else if (reFragment.test(selector)) {
@@ -53,7 +50,7 @@ function $(selector) {
         collection = createFragment(selector);
     } else {
 
-        context = typeof context === "string" ? document.querySelector(context) : context.length ? context[0] : context;
+        context = typeof context === 'string' ? document.querySelector(context) : context.length ? context[0] : context;
 
         collection = querySelector(selector, context);
     }
@@ -72,8 +69,8 @@ function $(selector) {
 
 function find(selector) {
     var nodes = [];
-    each(this, function (node) {
-        each(querySelector(selector, node), function (child) {
+    _global$each.each(this, function (node) {
+        _global$each.each(querySelector(selector, node), function (child) {
             if (nodes.indexOf(child) === -1) {
                 nodes.push(child);
             }
@@ -94,7 +91,7 @@ function find(selector) {
  */
 
 var matches = (function () {
-    var context = typeof Element !== "undefined" ? Element.prototype : global,
+    var context = typeof Element !== 'undefined' ? Element.prototype : _global$each.global,
         _matches = context.matches || context.matchesSelector || context.mozMatchesSelector || context.msMatchesSelector || context.oMatchesSelector || context.webkitMatchesSelector;
     return function (element, selector) {
         return _matches.call(element, selector);
@@ -115,11 +112,11 @@ function querySelector(selector, context) {
     var isSimpleSelector = reSimpleSelector.test(selector);
 
     if (isSimpleSelector) {
-        if (selector[0] === "#") {
+        if (selector[0] === '#') {
             var element = (context.getElementById ? context : document).getElementById(selector.slice(1));
             return element ? [element] : [];
         }
-        if (selector[0] === ".") {
+        if (selector[0] === '.') {
             return context.getElementsByClassName(selector.slice(1));
         }
         return context.getElementsByTagName(selector);
@@ -143,7 +140,7 @@ function createFragment(html) {
     }
 
     var elements = [],
-        container = document.createElement("div"),
+        container = document.createElement('div'),
         children = container.childNodes;
 
     container.innerHTML = html;
