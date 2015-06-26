@@ -1,4 +1,8 @@
 define(['exports', './util'], function (exports, _util) {
+  /**
+   * @module noConflict
+   */
+
   'use strict';
 
   Object.defineProperty(exports, '__esModule', {
@@ -32,6 +36,3 @@ define(['exports', './util'], function (exports, _util) {
 
   exports.noConflict = noConflict;
 });
-/**
- * @module noConflict
- */

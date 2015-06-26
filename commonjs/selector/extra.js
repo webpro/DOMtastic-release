@@ -1,15 +1,16 @@
+/**
+ * @module Selector (extra)
+ */
+
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
-/**
- * @module Selector (extra)
- */
 
-var _each$toArray = require('../util');
+var _util = require('../util');
 
-var _$$matches = require('./index');
+var _index = require('./index');
 
 /**
  * Return children of each element in the collection, optionally filtered by a selector.
@@ -24,16 +25,16 @@ var _$$matches = require('./index');
 
 function children(selector) {
     var nodes = [];
-    _each$toArray.each(this, function (element) {
+    (0, _util.each)(this, function (element) {
         if (element.children) {
-            _each$toArray.each(element.children, function (child) {
-                if (!selector || selector && _$$matches.matches(child, selector)) {
+            (0, _util.each)(element.children, function (child) {
+                if (!selector || selector && (0, _index.matches)(child, selector)) {
                     nodes.push(child);
                 }
             });
         }
     });
-    return _$$matches.$(nodes);
+    return (0, _index.$)(nodes);
 }
 
 /**
@@ -46,10 +47,10 @@ function children(selector) {
 
 function contents() {
     var nodes = [];
-    _each$toArray.each(this, function (element) {
-        nodes.push.apply(nodes, _each$toArray.toArray(element.childNodes));
+    (0, _util.each)(this, function (element) {
+        nodes.push.apply(nodes, (0, _util.toArray)(element.childNodes));
     });
-    return _$$matches.$(nodes);
+    return (0, _index.$)(nodes);
 }
 
 /**
@@ -94,12 +95,12 @@ function get(index) {
 
 function parent(selector) {
     var nodes = [];
-    _each$toArray.each(this, function (element) {
-        if (!selector || selector && _$$matches.matches(element.parentNode, selector)) {
+    (0, _util.each)(this, function (element) {
+        if (!selector || selector && (0, _index.matches)(element.parentNode, selector)) {
             nodes.push(element.parentNode);
         }
     });
-    return _$$matches.$(nodes);
+    return (0, _index.$)(nodes);
 }
 
 /**
@@ -115,14 +116,14 @@ function parent(selector) {
 
 function siblings(selector) {
     var nodes = [];
-    _each$toArray.each(this, function (element) {
-        _each$toArray.each(element.parentNode.children, function (sibling) {
-            if (sibling !== element && (!selector || selector && _$$matches.matches(sibling, selector))) {
+    (0, _util.each)(this, function (element) {
+        (0, _util.each)(element.parentNode.children, function (sibling) {
+            if (sibling !== element && (!selector || selector && (0, _index.matches)(sibling, selector))) {
                 nodes.push(sibling);
             }
         });
     });
-    return _$$matches.$(nodes);
+    return (0, _index.$)(nodes);
 }
 
 /**
@@ -137,7 +138,7 @@ function siblings(selector) {
  */
 
 function slice(start, end) {
-    return _$$matches.$([].slice.apply(this, arguments));
+    return (0, _index.$)([].slice.apply(this, arguments));
 }
 
 /*

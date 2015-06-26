@@ -1,8 +1,3 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
 /*
  * @module Util
  */
@@ -12,6 +7,11 @@ Object.defineProperty(exports, "__esModule", {
  * @private
  */
 
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 var global = new Function("return this")();
 
 /**

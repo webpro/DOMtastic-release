@@ -1,15 +1,16 @@
+/**
+ * @module closest
+ */
+
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
-/**
- * @module closest
- */
 
-var _$$matches = require('./index');
+var _index = require('./index');
 
-var _each$uniq = require('../util');
+var _util = require('../util');
 
 /**
  * Return the closest element matching the selector (starting by itself) for each element in the collection.
@@ -26,28 +27,28 @@ var closest = (function () {
 
     function closest(selector, context) {
         var nodes = [];
-        _each$uniq.each(this, function (node) {
+        (0, _util.each)(this, function (node) {
             while (node && node !== context) {
-                if (_$$matches.matches(node, selector)) {
+                if ((0, _index.matches)(node, selector)) {
                     nodes.push(node);
                     break;
                 }
                 node = node.parentElement;
             }
         });
-        return _$$matches.$(_each$uniq.uniq(nodes));
+        return (0, _index.$)((0, _util.uniq)(nodes));
     }
 
     return !Element.prototype.closest ? closest : function (selector, context) {
         if (!context) {
             var nodes = [];
-            _each$uniq.each(this, function (node) {
+            (0, _util.each)(this, function (node) {
                 var n = node.closest(selector);
                 if (n) {
                     nodes.push(n);
                 }
             });
-            return _$$matches.$(_each$uniq.uniq(nodes));
+            return (0, _index.$)((0, _util.uniq)(nodes));
         } else {
             return closest.call(this, selector, context);
         }

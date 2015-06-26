@@ -1,15 +1,16 @@
+/**
+ * @module DOM
+ */
+
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
-/**
- * @module DOM
- */
 
-var _toArray = require('../util');
+var _util = require('../util');
 
-var _$ = require('../selector/index');
+var _selectorIndex = require('../selector/index');
 
 var forEach = Array.prototype.forEach;
 
@@ -32,7 +33,7 @@ function append(element) {
             if (element instanceof Node) {
                 this.appendChild(element);
             } else {
-                var elements = element instanceof NodeList ? _toArray.toArray(element) : element;
+                var elements = element instanceof NodeList ? (0, _util.toArray)(element) : element;
                 forEach.call(elements, this.appendChild.bind(this));
             }
         }
@@ -61,7 +62,7 @@ function prepend(element) {
             if (element instanceof Node) {
                 this.insertBefore(element, this.firstChild);
             } else {
-                var elements = element instanceof NodeList ? _toArray.toArray(element) : element;
+                var elements = element instanceof NodeList ? (0, _util.toArray)(element) : element;
                 forEach.call(elements.reverse(), prepend.bind(this));
             }
         }
@@ -90,7 +91,7 @@ function before(element) {
             if (element instanceof Node) {
                 this.parentNode.insertBefore(element, this);
             } else {
-                var elements = element instanceof NodeList ? _toArray.toArray(element) : element;
+                var elements = element instanceof NodeList ? (0, _util.toArray)(element) : element;
                 forEach.call(elements, before.bind(this));
             }
         }
@@ -118,7 +119,7 @@ function after(element) {
             if (element instanceof Node) {
                 this.parentNode.insertBefore(element, this.nextSibling);
             } else {
-                var elements = element instanceof NodeList ? _toArray.toArray(element) : element;
+                var elements = element instanceof NodeList ? (0, _util.toArray)(element) : element;
                 forEach.call(elements.reverse(), after.bind(this));
             }
         }
@@ -137,7 +138,7 @@ function after(element) {
  */
 
 function clone() {
-    return _$.$(_clone(this));
+    return (0, _selectorIndex.$)(_clone(this));
 }
 
 /**

@@ -1,15 +1,16 @@
+/**
+ * @module Events
+ */
+
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
-/**
- * @module Events
- */
 
-var _each = require('../util');
+var _util = require('../util');
 
-var _closest = require('../selector/closest');
+var _selectorClosest = require('../selector/closest');
 
 /**
  * Shorthand for `addEventListener`. Supports event delegation if a filter (`selector`) is provided.
@@ -42,7 +43,7 @@ function on(eventNames, selector, handler, useCapture) {
 
         eventListener = proxyHandler(handler);
 
-        _each.each(this, function (element) {
+        (0, _util.each)(this, function (element) {
 
             if (selector) {
                 eventListener = delegateHandler.bind(element, selector, eventListener);
@@ -78,8 +79,8 @@ function on(eventNames, selector, handler, useCapture) {
  *     $('.item').off();
  */
 
-function off(_x, selector, handler, useCapture) {
-    var eventNames = arguments[0] === undefined ? '' : arguments[0];
+function off(eventNames, selector, handler, useCapture) {
+    if (eventNames === undefined) eventNames = '';
 
     if (typeof selector === 'function') {
         handler = selector;
@@ -94,11 +95,11 @@ function off(_x, selector, handler, useCapture) {
         eventName = parts[0] || null;
         namespace = parts[1] || null;
 
-        _each.each(this, function (element) {
+        (0, _util.each)(this, function (element) {
 
             handlers = getHandlers(element);
 
-            _each.each(handlers.filter(function (item) {
+            (0, _util.each)(handlers.filter(function (item) {
                 return (!eventName || item.eventName === eventName) && (!namespace || item.namespace === namespace) && (!handler || item.handler === handler) && (!selector || item.selector === selector);
             }), function (item) {
                 element.removeEventListener(item.eventName, item.eventListener, useCapture || false);
@@ -223,7 +224,7 @@ var augmentEvent = (function () {
 
 function delegateHandler(selector, handler, event) {
     var eventTarget = event._target || event.target,
-        currentTarget = _closest.closest.call([eventTarget], selector, this)[0];
+        currentTarget = _selectorClosest.closest.call([eventTarget], selector, this)[0];
     if (currentTarget && currentTarget !== this) {
         if (currentTarget === eventTarget || !(event.isPropagationStopped && event.isPropagationStopped())) {
             handler.call(currentTarget, event);

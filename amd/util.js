@@ -1,9 +1,4 @@
 define(["exports"], function (exports) {
-    "use strict";
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
     /*
      * @module Util
      */
@@ -13,6 +8,11 @@ define(["exports"], function (exports) {
      * @private
      */
 
+    "use strict";
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
     var global = new Function("return this")();
 
     /**

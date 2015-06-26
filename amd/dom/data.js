@@ -1,4 +1,8 @@
 define(['exports', '../util'], function (exports, _util) {
+    /**
+     * @module Data
+     */
+
     'use strict';
 
     Object.defineProperty(exports, '__esModule', {
@@ -26,7 +30,7 @@ define(['exports', '../util'], function (exports, _util) {
             return element && element[dataKeyProp] ? element[dataKeyProp][key] : undefined;
         }
 
-        _util.each(this, function (element) {
+        (0, _util.each)(this, function (element) {
             element[dataKeyProp] = element[dataKeyProp] || {};
             element[dataKeyProp][key] = value;
         });
@@ -53,7 +57,7 @@ define(['exports', '../util'], function (exports, _util) {
             return element && element ? element[key] : undefined;
         }
 
-        _util.each(this, function (element) {
+        (0, _util.each)(this, function (element) {
             element[key] = value;
         });
 
@@ -67,6 +71,3 @@ define(['exports', '../util'], function (exports, _util) {
     exports.data = data;
     exports.prop = prop;
 });
-/**
- * @module Data
- */

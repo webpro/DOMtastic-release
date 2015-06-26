@@ -1,4 +1,8 @@
 define(['exports', '../util', '../selector/closest'], function (exports, _util, _selectorClosest) {
+    /**
+     * @module Events
+     */
+
     'use strict';
 
     Object.defineProperty(exports, '__esModule', {
@@ -36,7 +40,7 @@ define(['exports', '../util', '../selector/closest'], function (exports, _util, 
 
             eventListener = proxyHandler(handler);
 
-            _util.each(this, function (element) {
+            (0, _util.each)(this, function (element) {
 
                 if (selector) {
                     eventListener = delegateHandler.bind(element, selector, eventListener);
@@ -72,8 +76,8 @@ define(['exports', '../util', '../selector/closest'], function (exports, _util, 
      *     $('.item').off();
      */
 
-    function off(_x, selector, handler, useCapture) {
-        var eventNames = arguments[0] === undefined ? '' : arguments[0];
+    function off(eventNames, selector, handler, useCapture) {
+        if (eventNames === undefined) eventNames = '';
 
         if (typeof selector === 'function') {
             handler = selector;
@@ -88,11 +92,11 @@ define(['exports', '../util', '../selector/closest'], function (exports, _util, 
             eventName = parts[0] || null;
             namespace = parts[1] || null;
 
-            _util.each(this, function (element) {
+            (0, _util.each)(this, function (element) {
 
                 handlers = getHandlers(element);
 
-                _util.each(handlers.filter(function (item) {
+                (0, _util.each)(handlers.filter(function (item) {
                     return (!eventName || item.eventName === eventName) && (!namespace || item.namespace === namespace) && (!handler || item.handler === handler) && (!selector || item.selector === selector);
                 }), function (item) {
                     element.removeEventListener(item.eventName, item.eventListener, useCapture || false);
@@ -237,6 +241,3 @@ define(['exports', '../util', '../selector/closest'], function (exports, _util, 
     exports.bind = bind;
     exports.unbind = unbind;
 });
-/**
- * @module Events
- */

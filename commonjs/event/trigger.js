@@ -1,15 +1,16 @@
+/**
+ * @module trigger
+ */
+
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
-/**
- * @module trigger
- */
 
-var _global$each = require('../util');
+var _util = require('../util');
 
-var _contains = require('../dom/contains');
+var _domContains = require('../dom/contains');
 
 var reMouseEvent = /^(?:mouse|pointer|contextmenu)|click/,
     reKeyEvent = /^key/;
@@ -42,7 +43,7 @@ function trigger(type, data) {
 
     event._preventDefault = params.preventDefault;
 
-    _global$each.each(this, function (element) {
+    (0, _util.each)(this, function (element) {
         if (!params.bubbles || isEventBubblingInDetachedTree || isAttachedToDocument(element)) {
             dispatchEvent(element, event);
         } else {
@@ -87,7 +88,7 @@ function isAttachedToDocument(element) {
     if (element === window || element === document) {
         return true;
     }
-    return _contains.contains(element.ownerDocument.documentElement, element);
+    return (0, _domContains.contains)(element.ownerDocument.documentElement, element);
 }
 
 /**
@@ -148,8 +149,8 @@ function dispatchEvent(element, event) {
         return customEvent;
     }
 
-    CustomEvent.prototype = _global$each.global.CustomEvent && _global$each.global.CustomEvent.prototype;
-    _global$each.global.CustomEvent = CustomEvent;
+    CustomEvent.prototype = _util.global.CustomEvent && _util.global.CustomEvent.prototype;
+    _util.global.CustomEvent = CustomEvent;
 })();
 
 /*
@@ -159,7 +160,7 @@ function dispatchEvent(element, event) {
 
 var isEventBubblingInDetachedTree = (function () {
     var isBubbling = false,
-        doc = _global$each.global.document;
+        doc = _util.global.document;
     if (doc) {
         var parent = doc.createElement('div'),
             child = parent.cloneNode();

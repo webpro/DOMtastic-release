@@ -1,13 +1,14 @@
+/**
+ * @module Data
+ */
+
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
-/**
- * @module Data
- */
 
-var _each = require('../util');
+var _util = require('../util');
 
 var dataKeyProp = '__domtastic_data__';
 
@@ -30,7 +31,7 @@ function data(key, value) {
         return element && element[dataKeyProp] ? element[dataKeyProp][key] : undefined;
     }
 
-    _each.each(this, function (element) {
+    (0, _util.each)(this, function (element) {
         element[dataKeyProp] = element[dataKeyProp] || {};
         element[dataKeyProp][key] = value;
     });
@@ -57,7 +58,7 @@ function prop(key, value) {
         return element && element ? element[key] : undefined;
     }
 
-    _each.each(this, function (element) {
+    (0, _util.each)(this, function (element) {
         element[key] = value;
     });
 

@@ -1,4 +1,8 @@
 define(['exports', '../util', '../selector/index'], function (exports, _util, _selectorIndex) {
+    /**
+     * @module DOM
+     */
+
     'use strict';
 
     Object.defineProperty(exports, '__esModule', {
@@ -26,7 +30,7 @@ define(['exports', '../util', '../selector/index'], function (exports, _util, _s
                 if (element instanceof Node) {
                     this.appendChild(element);
                 } else {
-                    var elements = element instanceof NodeList ? _util.toArray(element) : element;
+                    var elements = element instanceof NodeList ? (0, _util.toArray)(element) : element;
                     forEach.call(elements, this.appendChild.bind(this));
                 }
             }
@@ -55,7 +59,7 @@ define(['exports', '../util', '../selector/index'], function (exports, _util, _s
                 if (element instanceof Node) {
                     this.insertBefore(element, this.firstChild);
                 } else {
-                    var elements = element instanceof NodeList ? _util.toArray(element) : element;
+                    var elements = element instanceof NodeList ? (0, _util.toArray)(element) : element;
                     forEach.call(elements.reverse(), prepend.bind(this));
                 }
             }
@@ -84,7 +88,7 @@ define(['exports', '../util', '../selector/index'], function (exports, _util, _s
                 if (element instanceof Node) {
                     this.parentNode.insertBefore(element, this);
                 } else {
-                    var elements = element instanceof NodeList ? _util.toArray(element) : element;
+                    var elements = element instanceof NodeList ? (0, _util.toArray)(element) : element;
                     forEach.call(elements, before.bind(this));
                 }
             }
@@ -112,7 +116,7 @@ define(['exports', '../util', '../selector/index'], function (exports, _util, _s
                 if (element instanceof Node) {
                     this.parentNode.insertBefore(element, this.nextSibling);
                 } else {
-                    var elements = element instanceof NodeList ? _util.toArray(element) : element;
+                    var elements = element instanceof NodeList ? (0, _util.toArray)(element) : element;
                     forEach.call(elements.reverse(), after.bind(this));
                 }
             }
@@ -131,7 +135,7 @@ define(['exports', '../util', '../selector/index'], function (exports, _util, _s
      */
 
     function clone() {
-        return _selectorIndex.$(_clone(this));
+        return (0, _selectorIndex.$)(_clone(this));
     }
 
     /**
@@ -182,6 +186,3 @@ define(['exports', '../util', '../selector/index'], function (exports, _util, _s
     exports.after = after;
     exports.clone = clone;
 });
-/**
- * @module DOM
- */

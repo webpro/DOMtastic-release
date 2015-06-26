@@ -1,4 +1,8 @@
 define(['exports', '../util', './index', '../selector/index'], function (exports, _util, _index, _selectorIndex) {
+    /**
+     * @module DOM (extra)
+     */
+
     'use strict';
 
     Object.defineProperty(exports, '__esModule', {
@@ -16,7 +20,7 @@ define(['exports', '../util', './index', '../selector/index'], function (exports
      */
 
     function appendTo(element) {
-        var context = typeof element === 'string' ? _selectorIndex.$(element) : element;
+        var context = typeof element === 'string' ? (0, _selectorIndex.$)(element) : element;
         _index.append.call(context, this);
         return this;
     }
@@ -31,7 +35,7 @@ define(['exports', '../util', './index', '../selector/index'], function (exports
      */
 
     function empty() {
-        return _util.each(this, function (element) {
+        return (0, _util.each)(this, function (element) {
             element.innerHTML = '';
         });
     }
@@ -45,7 +49,7 @@ define(['exports', '../util', './index', '../selector/index'], function (exports
      */
 
     function remove() {
-        return _util.each(this, function (element) {
+        return (0, _util.each)(this, function (element) {
             if (element.parentNode) {
                 element.parentNode.removeChild(element);
             }
@@ -78,7 +82,7 @@ define(['exports', '../util', './index', '../selector/index'], function (exports
             return this[0].textContent;
         }
 
-        _util.each(this, function (element) {
+        (0, _util.each)(this, function (element) {
             element.textContent = '' + value;
         });
 
@@ -101,7 +105,7 @@ define(['exports', '../util', './index', '../selector/index'], function (exports
             return this[0].value;
         }
 
-        _util.each(this, function (element) {
+        (0, _util.each)(this, function (element) {
             element.value = value;
         });
 
@@ -119,6 +123,3 @@ define(['exports', '../util', './index', '../selector/index'], function (exports
     exports.text = text;
     exports.val = val;
 });
-/**
- * @module DOM (extra)
- */

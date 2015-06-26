@@ -1,17 +1,18 @@
+/**
+ * @module DOM (extra)
+ */
+
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
-/**
- * @module DOM (extra)
- */
 
-var _each = require('../util');
+var _util = require('../util');
 
-var _append$before$after = require('./index');
+var _index = require('./index');
 
-var _$ = require('../selector/index');
+var _selectorIndex = require('../selector/index');
 
 /**
  * Append each element in the collection to the specified element(s).
@@ -24,8 +25,8 @@ var _$ = require('../selector/index');
  */
 
 function appendTo(element) {
-    var context = typeof element === 'string' ? _$.$(element) : element;
-    _append$before$after.append.call(context, this);
+    var context = typeof element === 'string' ? (0, _selectorIndex.$)(element) : element;
+    _index.append.call(context, this);
     return this;
 }
 
@@ -39,7 +40,7 @@ function appendTo(element) {
  */
 
 function empty() {
-    return _each.each(this, function (element) {
+    return (0, _util.each)(this, function (element) {
         element.innerHTML = '';
     });
 }
@@ -53,7 +54,7 @@ function empty() {
  */
 
 function remove() {
-    return _each.each(this, function (element) {
+    return (0, _util.each)(this, function (element) {
         if (element.parentNode) {
             element.parentNode.removeChild(element);
         }
@@ -67,7 +68,7 @@ function remove() {
  */
 
 function replaceWith() {
-    return _append$before$after.before.apply(this, arguments).remove();
+    return _index.before.apply(this, arguments).remove();
 }
 
 /**
@@ -86,7 +87,7 @@ function text(value) {
         return this[0].textContent;
     }
 
-    _each.each(this, function (element) {
+    (0, _util.each)(this, function (element) {
         element.textContent = '' + value;
     });
 
@@ -109,7 +110,7 @@ function val(value) {
         return this[0].value;
     }
 
-    _each.each(this, function (element) {
+    (0, _util.each)(this, function (element) {
         element.value = value;
     });
 

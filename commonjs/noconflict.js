@@ -1,20 +1,21 @@
+/**
+ * @module noConflict
+ */
+
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
-/**
- * @module noConflict
- */
 
-var _global = require('./util');
+var _util = require('./util');
 
 /*
  * Save the previous value of the global `$` variable, so that it can be restored later on.
  * @private
  */
 
-var previousLib = _global.global.$;
+var previousLib = _util.global.$;
 
 /**
  * In case another library sets the global `$` variable before DOMtastic does,
@@ -26,7 +27,7 @@ var previousLib = _global.global.$;
  */
 
 function noConflict() {
-  _global.global.$ = previousLib;
+  _util.global.$ = previousLib;
   return this;
 }
 

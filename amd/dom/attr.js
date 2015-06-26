@@ -1,4 +1,8 @@
 define(['exports', '../util'], function (exports, _util) {
+    /**
+     * @module Attr
+     */
+
     'use strict';
 
     Object.defineProperty(exports, '__esModule', {
@@ -25,7 +29,7 @@ define(['exports', '../util'], function (exports, _util) {
             return element ? element.getAttribute(key) : undefined;
         }
 
-        _util.each(this, function (element) {
+        (0, _util.each)(this, function (element) {
             if (typeof key === 'object') {
                 for (var attr in key) {
                     element.setAttribute(attr, key[attr]);
@@ -49,7 +53,7 @@ define(['exports', '../util'], function (exports, _util) {
      */
 
     function removeAttr(key) {
-        _util.each(this, function (element) {
+        (0, _util.each)(this, function (element) {
             element.removeAttribute(key);
         });
         return this;
@@ -62,6 +66,3 @@ define(['exports', '../util'], function (exports, _util) {
     exports.attr = attr;
     exports.removeAttr = removeAttr;
 });
-/**
- * @module Attr
- */

@@ -1,13 +1,14 @@
+/**
+ * @module Class
+ */
+
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
-/**
- * @module Class
- */
 
-var _each2 = require('../util');
+var _util = require('../util');
 
 /**
  * Add a class to the element(s)
@@ -22,7 +23,7 @@ var _each2 = require('../util');
 
 function addClass(value) {
     if (value && value.length) {
-        _each2.each(value.split(' '), _each.bind(this, 'add'));
+        (0, _util.each)(value.split(' '), _each.bind(this, 'add'));
     }
     return this;
 }
@@ -40,7 +41,7 @@ function addClass(value) {
 
 function removeClass(value) {
     if (value && value.length) {
-        _each2.each(value.split(' '), _each.bind(this, 'remove'));
+        (0, _util.each)(value.split(' '), _each.bind(this, 'remove'));
     }
     return this;
 }
@@ -58,7 +59,7 @@ function removeClass(value) {
 
 function toggleClass(value) {
     if (value && value.length) {
-        _each2.each(value.split(' '), _each.bind(this, 'toggle'));
+        (0, _util.each)(value.split(' '), _each.bind(this, 'toggle'));
     }
     return this;
 }
@@ -88,7 +89,7 @@ function hasClass(value) {
  */
 
 function _each(fnName, className) {
-    _each2.each(this, function (element) {
+    (0, _util.each)(this, function (element) {
         element.classList[fnName](className);
     });
 }

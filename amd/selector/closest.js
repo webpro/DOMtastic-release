@@ -1,4 +1,8 @@
 define(['exports', './index', '../util'], function (exports, _index, _util) {
+    /**
+     * @module closest
+     */
+
     'use strict';
 
     Object.defineProperty(exports, '__esModule', {
@@ -20,28 +24,28 @@ define(['exports', './index', '../util'], function (exports, _index, _util) {
 
         function closest(selector, context) {
             var nodes = [];
-            _util.each(this, function (node) {
+            (0, _util.each)(this, function (node) {
                 while (node && node !== context) {
-                    if (_index.matches(node, selector)) {
+                    if ((0, _index.matches)(node, selector)) {
                         nodes.push(node);
                         break;
                     }
                     node = node.parentElement;
                 }
             });
-            return _index.$(_util.uniq(nodes));
+            return (0, _index.$)((0, _util.uniq)(nodes));
         }
 
         return !Element.prototype.closest ? closest : function (selector, context) {
             if (!context) {
                 var nodes = [];
-                _util.each(this, function (node) {
+                (0, _util.each)(this, function (node) {
                     var n = node.closest(selector);
                     if (n) {
                         nodes.push(n);
                     }
                 });
-                return _index.$(_util.uniq(nodes));
+                return (0, _index.$)((0, _util.uniq)(nodes));
             } else {
                 return closest.call(this, selector, context);
             }
@@ -54,6 +58,3 @@ define(['exports', './index', '../util'], function (exports, _index, _util) {
 
     exports.closest = closest;
 });
-/**
- * @module closest
- */

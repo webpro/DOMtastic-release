@@ -1,15 +1,16 @@
+/**
+ * @module Array
+ */
+
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
-/**
- * @module Array
- */
 
-var _each$toArray = require('./util');
+var _util = require('./util');
 
-var _$$matches = require('./selector/index');
+var _selectorIndex = require('./selector/index');
 
 var ArrayProto = Array.prototype;
 
@@ -45,9 +46,9 @@ var every = ArrayProto.every;
 
 function filter(selector, thisArg) {
   var callback = typeof selector === 'function' ? selector : function (element) {
-    return _$$matches.matches(element, selector);
+    return (0, _selectorIndex.matches)(element, selector);
   };
-  return _$$matches.$(ArrayProto.filter.call(this, callback, thisArg));
+  return (0, _selectorIndex.$)(ArrayProto.filter.call(this, callback, thisArg));
 }
 
 /**
@@ -64,7 +65,7 @@ function filter(selector, thisArg) {
  */
 
 function forEach(callback, thisArg) {
-  return _each$toArray.each(this, callback, thisArg);
+  return (0, _util.each)(this, callback, thisArg);
 }
 
 var each = forEach;
@@ -157,7 +158,7 @@ var reduceRight = ArrayProto.reduceRight;
  */
 
 function reverse() {
-  return _$$matches.$(_each$toArray.toArray(this).reverse());
+  return (0, _selectorIndex.$)((0, _util.toArray)(this).reverse());
 }
 
 /**

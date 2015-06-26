@@ -1,13 +1,14 @@
+/**
+ * @module Selector
+ */
+
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
-/**
- * @module Selector
- */
 
-var _global$each = require('../util');
+var _util = require('../util');
 
 var isPrototypeSet = false,
     reFragment = /^\s*<(\w+|!)[^>]*>/,
@@ -69,8 +70,8 @@ function $(selector) {
 
 function find(selector) {
     var nodes = [];
-    _global$each.each(this, function (node) {
-        _global$each.each(querySelector(selector, node), function (child) {
+    (0, _util.each)(this, function (node) {
+        (0, _util.each)(querySelector(selector, node), function (child) {
             if (nodes.indexOf(child) === -1) {
                 nodes.push(child);
             }
@@ -91,7 +92,7 @@ function find(selector) {
  */
 
 var matches = (function () {
-    var context = typeof Element !== 'undefined' ? Element.prototype : _global$each.global,
+    var context = typeof Element !== 'undefined' ? Element.prototype : _util.global,
         _matches = context.matches || context.matchesSelector || context.mozMatchesSelector || context.msMatchesSelector || context.oMatchesSelector || context.webkitMatchesSelector;
     return function (element, selector) {
         return _matches.call(element, selector);

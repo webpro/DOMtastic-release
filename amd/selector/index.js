@@ -1,4 +1,8 @@
 define(['exports', '../util'], function (exports, _util) {
+    /**
+     * @module Selector
+     */
+
     'use strict';
 
     Object.defineProperty(exports, '__esModule', {
@@ -65,8 +69,8 @@ define(['exports', '../util'], function (exports, _util) {
 
     function find(selector) {
         var nodes = [];
-        _util.each(this, function (node) {
-            _util.each(querySelector(selector, node), function (child) {
+        (0, _util.each)(this, function (node) {
+            (0, _util.each)(querySelector(selector, node), function (child) {
                 if (nodes.indexOf(child) === -1) {
                     nodes.push(child);
                 }
@@ -192,6 +196,3 @@ define(['exports', '../util'], function (exports, _util) {
     exports.find = find;
     exports.matches = matches;
 });
-/**
- * @module Selector
- */

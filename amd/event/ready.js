@@ -1,9 +1,4 @@
 define(['exports'], function (exports) {
-  'use strict';
-
-  Object.defineProperty(exports, '__esModule', {
-    value: true
-  });
   /**
    * @module Ready
    */
@@ -18,6 +13,11 @@ define(['exports'], function (exports) {
    *     $(document).ready(callback);
    */
 
+  'use strict';
+
+  Object.defineProperty(exports, '__esModule', {
+    value: true
+  });
   function ready(handler) {
     if (/complete|loaded|interactive/.test(document.readyState) && document.body) {
       handler();

@@ -1,13 +1,14 @@
+/**
+ * @module HTML
+ */
+
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
-/**
- * @module HTML
- */
 
-var _each = require('../util');
+var _util = require('../util');
 
 /*
  * Get the HTML contents of the first element, or set the HTML contents for each element in the collection.
@@ -27,7 +28,7 @@ function html(fragment) {
     return element ? element.innerHTML : undefined;
   }
 
-  _each.each(this, function (element) {
+  (0, _util.each)(this, function (element) {
     element.innerHTML = fragment;
   });
 

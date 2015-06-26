@@ -1,9 +1,4 @@
 define(["exports"], function (exports) {
-    "use strict";
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
     /**
      * @module contains
      */
@@ -19,6 +14,11 @@ define(["exports"], function (exports) {
      *     // true/false
      */
 
+    "use strict";
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
     function contains(container, element) {
         if (!container || !element || container === element) {
             return false;

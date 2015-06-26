@@ -1,85 +1,86 @@
-'use strict';
-
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
 /**
  * @module API
  */
 
-var _extend = require('./util');
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
+
+var _util = require('./util');
 
 // Import modules to build up the API
 
-var _import = require('./array');
+var _array = require('./array');
 
-var array = _interopRequireWildcard(_import);
+var array = _interopRequireWildcard(_array);
 
-var _import2 = require('./dom/attr');
+var _domAttr = require('./dom/attr');
 
-var attr = _interopRequireWildcard(_import2);
+var attr = _interopRequireWildcard(_domAttr);
 
-var _import3 = require('./dom/class');
+var _domClass = require('./dom/class');
 
-var class_ = _interopRequireWildcard(_import3);
+var class_ = _interopRequireWildcard(_domClass);
 
-var _import4 = require('./dom/contains');
+var _domContains = require('./dom/contains');
 
-var contains = _interopRequireWildcard(_import4);
+var contains = _interopRequireWildcard(_domContains);
 
-var _import5 = require('./css');
+var _css = require('./css');
 
-var css = _interopRequireWildcard(_import5);
+var css = _interopRequireWildcard(_css);
 
-var _import6 = require('./dom/data');
+var _domData = require('./dom/data');
 
-var data = _interopRequireWildcard(_import6);
+var data = _interopRequireWildcard(_domData);
 
-var _import7 = require('./dom/index');
+var _domIndex = require('./dom/index');
 
-var dom = _interopRequireWildcard(_import7);
+var dom = _interopRequireWildcard(_domIndex);
 
-var _import8 = require('./dom/extra');
+var _domExtra = require('./dom/extra');
 
-var dom_extra = _interopRequireWildcard(_import8);
+var dom_extra = _interopRequireWildcard(_domExtra);
 
-var _import9 = require('./event/index');
+var _eventIndex = require('./event/index');
 
-var event = _interopRequireWildcard(_import9);
+var event = _interopRequireWildcard(_eventIndex);
 
-var _import10 = require('./dom/html');
+var _domHtml = require('./dom/html');
 
-var html = _interopRequireWildcard(_import10);
+var html = _interopRequireWildcard(_domHtml);
 
-var _import11 = require('./noconflict');
+var _noconflict = require('./noconflict');
 
-var noconflict = _interopRequireWildcard(_import11);
+var noconflict = _interopRequireWildcard(_noconflict);
 
-var _import12 = require('./event/ready');
+var _eventReady = require('./event/ready');
 
-var ready = _interopRequireWildcard(_import12);
+var ready = _interopRequireWildcard(_eventReady);
 
-var _import13 = require('./selector/index');
+var _selectorIndex = require('./selector/index');
 
-var selector = _interopRequireWildcard(_import13);
+var selector = _interopRequireWildcard(_selectorIndex);
 
-var _import14 = require('./selector/closest');
+var _selectorClosest = require('./selector/closest');
 
-var closest = _interopRequireWildcard(_import14);
+var closest = _interopRequireWildcard(_selectorClosest);
 
-var _import15 = require('./selector/extra');
+var _selectorExtra = require('./selector/extra');
 
-var selector_extra = _interopRequireWildcard(_import15);
+var selector_extra = _interopRequireWildcard(_selectorExtra);
 
-var _import16 = require('./event/trigger');
+var _eventTrigger = require('./event/trigger');
 
-var trigger = _interopRequireWildcard(_import16);
+var trigger = _interopRequireWildcard(_eventTrigger);
 
-var _import17 = require('./type');
+var _type = require('./type');
 
-var type = _interopRequireWildcard(_import17);
+var type = _interopRequireWildcard(_type);
 
 var api = {},
     $ = {};
@@ -90,18 +91,18 @@ if (typeof selector !== 'undefined') {
     api.find = selector.find;
 }
 
-_extend.extend($, contains, noconflict, type);
-_extend.extend(api, array, attr, class_, closest, css, data, dom, dom_extra, event, html, ready, selector_extra, trigger);
+(0, _util.extend)($, contains, noconflict, type);
+(0, _util.extend)(api, array, attr, class_, closest, css, data, dom, dom_extra, event, html, ready, selector_extra, trigger);
 
 $.fn = api;
 
 // Version
 
-$.version = '0.10.2';
+$.version = '0.10.3';
 
 // Util
 
-$.extend = _extend.extend;
+$.extend = _util.extend;
 
 // Export interface
 

@@ -1,4 +1,8 @@
 define(['exports', '../util'], function (exports, _util) {
+  /**
+   * @module HTML
+   */
+
   'use strict';
 
   Object.defineProperty(exports, '__esModule', {
@@ -23,7 +27,7 @@ define(['exports', '../util'], function (exports, _util) {
       return element ? element.innerHTML : undefined;
     }
 
-    _util.each(this, function (element) {
+    (0, _util.each)(this, function (element) {
       element.innerHTML = fragment;
     });
 
@@ -36,6 +40,3 @@ define(['exports', '../util'], function (exports, _util) {
 
   exports.html = html;
 });
-/**
- * @module HTML
- */

@@ -5,9 +5,9 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _each$toArray = require(18);
+var _util = require(18);
 
-var _$$matches = require(16);
+var _selectorIndex = require(16);
 
 var ArrayProto = Array.prototype;
 
@@ -15,13 +15,13 @@ var every = ArrayProto.every;
 
 function filter(selector, thisArg) {
   var callback = typeof selector === 'function' ? selector : function (element) {
-    return _$$matches.matches(element, selector);
+    return (0, _selectorIndex.matches)(element, selector);
   };
-  return _$$matches.$(ArrayProto.filter.call(this, callback, thisArg));
+  return (0, _selectorIndex.$)(ArrayProto.filter.call(this, callback, thisArg));
 }
 
 function forEach(callback, thisArg) {
-  return _each$toArray.each(this, callback, thisArg);
+  return (0, _util.each)(this, callback, thisArg);
 }
 
 var each = forEach;
@@ -39,7 +39,7 @@ var reduce = ArrayProto.reduce;
 var reduceRight = ArrayProto.reduceRight;
 
 function reverse() {
-  return _$$matches.$(_each$toArray.toArray(this).reverse());
+  return (0, _selectorIndex.$)((0, _util.toArray)(this).reverse());
 }
 
 var shift = ArrayProto.shift;
@@ -70,7 +70,7 @@ Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _each = require(18);
+var _util = require(18);
 
 function isNumeric(value) {
     return !isNaN(parseFloat(value)) && isFinite(value);
@@ -113,7 +113,7 @@ function css(key, value) {
         }
     }
 
-    _each.each(this, function (element) {
+    (0, _util.each)(this, function (element) {
         for (prop in styleProps) {
             if (styleProps[prop] || styleProps[prop] === 0) {
                 element.style[prop] = styleProps[prop];
@@ -135,7 +135,7 @@ Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _each = require(18);
+var _util = require(18);
 
 function attr(key, value) {
 
@@ -144,7 +144,7 @@ function attr(key, value) {
         return element ? element.getAttribute(key) : undefined;
     }
 
-    _each.each(this, function (element) {
+    (0, _util.each)(this, function (element) {
         if (typeof key === 'object') {
             for (var attr in key) {
                 element.setAttribute(attr, key[attr]);
@@ -158,7 +158,7 @@ function attr(key, value) {
 }
 
 function removeAttr(key) {
-    _each.each(this, function (element) {
+    (0, _util.each)(this, function (element) {
         element.removeAttribute(key);
     });
     return this;
@@ -174,25 +174,25 @@ Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _each2 = require(18);
+var _util = require(18);
 
 function addClass(value) {
     if (value && value.length) {
-        _each2.each(value.split(' '), _each.bind(this, 'add'));
+        (0, _util.each)(value.split(' '), _each.bind(this, 'add'));
     }
     return this;
 }
 
 function removeClass(value) {
     if (value && value.length) {
-        _each2.each(value.split(' '), _each.bind(this, 'remove'));
+        (0, _util.each)(value.split(' '), _each.bind(this, 'remove'));
     }
     return this;
 }
 
 function toggleClass(value) {
     if (value && value.length) {
-        _each2.each(value.split(' '), _each.bind(this, 'toggle'));
+        (0, _util.each)(value.split(' '), _each.bind(this, 'toggle'));
     }
     return this;
 }
@@ -204,7 +204,7 @@ function hasClass(value) {
 }
 
 function _each(fnName, className) {
-    _each2.each(this, function (element) {
+    (0, _util.each)(this, function (element) {
         element.classList[fnName](className);
     });
 }
@@ -241,7 +241,7 @@ Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _each = require(18);
+var _util = require(18);
 
 var dataKeyProp = '__domtastic_data__';
 
@@ -252,7 +252,7 @@ function data(key, value) {
         return element && element[dataKeyProp] ? element[dataKeyProp][key] : undefined;
     }
 
-    _each.each(this, function (element) {
+    (0, _util.each)(this, function (element) {
         element[dataKeyProp] = element[dataKeyProp] || {};
         element[dataKeyProp][key] = value;
     });
@@ -267,7 +267,7 @@ function prop(key, value) {
         return element && element ? element[key] : undefined;
     }
 
-    _each.each(this, function (element) {
+    (0, _util.each)(this, function (element) {
         element[key] = value;
     });
 
@@ -284,26 +284,26 @@ Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _each = require(18);
+var _util = require(18);
 
-var _append$before$after = require(9);
+var _index = require(9);
 
-var _$ = require(16);
+var _selectorIndex = require(16);
 
 function appendTo(element) {
-    var context = typeof element === 'string' ? _$.$(element) : element;
-    _append$before$after.append.call(context, this);
+    var context = typeof element === 'string' ? (0, _selectorIndex.$)(element) : element;
+    _index.append.call(context, this);
     return this;
 }
 
 function empty() {
-    return _each.each(this, function (element) {
+    return (0, _util.each)(this, function (element) {
         element.innerHTML = '';
     });
 }
 
 function remove() {
-    return _each.each(this, function (element) {
+    return (0, _util.each)(this, function (element) {
         if (element.parentNode) {
             element.parentNode.removeChild(element);
         }
@@ -311,7 +311,7 @@ function remove() {
 }
 
 function replaceWith() {
-    return _append$before$after.before.apply(this, arguments).remove();
+    return _index.before.apply(this, arguments).remove();
 }
 
 function text(value) {
@@ -320,7 +320,7 @@ function text(value) {
         return this[0].textContent;
     }
 
-    _each.each(this, function (element) {
+    (0, _util.each)(this, function (element) {
         element.textContent = '' + value;
     });
 
@@ -333,7 +333,7 @@ function val(value) {
         return this[0].value;
     }
 
-    _each.each(this, function (element) {
+    (0, _util.each)(this, function (element) {
         element.value = value;
     });
 
@@ -354,7 +354,7 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _each = require(18);
+var _util = require(18);
 
 function html(fragment) {
 
@@ -363,7 +363,7 @@ function html(fragment) {
     return element ? element.innerHTML : undefined;
   }
 
-  _each.each(this, function (element) {
+  (0, _util.each)(this, function (element) {
     element.innerHTML = fragment;
   });
 
@@ -379,9 +379,9 @@ Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _toArray = require(18);
+var _util = require(18);
 
-var _$ = require(16);
+var _selectorIndex = require(16);
 
 var forEach = Array.prototype.forEach;
 
@@ -393,7 +393,7 @@ function append(element) {
             if (element instanceof Node) {
                 this.appendChild(element);
             } else {
-                var elements = element instanceof NodeList ? _toArray.toArray(element) : element;
+                var elements = element instanceof NodeList ? (0, _util.toArray)(element) : element;
                 forEach.call(elements, this.appendChild.bind(this));
             }
         }
@@ -411,7 +411,7 @@ function prepend(element) {
             if (element instanceof Node) {
                 this.insertBefore(element, this.firstChild);
             } else {
-                var elements = element instanceof NodeList ? _toArray.toArray(element) : element;
+                var elements = element instanceof NodeList ? (0, _util.toArray)(element) : element;
                 forEach.call(elements.reverse(), prepend.bind(this));
             }
         }
@@ -429,7 +429,7 @@ function before(element) {
             if (element instanceof Node) {
                 this.parentNode.insertBefore(element, this);
             } else {
-                var elements = element instanceof NodeList ? _toArray.toArray(element) : element;
+                var elements = element instanceof NodeList ? (0, _util.toArray)(element) : element;
                 forEach.call(elements, before.bind(this));
             }
         }
@@ -447,7 +447,7 @@ function after(element) {
             if (element instanceof Node) {
                 this.parentNode.insertBefore(element, this.nextSibling);
             } else {
-                var elements = element instanceof NodeList ? _toArray.toArray(element) : element;
+                var elements = element instanceof NodeList ? (0, _util.toArray)(element) : element;
                 forEach.call(elements.reverse(), after.bind(this));
             }
         }
@@ -458,7 +458,7 @@ function after(element) {
 }
 
 function clone() {
-    return _$.$(_clone(this));
+    return (0, _selectorIndex.$)(_clone(this));
 }
 
 function _clone(element) {
@@ -495,9 +495,9 @@ Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _each = require(18);
+var _util = require(18);
 
-var _closest = require(14);
+var _selectorClosest = require(14);
 
 function on(eventNames, selector, handler, useCapture) {
 
@@ -516,7 +516,7 @@ function on(eventNames, selector, handler, useCapture) {
 
         eventListener = proxyHandler(handler);
 
-        _each.each(this, function (element) {
+        (0, _util.each)(this, function (element) {
 
             if (selector) {
                 eventListener = delegateHandler.bind(element, selector, eventListener);
@@ -537,8 +537,8 @@ function on(eventNames, selector, handler, useCapture) {
     return this;
 }
 
-function off(_x, selector, handler, useCapture) {
-    var eventNames = arguments[0] === undefined ? '' : arguments[0];
+function off(eventNames, selector, handler, useCapture) {
+    if (eventNames === undefined) eventNames = '';
 
     if (typeof selector === 'function') {
         handler = selector;
@@ -553,11 +553,11 @@ function off(_x, selector, handler, useCapture) {
         eventName = parts[0] || null;
         namespace = parts[1] || null;
 
-        _each.each(this, function (element) {
+        (0, _util.each)(this, function (element) {
 
             handlers = getHandlers(element);
 
-            _each.each(handlers.filter(function (item) {
+            (0, _util.each)(handlers.filter(function (item) {
                 return (!eventName || item.eventName === eventName) && (!namespace || item.namespace === namespace) && (!handler || item.handler === handler) && (!selector || item.selector === selector);
             }), function (item) {
                 element.removeEventListener(item.eventName, item.eventListener, useCapture || false);
@@ -639,7 +639,7 @@ var augmentEvent = (function () {
 
 function delegateHandler(selector, handler, event) {
     var eventTarget = event._target || event.target,
-        currentTarget = _closest.closest.call([eventTarget], selector, this)[0];
+        currentTarget = _selectorClosest.closest.call([eventTarget], selector, this)[0];
     if (currentTarget && currentTarget !== this) {
         if (currentTarget === eventTarget || !(event.isPropagationStopped && event.isPropagationStopped())) {
             handler.call(currentTarget, event);
@@ -680,9 +680,9 @@ Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _global$each = require(18);
+var _util = require(18);
 
-var _contains = require(5);
+var _domContains = require(5);
 
 var reMouseEvent = /^(?:mouse|pointer|contextmenu)|click/,
     reKeyEvent = /^key/;
@@ -700,7 +700,7 @@ function trigger(type, data) {
 
     event._preventDefault = params.preventDefault;
 
-    _global$each.each(this, function (element) {
+    (0, _util.each)(this, function (element) {
         if (!params.bubbles || isEventBubblingInDetachedTree || isAttachedToDocument(element)) {
             dispatchEvent(element, event);
         } else {
@@ -724,7 +724,7 @@ function isAttachedToDocument(element) {
     if (element === window || element === document) {
         return true;
     }
-    return _contains.contains(element.ownerDocument.documentElement, element);
+    return (0, _domContains.contains)(element.ownerDocument.documentElement, element);
 }
 
 function triggerForPath(element, type) {
@@ -757,13 +757,13 @@ function dispatchEvent(element, event) {
         return customEvent;
     }
 
-    CustomEvent.prototype = _global$each.global.CustomEvent && _global$each.global.CustomEvent.prototype;
-    _global$each.global.CustomEvent = CustomEvent;
+    CustomEvent.prototype = _util.global.CustomEvent && _util.global.CustomEvent.prototype;
+    _util.global.CustomEvent = CustomEvent;
 })();
 
 var isEventBubblingInDetachedTree = (function () {
     var isBubbling = false,
-        doc = _global$each.global.document;
+        doc = _util.global.document;
     if (doc) {
         var parent = doc.createElement('div'),
             child = parent.cloneNode();
@@ -795,12 +795,12 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _global = require(18);
+var _util = require(18);
 
-var previousLib = _global.global.$;
+var previousLib = _util.global.$;
 
 function noConflict() {
-  _global.global.$ = previousLib;
+  _util.global.$ = previousLib;
   return this;
 }
 
@@ -813,36 +813,36 @@ Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _$$matches = require(16);
+var _index = require(16);
 
-var _each$uniq = require(18);
+var _util = require(18);
 
 var closest = (function () {
 
     function closest(selector, context) {
         var nodes = [];
-        _each$uniq.each(this, function (node) {
+        (0, _util.each)(this, function (node) {
             while (node && node !== context) {
-                if (_$$matches.matches(node, selector)) {
+                if ((0, _index.matches)(node, selector)) {
                     nodes.push(node);
                     break;
                 }
                 node = node.parentElement;
             }
         });
-        return _$$matches.$(_each$uniq.uniq(nodes));
+        return (0, _index.$)((0, _util.uniq)(nodes));
     }
 
     return !Element.prototype.closest ? closest : function (selector, context) {
         if (!context) {
             var nodes = [];
-            _each$uniq.each(this, function (node) {
+            (0, _util.each)(this, function (node) {
                 var n = node.closest(selector);
                 if (n) {
                     nodes.push(n);
                 }
             });
-            return _$$matches.$(_each$uniq.uniq(nodes));
+            return (0, _index.$)((0, _util.uniq)(nodes));
         } else {
             return closest.call(this, selector, context);
         }
@@ -858,30 +858,30 @@ Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _each$toArray = require(18);
+var _util = require(18);
 
-var _$$matches = require(16);
+var _index = require(16);
 
 function children(selector) {
     var nodes = [];
-    _each$toArray.each(this, function (element) {
+    (0, _util.each)(this, function (element) {
         if (element.children) {
-            _each$toArray.each(element.children, function (child) {
-                if (!selector || selector && _$$matches.matches(child, selector)) {
+            (0, _util.each)(element.children, function (child) {
+                if (!selector || selector && (0, _index.matches)(child, selector)) {
                     nodes.push(child);
                 }
             });
         }
     });
-    return _$$matches.$(nodes);
+    return (0, _index.$)(nodes);
 }
 
 function contents() {
     var nodes = [];
-    _each$toArray.each(this, function (element) {
-        nodes.push.apply(nodes, _each$toArray.toArray(element.childNodes));
+    (0, _util.each)(this, function (element) {
+        nodes.push.apply(nodes, (0, _util.toArray)(element.childNodes));
     });
-    return _$$matches.$(nodes);
+    return (0, _index.$)(nodes);
 }
 
 function eq(index) {
@@ -894,28 +894,28 @@ function get(index) {
 
 function parent(selector) {
     var nodes = [];
-    _each$toArray.each(this, function (element) {
-        if (!selector || selector && _$$matches.matches(element.parentNode, selector)) {
+    (0, _util.each)(this, function (element) {
+        if (!selector || selector && (0, _index.matches)(element.parentNode, selector)) {
             nodes.push(element.parentNode);
         }
     });
-    return _$$matches.$(nodes);
+    return (0, _index.$)(nodes);
 }
 
 function siblings(selector) {
     var nodes = [];
-    _each$toArray.each(this, function (element) {
-        _each$toArray.each(element.parentNode.children, function (sibling) {
-            if (sibling !== element && (!selector || selector && _$$matches.matches(sibling, selector))) {
+    (0, _util.each)(this, function (element) {
+        (0, _util.each)(element.parentNode.children, function (sibling) {
+            if (sibling !== element && (!selector || selector && (0, _index.matches)(sibling, selector))) {
                 nodes.push(sibling);
             }
         });
     });
-    return _$$matches.$(nodes);
+    return (0, _index.$)(nodes);
 }
 
 function slice(start, end) {
-    return _$$matches.$([].slice.apply(this, arguments));
+    return (0, _index.$)([].slice.apply(this, arguments));
 }
 
 exports.children = children;
@@ -933,7 +933,7 @@ Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _global$each = require(18);
+var _util = require(18);
 
 var isPrototypeSet = false,
     reFragment = /^\s*<(\w+|!)[^>]*>/,
@@ -969,8 +969,8 @@ function $(selector) {
 
 function find(selector) {
     var nodes = [];
-    _global$each.each(this, function (node) {
-        _global$each.each(querySelector(selector, node), function (child) {
+    (0, _util.each)(this, function (node) {
+        (0, _util.each)(querySelector(selector, node), function (child) {
             if (nodes.indexOf(child) === -1) {
                 nodes.push(child);
             }
@@ -980,7 +980,7 @@ function find(selector) {
 }
 
 var matches = (function () {
-    var context = typeof Element !== 'undefined' ? Element.prototype : _global$each.global,
+    var context = typeof Element !== 'undefined' ? Element.prototype : _util.global,
         _matches = context.matches || context.matchesSelector || context.mozMatchesSelector || context.msMatchesSelector || context.oMatchesSelector || context.webkitMatchesSelector;
     return function (element, selector) {
         return _matches.call(element, selector);
@@ -1122,81 +1122,81 @@ exports.uniq = uniq;
 },{}],19:[function(require,module,exports){
 'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
-
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _extend = require(18);
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 
-var _import = require(1);
+var _util = require(18);
 
-var array = _interopRequireWildcard(_import);
+var _array = require(1);
 
-var _import2 = require(3);
+var array = _interopRequireWildcard(_array);
 
-var attr = _interopRequireWildcard(_import2);
+var _domAttr = require(3);
 
-var _import3 = require(4);
+var attr = _interopRequireWildcard(_domAttr);
 
-var class_ = _interopRequireWildcard(_import3);
+var _domClass = require(4);
 
-var _import4 = require(5);
+var class_ = _interopRequireWildcard(_domClass);
 
-var contains = _interopRequireWildcard(_import4);
+var _domContains = require(5);
 
-var _import5 = require(2);
+var contains = _interopRequireWildcard(_domContains);
 
-var css = _interopRequireWildcard(_import5);
+var _css = require(2);
 
-var _import6 = require(6);
+var css = _interopRequireWildcard(_css);
 
-var data = _interopRequireWildcard(_import6);
+var _domData = require(6);
 
-var _import7 = require(9);
+var data = _interopRequireWildcard(_domData);
 
-var dom = _interopRequireWildcard(_import7);
+var _domIndex = require(9);
 
-var _import8 = require(7);
+var dom = _interopRequireWildcard(_domIndex);
 
-var dom_extra = _interopRequireWildcard(_import8);
+var _domExtra = require(7);
 
-var _import9 = require(10);
+var dom_extra = _interopRequireWildcard(_domExtra);
 
-var event = _interopRequireWildcard(_import9);
+var _eventIndex = require(10);
 
-var _import10 = require(8);
+var event = _interopRequireWildcard(_eventIndex);
 
-var html = _interopRequireWildcard(_import10);
+var _domHtml = require(8);
 
-var _import11 = require(13);
+var html = _interopRequireWildcard(_domHtml);
 
-var noconflict = _interopRequireWildcard(_import11);
+var _noconflict = require(13);
 
-var _import12 = require(11);
+var noconflict = _interopRequireWildcard(_noconflict);
 
-var ready = _interopRequireWildcard(_import12);
+var _eventReady = require(11);
 
-var _import13 = require(16);
+var ready = _interopRequireWildcard(_eventReady);
 
-var selector = _interopRequireWildcard(_import13);
+var _selectorIndex = require(16);
 
-var _import14 = require(14);
+var selector = _interopRequireWildcard(_selectorIndex);
 
-var closest = _interopRequireWildcard(_import14);
+var _selectorClosest = require(14);
 
-var _import15 = require(15);
+var closest = _interopRequireWildcard(_selectorClosest);
 
-var selector_extra = _interopRequireWildcard(_import15);
+var _selectorExtra = require(15);
 
-var _import16 = require(12);
+var selector_extra = _interopRequireWildcard(_selectorExtra);
 
-var trigger = _interopRequireWildcard(_import16);
+var _eventTrigger = require(12);
 
-var _import17 = require(17);
+var trigger = _interopRequireWildcard(_eventTrigger);
 
-var type = _interopRequireWildcard(_import17);
+var _type = require(17);
+
+var type = _interopRequireWildcard(_type);
 
 var api = {},
     $ = {};
@@ -1207,20 +1207,18 @@ if (typeof selector !== 'undefined') {
     api.find = selector.find;
 }
 
-_extend.extend($, contains, noconflict, type);
-_extend.extend(api, array, attr, class_, closest, css, data, dom, dom_extra, event, html, ready, selector_extra, trigger);
+(0, _util.extend)($, contains, noconflict, type);
+(0, _util.extend)(api, array, attr, class_, closest, css, data, dom, dom_extra, event, html, ready, selector_extra, trigger);
 
 $.fn = api;
 
-$.version = '0.10.2';
+$.version = '0.10.3';
 
-$.extend = _extend.extend;
+$.extend = _util.extend;
 
 exports['default'] = $;
 module.exports = exports['default'];
 
 },{"1":1,"10":10,"11":11,"12":12,"13":13,"14":14,"15":15,"16":16,"17":17,"18":18,"2":2,"3":3,"4":4,"5":5,"6":6,"7":7,"8":8,"9":9}]},{},[19])(19)
 });
-
-
 //# sourceMappingURL=domtastic.js.map

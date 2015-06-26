@@ -1,4 +1,8 @@
 define(['exports', './util', './selector/index'], function (exports, _util, _selectorIndex) {
+  /**
+   * @module Array
+   */
+
   'use strict';
 
   Object.defineProperty(exports, '__esModule', {
@@ -39,9 +43,9 @@ define(['exports', './util', './selector/index'], function (exports, _util, _sel
 
   function filter(selector, thisArg) {
     var callback = typeof selector === 'function' ? selector : function (element) {
-      return _selectorIndex.matches(element, selector);
+      return (0, _selectorIndex.matches)(element, selector);
     };
-    return _selectorIndex.$(ArrayProto.filter.call(this, callback, thisArg));
+    return (0, _selectorIndex.$)(ArrayProto.filter.call(this, callback, thisArg));
   }
 
   /**
@@ -58,7 +62,7 @@ define(['exports', './util', './selector/index'], function (exports, _util, _sel
    */
 
   function forEach(callback, thisArg) {
-    return _util.each(this, callback, thisArg);
+    return (0, _util.each)(this, callback, thisArg);
   }
 
   var each = forEach;
@@ -151,7 +155,7 @@ define(['exports', './util', './selector/index'], function (exports, _util, _sel
    */
 
   function reverse() {
-    return _selectorIndex.$(_util.toArray(this).reverse());
+    return (0, _selectorIndex.$)((0, _util.toArray)(this).reverse());
   }
 
   /**
@@ -208,6 +212,3 @@ define(['exports', './util', './selector/index'], function (exports, _util, _sel
   exports.some = some;
   exports.unshift = unshift;
 });
-/**
- * @module Array
- */

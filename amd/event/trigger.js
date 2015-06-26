@@ -1,4 +1,8 @@
 define(['exports', '../util', '../dom/contains'], function (exports, _util, _domContains) {
+    /**
+     * @module trigger
+     */
+
     'use strict';
 
     Object.defineProperty(exports, '__esModule', {
@@ -36,7 +40,7 @@ define(['exports', '../util', '../dom/contains'], function (exports, _util, _dom
 
         event._preventDefault = params.preventDefault;
 
-        _util.each(this, function (element) {
+        (0, _util.each)(this, function (element) {
             if (!params.bubbles || isEventBubblingInDetachedTree || isAttachedToDocument(element)) {
                 dispatchEvent(element, event);
             } else {
@@ -81,7 +85,7 @@ define(['exports', '../util', '../dom/contains'], function (exports, _util, _dom
         if (element === window || element === document) {
             return true;
         }
-        return _domContains.contains(element.ownerDocument.documentElement, element);
+        return (0, _domContains.contains)(element.ownerDocument.documentElement, element);
     }
 
     /**
@@ -182,6 +186,3 @@ define(['exports', '../util', '../dom/contains'], function (exports, _util, _dom
     exports.trigger = trigger;
     exports.triggerHandler = triggerHandler;
 });
-/**
- * @module trigger
- */

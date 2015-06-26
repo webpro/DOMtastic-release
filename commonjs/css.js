@@ -1,13 +1,14 @@
+/**
+ * @module CSS
+ */
+
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
-/**
- * @module Attr
- */
 
-var _each = require('./util');
+var _util = require('./util');
 
 function isNumeric(value) {
     return !isNaN(parseFloat(value)) && isFinite(value);
@@ -63,7 +64,7 @@ function css(key, value) {
         }
     }
 
-    _each.each(this, function (element) {
+    (0, _util.each)(this, function (element) {
         for (prop in styleProps) {
             if (styleProps[prop] || styleProps[prop] === 0) {
                 element.style[prop] = styleProps[prop];
