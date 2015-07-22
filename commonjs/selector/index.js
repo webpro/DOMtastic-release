@@ -4,14 +4,13 @@
 
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
+exports.__esModule = true;
 
 var _util = require('../util');
 
-var isPrototypeSet = false,
-    reFragment = /^\s*<(\w+|!)[^>]*>/,
+var isPrototypeSet = false;
+
+var reFragment = /^\s*<(\w+|!)[^>]*>/,
     reSingleTag = /^<(\w+)\s*\/?>(?:<\/\1>|)$/,
     reSimpleSelector = /^[\.#]?[\w-]*$/;
 
@@ -33,9 +32,9 @@ var isPrototypeSet = false,
  */
 
 function $(selector) {
-    var context = arguments[1] === undefined ? document : arguments[1];
+    var context = arguments.length <= 1 || arguments[1] === undefined ? document : arguments[1];
 
-    var collection;
+    var collection = undefined;
 
     if (!selector) {
 
@@ -70,8 +69,8 @@ function $(selector) {
 
 function find(selector) {
     var nodes = [];
-    (0, _util.each)(this, function (node) {
-        (0, _util.each)(querySelector(selector, node), function (child) {
+    _util.each(this, function (node) {
+        _util.each(querySelector(selector, node), function (child) {
             if (nodes.indexOf(child) === -1) {
                 nodes.push(child);
             }
@@ -196,3 +195,4 @@ function Wrapper(collection) {
 exports.$ = $;
 exports.find = find;
 exports.matches = matches;
+exports.Wrapper = Wrapper;

@@ -4,9 +4,7 @@
 
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
+exports.__esModule = true;
 
 var _util = require('./util');
 
@@ -46,9 +44,9 @@ var every = ArrayProto.every;
 
 function filter(selector, thisArg) {
   var callback = typeof selector === 'function' ? selector : function (element) {
-    return (0, _selectorIndex.matches)(element, selector);
+    return _selectorIndex.matches(element, selector);
   };
-  return (0, _selectorIndex.$)(ArrayProto.filter.call(this, callback, thisArg));
+  return _selectorIndex.$(ArrayProto.filter.call(this, callback, thisArg));
 }
 
 /**
@@ -65,7 +63,7 @@ function filter(selector, thisArg) {
  */
 
 function forEach(callback, thisArg) {
-  return (0, _util.each)(this, callback, thisArg);
+  return _util.each(this, callback, thisArg);
 }
 
 var each = forEach;
@@ -158,7 +156,7 @@ var reduceRight = ArrayProto.reduceRight;
  */
 
 function reverse() {
-  return (0, _selectorIndex.$)((0, _util.toArray)(this).reverse());
+  return _selectorIndex.$(_util.toArray(this).reverse());
 }
 
 /**

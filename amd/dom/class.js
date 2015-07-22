@@ -5,9 +5,7 @@ define(['exports', '../util'], function (exports, _util) {
 
     'use strict';
 
-    Object.defineProperty(exports, '__esModule', {
-        value: true
-    });
+    exports.__esModule = true;
 
     /**
      * Add a class to the element(s)
@@ -22,7 +20,7 @@ define(['exports', '../util'], function (exports, _util) {
 
     function addClass(value) {
         if (value && value.length) {
-            (0, _util.each)(value.split(' '), _each.bind(this, 'add'));
+            _util.each(value.split(' '), _each.bind(this, 'add'));
         }
         return this;
     }
@@ -40,7 +38,7 @@ define(['exports', '../util'], function (exports, _util) {
 
     function removeClass(value) {
         if (value && value.length) {
-            (0, _util.each)(value.split(' '), _each.bind(this, 'remove'));
+            _util.each(value.split(' '), _each.bind(this, 'remove'));
         }
         return this;
     }
@@ -58,7 +56,7 @@ define(['exports', '../util'], function (exports, _util) {
 
     function toggleClass(value) {
         if (value && value.length) {
-            (0, _util.each)(value.split(' '), _each.bind(this, 'toggle'));
+            _util.each(value.split(' '), _each.bind(this, 'toggle'));
         }
         return this;
     }
@@ -88,8 +86,8 @@ define(['exports', '../util'], function (exports, _util) {
      */
 
     function _each(fnName, className) {
-        (0, _util.each)(this, function (element) {
-            element.classList[fnName](className);
+        _util.each(this, function (element) {
+            return element.classList[fnName](className);
         });
     }
 

@@ -4,9 +4,7 @@
 
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
+exports.__esModule = true;
 
 var _util = require('../util');
 
@@ -33,7 +31,7 @@ function append(element) {
             if (element instanceof Node) {
                 this.appendChild(element);
             } else {
-                var elements = element instanceof NodeList ? (0, _util.toArray)(element) : element;
+                var elements = element instanceof NodeList ? _util.toArray(element) : element;
                 forEach.call(elements, this.appendChild.bind(this));
             }
         }
@@ -62,7 +60,7 @@ function prepend(element) {
             if (element instanceof Node) {
                 this.insertBefore(element, this.firstChild);
             } else {
-                var elements = element instanceof NodeList ? (0, _util.toArray)(element) : element;
+                var elements = element instanceof NodeList ? _util.toArray(element) : element;
                 forEach.call(elements.reverse(), prepend.bind(this));
             }
         }
@@ -91,7 +89,7 @@ function before(element) {
             if (element instanceof Node) {
                 this.parentNode.insertBefore(element, this);
             } else {
-                var elements = element instanceof NodeList ? (0, _util.toArray)(element) : element;
+                var elements = element instanceof NodeList ? _util.toArray(element) : element;
                 forEach.call(elements, before.bind(this));
             }
         }
@@ -119,7 +117,7 @@ function after(element) {
             if (element instanceof Node) {
                 this.parentNode.insertBefore(element, this.nextSibling);
             } else {
-                var elements = element instanceof NodeList ? (0, _util.toArray)(element) : element;
+                var elements = element instanceof NodeList ? _util.toArray(element) : element;
                 forEach.call(elements.reverse(), after.bind(this));
             }
         }
@@ -138,7 +136,7 @@ function after(element) {
  */
 
 function clone() {
-    return (0, _selectorIndex.$)(_clone(this));
+    return _selectorIndex.$(_clone(this));
 }
 
 /**

@@ -4,9 +4,7 @@
 
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
+exports.__esModule = true;
 
 var _util = require('./util');
 
@@ -39,7 +37,9 @@ function dasherize(value) {
 
 function css(key, value) {
 
-    var styleProps, prop, val;
+    var styleProps = undefined,
+        prop = undefined,
+        val = undefined;
 
     if (typeof key === 'string') {
         key = camelize(key);
@@ -64,7 +64,7 @@ function css(key, value) {
         }
     }
 
-    (0, _util.each)(this, function (element) {
+    _util.each(this, function (element) {
         for (prop in styleProps) {
             if (styleProps[prop] || styleProps[prop] === 0) {
                 element.style[prop] = styleProps[prop];

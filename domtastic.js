@@ -1,13 +1,11 @@
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.$ = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
+exports.__esModule = true;
 
-var _util = require(18);
+var _util = require(19);
 
-var _selectorIndex = require(16);
+var _selectorIndex = require(17);
 
 var ArrayProto = Array.prototype;
 
@@ -15,13 +13,13 @@ var every = ArrayProto.every;
 
 function filter(selector, thisArg) {
   var callback = typeof selector === 'function' ? selector : function (element) {
-    return (0, _selectorIndex.matches)(element, selector);
+    return _selectorIndex.matches(element, selector);
   };
-  return (0, _selectorIndex.$)(ArrayProto.filter.call(this, callback, thisArg));
+  return _selectorIndex.$(ArrayProto.filter.call(this, callback, thisArg));
 }
 
 function forEach(callback, thisArg) {
-  return (0, _util.each)(this, callback, thisArg);
+  return _util.each(this, callback, thisArg);
 }
 
 var each = forEach;
@@ -39,7 +37,7 @@ var reduce = ArrayProto.reduce;
 var reduceRight = ArrayProto.reduceRight;
 
 function reverse() {
-  return (0, _selectorIndex.$)((0, _util.toArray)(this).reverse());
+  return _selectorIndex.$(_util.toArray(this).reverse());
 }
 
 var shift = ArrayProto.shift;
@@ -63,14 +61,36 @@ exports.shift = shift;
 exports.some = some;
 exports.unshift = unshift;
 
-},{"16":16,"18":18}],2:[function(require,module,exports){
+},{"17":17,"19":19}],2:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
+exports.__esModule = true;
 
-var _util = require(18);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+var _selectorIndex = require(17);
+
+var _util = require(19);
+
+exports['default'] = function (api) {
+    var Base = function Base() {
+        _classCallCheck(this, Base);
+
+        _selectorIndex.Wrapper.call(this, _selectorIndex.$.apply(undefined, arguments));
+    };
+
+    _util.extend(Base.prototype, api);
+    return Base;
+};
+
+module.exports = exports['default'];
+
+},{"17":17,"19":19}],3:[function(require,module,exports){
+'use strict';
+
+exports.__esModule = true;
+
+var _util = require(19);
 
 function isNumeric(value) {
     return !isNaN(parseFloat(value)) && isFinite(value);
@@ -88,7 +108,9 @@ function dasherize(value) {
 
 function css(key, value) {
 
-    var styleProps, prop, val;
+    var styleProps = undefined,
+        prop = undefined,
+        val = undefined;
 
     if (typeof key === 'string') {
         key = camelize(key);
@@ -113,7 +135,7 @@ function css(key, value) {
         }
     }
 
-    (0, _util.each)(this, function (element) {
+    _util.each(this, function (element) {
         for (prop in styleProps) {
             if (styleProps[prop] || styleProps[prop] === 0) {
                 element.style[prop] = styleProps[prop];
@@ -128,14 +150,12 @@ function css(key, value) {
 
 exports.css = css;
 
-},{"18":18}],3:[function(require,module,exports){
+},{"19":19}],4:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
+exports.__esModule = true;
 
-var _util = require(18);
+var _util = require(19);
 
 function attr(key, value) {
 
@@ -144,10 +164,10 @@ function attr(key, value) {
         return element ? element.getAttribute(key) : undefined;
     }
 
-    (0, _util.each)(this, function (element) {
+    _util.each(this, function (element) {
         if (typeof key === 'object') {
-            for (var attr in key) {
-                element.setAttribute(attr, key[attr]);
+            for (var _attr in key) {
+                element.setAttribute(_attr, key[_attr]);
             }
         } else {
             element.setAttribute(key, value);
@@ -158,8 +178,8 @@ function attr(key, value) {
 }
 
 function removeAttr(key) {
-    (0, _util.each)(this, function (element) {
-        element.removeAttribute(key);
+    _util.each(this, function (element) {
+        return element.removeAttribute(key);
     });
     return this;
 }
@@ -167,32 +187,30 @@ function removeAttr(key) {
 exports.attr = attr;
 exports.removeAttr = removeAttr;
 
-},{"18":18}],4:[function(require,module,exports){
+},{"19":19}],5:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
+exports.__esModule = true;
 
-var _util = require(18);
+var _util = require(19);
 
 function addClass(value) {
     if (value && value.length) {
-        (0, _util.each)(value.split(' '), _each.bind(this, 'add'));
+        _util.each(value.split(' '), _each.bind(this, 'add'));
     }
     return this;
 }
 
 function removeClass(value) {
     if (value && value.length) {
-        (0, _util.each)(value.split(' '), _each.bind(this, 'remove'));
+        _util.each(value.split(' '), _each.bind(this, 'remove'));
     }
     return this;
 }
 
 function toggleClass(value) {
     if (value && value.length) {
-        (0, _util.each)(value.split(' '), _each.bind(this, 'toggle'));
+        _util.each(value.split(' '), _each.bind(this, 'toggle'));
     }
     return this;
 }
@@ -204,8 +222,8 @@ function hasClass(value) {
 }
 
 function _each(fnName, className) {
-    (0, _util.each)(this, function (element) {
-        element.classList[fnName](className);
+    _util.each(this, function (element) {
+        return element.classList[fnName](className);
     });
 }
 
@@ -214,12 +232,10 @@ exports.removeClass = removeClass;
 exports.toggleClass = toggleClass;
 exports.hasClass = hasClass;
 
-},{"18":18}],5:[function(require,module,exports){
+},{"19":19}],6:[function(require,module,exports){
 "use strict";
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
+exports.__esModule = true;
 
 function contains(container, element) {
     if (!container || !element || container === element) {
@@ -234,14 +250,12 @@ function contains(container, element) {
 
 exports.contains = contains;
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
+exports.__esModule = true;
 
-var _util = require(18);
+var _util = require(19);
 
 var dataKeyProp = '__domtastic_data__';
 
@@ -252,7 +266,7 @@ function data(key, value) {
         return element && element[dataKeyProp] ? element[dataKeyProp][key] : undefined;
     }
 
-    (0, _util.each)(this, function (element) {
+    _util.each(this, function (element) {
         element[dataKeyProp] = element[dataKeyProp] || {};
         element[dataKeyProp][key] = value;
     });
@@ -267,8 +281,8 @@ function prop(key, value) {
         return element && element ? element[key] : undefined;
     }
 
-    (0, _util.each)(this, function (element) {
-        element[key] = value;
+    _util.each(this, function (element) {
+        return element[key] = value;
     });
 
     return this;
@@ -277,33 +291,31 @@ function prop(key, value) {
 exports.data = data;
 exports.prop = prop;
 
-},{"18":18}],7:[function(require,module,exports){
+},{"19":19}],8:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
+exports.__esModule = true;
 
-var _util = require(18);
+var _util = require(19);
 
-var _index = require(9);
+var _index = require(10);
 
-var _selectorIndex = require(16);
+var _selectorIndex = require(17);
 
 function appendTo(element) {
-    var context = typeof element === 'string' ? (0, _selectorIndex.$)(element) : element;
+    var context = typeof element === 'string' ? _selectorIndex.$(element) : element;
     _index.append.call(context, this);
     return this;
 }
 
 function empty() {
-    return (0, _util.each)(this, function (element) {
-        element.innerHTML = '';
+    return _util.each(this, function (element) {
+        return element.innerHTML = '';
     });
 }
 
 function remove() {
-    return (0, _util.each)(this, function (element) {
+    return _util.each(this, function (element) {
         if (element.parentNode) {
             element.parentNode.removeChild(element);
         }
@@ -320,8 +332,8 @@ function text(value) {
         return this[0].textContent;
     }
 
-    (0, _util.each)(this, function (element) {
-        element.textContent = '' + value;
+    _util.each(this, function (element) {
+        return element.textContent = '' + value;
     });
 
     return this;
@@ -333,8 +345,8 @@ function val(value) {
         return this[0].value;
     }
 
-    (0, _util.each)(this, function (element) {
-        element.value = value;
+    _util.each(this, function (element) {
+        return element.value = value;
     });
 
     return this;
@@ -347,14 +359,12 @@ exports.replaceWith = replaceWith;
 exports.text = text;
 exports.val = val;
 
-},{"16":16,"18":18,"9":9}],8:[function(require,module,exports){
+},{"10":10,"17":17,"19":19}],9:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
+exports.__esModule = true;
 
-var _util = require(18);
+var _util = require(19);
 
 function html(fragment) {
 
@@ -363,8 +373,8 @@ function html(fragment) {
     return element ? element.innerHTML : undefined;
   }
 
-  (0, _util.each)(this, function (element) {
-    element.innerHTML = fragment;
+  _util.each(this, function (element) {
+    return element.innerHTML = fragment;
   });
 
   return this;
@@ -372,16 +382,14 @@ function html(fragment) {
 
 exports.html = html;
 
-},{"18":18}],9:[function(require,module,exports){
+},{"19":19}],10:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
+exports.__esModule = true;
 
-var _util = require(18);
+var _util = require(19);
 
-var _selectorIndex = require(16);
+var _selectorIndex = require(17);
 
 var forEach = Array.prototype.forEach;
 
@@ -393,7 +401,7 @@ function append(element) {
             if (element instanceof Node) {
                 this.appendChild(element);
             } else {
-                var elements = element instanceof NodeList ? (0, _util.toArray)(element) : element;
+                var elements = element instanceof NodeList ? _util.toArray(element) : element;
                 forEach.call(elements, this.appendChild.bind(this));
             }
         }
@@ -411,7 +419,7 @@ function prepend(element) {
             if (element instanceof Node) {
                 this.insertBefore(element, this.firstChild);
             } else {
-                var elements = element instanceof NodeList ? (0, _util.toArray)(element) : element;
+                var elements = element instanceof NodeList ? _util.toArray(element) : element;
                 forEach.call(elements.reverse(), prepend.bind(this));
             }
         }
@@ -429,7 +437,7 @@ function before(element) {
             if (element instanceof Node) {
                 this.parentNode.insertBefore(element, this);
             } else {
-                var elements = element instanceof NodeList ? (0, _util.toArray)(element) : element;
+                var elements = element instanceof NodeList ? _util.toArray(element) : element;
                 forEach.call(elements, before.bind(this));
             }
         }
@@ -447,7 +455,7 @@ function after(element) {
             if (element instanceof Node) {
                 this.parentNode.insertBefore(element, this.nextSibling);
             } else {
-                var elements = element instanceof NodeList ? (0, _util.toArray)(element) : element;
+                var elements = element instanceof NodeList ? _util.toArray(element) : element;
                 forEach.call(elements.reverse(), after.bind(this));
             }
         }
@@ -458,7 +466,7 @@ function after(element) {
 }
 
 function clone() {
-    return (0, _selectorIndex.$)(_clone(this));
+    return _selectorIndex.$(_clone(this));
 }
 
 function _clone(element) {
@@ -488,25 +496,26 @@ exports.before = before;
 exports.after = after;
 exports.clone = clone;
 
-},{"16":16,"18":18}],10:[function(require,module,exports){
+},{"17":17,"19":19}],11:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
+exports.__esModule = true;
 
-var _util = require(18);
+var _util = require(19);
 
-var _selectorClosest = require(14);
+var _selectorClosest = require(15);
 
 function on(eventNames, selector, handler, useCapture) {
+    var _this = this;
 
     if (typeof selector === 'function') {
         handler = selector;
         selector = null;
     }
 
-    var parts, namespace, eventListener;
+    var parts = undefined,
+        namespace = undefined,
+        eventListener = undefined;
 
     eventNames.split(' ').forEach(function (eventName) {
 
@@ -516,7 +525,7 @@ function on(eventNames, selector, handler, useCapture) {
 
         eventListener = proxyHandler(handler);
 
-        (0, _util.each)(this, function (element) {
+        _util.each(_this, function (element) {
 
             if (selector) {
                 eventListener = delegateHandler.bind(element, selector, eventListener);
@@ -540,12 +549,16 @@ function on(eventNames, selector, handler, useCapture) {
 function off(eventNames, selector, handler, useCapture) {
     if (eventNames === undefined) eventNames = '';
 
+    var _this2 = this;
+
     if (typeof selector === 'function') {
         handler = selector;
         selector = null;
     }
 
-    var parts, namespace, handlers;
+    var parts = undefined,
+        namespace = undefined,
+        handlers = undefined;
 
     eventNames.split(' ').forEach(function (eventName) {
 
@@ -553,11 +566,11 @@ function off(eventNames, selector, handler, useCapture) {
         eventName = parts[0] || null;
         namespace = parts[1] || null;
 
-        (0, _util.each)(this, function (element) {
+        _util.each(_this2, function (element) {
 
             handlers = getHandlers(element);
 
-            (0, _util.each)(handlers.filter(function (item) {
+            _util.each(handlers.filter(function (item) {
                 return (!eventName || item.eventName === eventName) && (!namespace || item.namespace === namespace) && (!handler || item.handler === handler) && (!selector || item.selector === selector);
             }), function (item) {
                 element.removeEventListener(item.eventName, item.eventListener, useCapture || false);
@@ -605,7 +618,7 @@ function proxyHandler(handler) {
 
 var augmentEvent = (function () {
 
-    var methodName,
+    var methodName = undefined,
         eventMethods = {
         preventDefault: 'isDefaultPrevented',
         stopImmediatePropagation: 'isImmediatePropagationStopped',
@@ -655,12 +668,10 @@ exports.off = off;
 exports.bind = bind;
 exports.unbind = unbind;
 
-},{"14":14,"18":18}],11:[function(require,module,exports){
+},{"15":15,"19":19}],12:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
+exports.__esModule = true;
 
 function ready(handler) {
   if (/complete|loaded|interactive/.test(document.readyState) && document.body) {
@@ -673,22 +684,20 @@ function ready(handler) {
 
 exports.ready = ready;
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
+exports.__esModule = true;
 
-var _util = require(18);
+var _util = require(19);
 
-var _domContains = require(5);
+var _domContains = require(6);
 
 var reMouseEvent = /^(?:mouse|pointer|contextmenu)|click/,
     reKeyEvent = /^key/;
 
 function trigger(type, data) {
-    var params = arguments[2] === undefined ? {} : arguments[2];
+    var params = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 
     params.bubbles = typeof params.bubbles === 'boolean' ? params.bubbles : true;
     params.cancelable = typeof params.cancelable === 'boolean' ? params.cancelable : true;
@@ -700,7 +709,7 @@ function trigger(type, data) {
 
     event._preventDefault = params.preventDefault;
 
-    (0, _util.each)(this, function (element) {
+    _util.each(this, function (element) {
         if (!params.bubbles || isEventBubblingInDetachedTree || isAttachedToDocument(element)) {
             dispatchEvent(element, event);
         } else {
@@ -724,11 +733,11 @@ function isAttachedToDocument(element) {
     if (element === window || element === document) {
         return true;
     }
-    return (0, _domContains.contains)(element.ownerDocument.documentElement, element);
+    return _domContains.contains(element.ownerDocument.documentElement, element);
 }
 
 function triggerForPath(element, type) {
-    var params = arguments[2] === undefined ? {} : arguments[2];
+    var params = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 
     params.bubbles = false;
     var event = new CustomEvent(type, params);
@@ -750,7 +759,7 @@ function dispatchEvent(element, event) {
 
 (function () {
     function CustomEvent(event) {
-        var params = arguments[1] === undefined ? { bubbles: false, cancelable: false, detail: undefined } : arguments[1];
+        var params = arguments.length <= 1 || arguments[1] === undefined ? { bubbles: false, cancelable: false, detail: undefined } : arguments[1];
 
         var customEvent = document.createEvent('CustomEvent');
         customEvent.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
@@ -765,10 +774,10 @@ var isEventBubblingInDetachedTree = (function () {
     var isBubbling = false,
         doc = _util.global.document;
     if (doc) {
-        var parent = doc.createElement('div'),
-            child = parent.cloneNode();
-        parent.appendChild(child);
-        parent.addEventListener('e', function () {
+        var _parent = doc.createElement('div'),
+            child = _parent.cloneNode();
+        _parent.appendChild(child);
+        _parent.addEventListener('e', function () {
             isBubbling = true;
         });
         child.dispatchEvent(new CustomEvent('e', { bubbles: true }));
@@ -788,14 +797,12 @@ var supportsOtherEventConstructors = (function () {
 exports.trigger = trigger;
 exports.triggerHandler = triggerHandler;
 
-},{"18":18,"5":5}],13:[function(require,module,exports){
+},{"19":19,"6":6}],14:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
+exports.__esModule = true;
 
-var _util = require(18);
+var _util = require(19);
 
 var previousLib = _util.global.$;
 
@@ -806,43 +813,49 @@ function noConflict() {
 
 exports.noConflict = noConflict;
 
-},{"18":18}],14:[function(require,module,exports){
+},{"19":19}],15:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
+exports.__esModule = true;
 
-var _index = require(16);
+var _index = require(17);
 
-var _util = require(18);
+var _util = require(19);
 
 var closest = (function () {
 
     function closest(selector, context) {
         var nodes = [];
-        (0, _util.each)(this, function (node) {
+        _util.each(this, function (node) {
             while (node && node !== context) {
-                if ((0, _index.matches)(node, selector)) {
+                if (_index.matches(node, selector)) {
                     nodes.push(node);
                     break;
                 }
                 node = node.parentElement;
             }
         });
-        return (0, _index.$)((0, _util.uniq)(nodes));
+        return _index.$(_util.uniq(nodes));
     }
 
     return !Element.prototype.closest ? closest : function (selector, context) {
+        var _this = this;
+
         if (!context) {
-            var nodes = [];
-            (0, _util.each)(this, function (node) {
-                var n = node.closest(selector);
-                if (n) {
-                    nodes.push(n);
-                }
-            });
-            return (0, _index.$)((0, _util.uniq)(nodes));
+            var _ret = (function () {
+                var nodes = [];
+                _util.each(_this, function (node) {
+                    var n = node.closest(selector);
+                    if (n) {
+                        nodes.push(n);
+                    }
+                });
+                return {
+                    v: _index.$(_util.uniq(nodes))
+                };
+            })();
+
+            if (typeof _ret === 'object') return _ret.v;
         } else {
             return closest.call(this, selector, context);
         }
@@ -851,37 +864,35 @@ var closest = (function () {
 
 exports.closest = closest;
 
-},{"16":16,"18":18}],15:[function(require,module,exports){
+},{"17":17,"19":19}],16:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
+exports.__esModule = true;
 
-var _util = require(18);
+var _util = require(19);
 
-var _index = require(16);
+var _index = require(17);
 
 function children(selector) {
     var nodes = [];
-    (0, _util.each)(this, function (element) {
+    _util.each(this, function (element) {
         if (element.children) {
-            (0, _util.each)(element.children, function (child) {
-                if (!selector || selector && (0, _index.matches)(child, selector)) {
+            _util.each(element.children, function (child) {
+                if (!selector || selector && _index.matches(child, selector)) {
                     nodes.push(child);
                 }
             });
         }
     });
-    return (0, _index.$)(nodes);
+    return _index.$(nodes);
 }
 
 function contents() {
     var nodes = [];
-    (0, _util.each)(this, function (element) {
-        nodes.push.apply(nodes, (0, _util.toArray)(element.childNodes));
+    _util.each(this, function (element) {
+        nodes.push.apply(nodes, _util.toArray(element.childNodes));
     });
-    return (0, _index.$)(nodes);
+    return _index.$(nodes);
 }
 
 function eq(index) {
@@ -894,28 +905,28 @@ function get(index) {
 
 function parent(selector) {
     var nodes = [];
-    (0, _util.each)(this, function (element) {
-        if (!selector || selector && (0, _index.matches)(element.parentNode, selector)) {
+    _util.each(this, function (element) {
+        if (!selector || selector && _index.matches(element.parentNode, selector)) {
             nodes.push(element.parentNode);
         }
     });
-    return (0, _index.$)(nodes);
+    return _index.$(nodes);
 }
 
 function siblings(selector) {
     var nodes = [];
-    (0, _util.each)(this, function (element) {
-        (0, _util.each)(element.parentNode.children, function (sibling) {
-            if (sibling !== element && (!selector || selector && (0, _index.matches)(sibling, selector))) {
+    _util.each(this, function (element) {
+        _util.each(element.parentNode.children, function (sibling) {
+            if (sibling !== element && (!selector || selector && _index.matches(sibling, selector))) {
                 nodes.push(sibling);
             }
         });
     });
-    return (0, _index.$)(nodes);
+    return _index.$(nodes);
 }
 
 function slice(start, end) {
-    return (0, _index.$)([].slice.apply(this, arguments));
+    return _index.$([].slice.apply(this, arguments));
 }
 
 exports.children = children;
@@ -926,24 +937,23 @@ exports.parent = parent;
 exports.siblings = siblings;
 exports.slice = slice;
 
-},{"16":16,"18":18}],16:[function(require,module,exports){
+},{"17":17,"19":19}],17:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
+exports.__esModule = true;
 
-var _util = require(18);
+var _util = require(19);
 
-var isPrototypeSet = false,
-    reFragment = /^\s*<(\w+|!)[^>]*>/,
+var isPrototypeSet = false;
+
+var reFragment = /^\s*<(\w+|!)[^>]*>/,
     reSingleTag = /^<(\w+)\s*\/?>(?:<\/\1>|)$/,
     reSimpleSelector = /^[\.#]?[\w-]*$/;
 
 function $(selector) {
-    var context = arguments[1] === undefined ? document : arguments[1];
+    var context = arguments.length <= 1 || arguments[1] === undefined ? document : arguments[1];
 
-    var collection;
+    var collection = undefined;
 
     if (!selector) {
 
@@ -969,8 +979,8 @@ function $(selector) {
 
 function find(selector) {
     var nodes = [];
-    (0, _util.each)(this, function (node) {
-        (0, _util.each)(querySelector(selector, node), function (child) {
+    _util.each(this, function (node) {
+        _util.each(querySelector(selector, node), function (child) {
             if (nodes.indexOf(child) === -1) {
                 nodes.push(child);
             }
@@ -1047,13 +1057,12 @@ function Wrapper(collection) {
 exports.$ = $;
 exports.find = find;
 exports.matches = matches;
+exports.Wrapper = Wrapper;
 
-},{"18":18}],17:[function(require,module,exports){
+},{"19":19}],18:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
+exports.__esModule = true;
 
 function isFunction(obj) {
   return typeof obj === 'function';
@@ -1064,12 +1073,10 @@ var isArray = Array.isArray;
 exports.isArray = isArray;
 exports.isFunction = isFunction;
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 "use strict";
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
+exports.__esModule = true;
 
 var global = new Function("return this")();
 
@@ -1119,82 +1126,86 @@ exports.each = each;
 exports.extend = extend;
 exports.uniq = uniq;
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
+exports.__esModule = true;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 
-var _util = require(18);
+var _util = require(19);
 
 var _array = require(1);
 
 var array = _interopRequireWildcard(_array);
 
-var _domAttr = require(3);
+var _baseClass = require(2);
+
+var _baseClass2 = _interopRequireDefault(_baseClass);
+
+var _domAttr = require(4);
 
 var attr = _interopRequireWildcard(_domAttr);
 
-var _domClass = require(4);
+var _domClass = require(5);
 
 var class_ = _interopRequireWildcard(_domClass);
 
-var _domContains = require(5);
+var _domContains = require(6);
 
 var contains = _interopRequireWildcard(_domContains);
 
-var _css = require(2);
+var _css = require(3);
 
 var css = _interopRequireWildcard(_css);
 
-var _domData = require(6);
+var _domData = require(7);
 
 var data = _interopRequireWildcard(_domData);
 
-var _domIndex = require(9);
+var _domIndex = require(10);
 
 var dom = _interopRequireWildcard(_domIndex);
 
-var _domExtra = require(7);
+var _domExtra = require(8);
 
 var dom_extra = _interopRequireWildcard(_domExtra);
 
-var _eventIndex = require(10);
+var _eventIndex = require(11);
 
 var event = _interopRequireWildcard(_eventIndex);
 
-var _domHtml = require(8);
+var _domHtml = require(9);
 
 var html = _interopRequireWildcard(_domHtml);
 
-var _noconflict = require(13);
+var _noconflict = require(14);
 
 var noconflict = _interopRequireWildcard(_noconflict);
 
-var _eventReady = require(11);
+var _eventReady = require(12);
 
 var ready = _interopRequireWildcard(_eventReady);
 
-var _selectorIndex = require(16);
+var _selectorIndex = require(17);
 
 var selector = _interopRequireWildcard(_selectorIndex);
 
-var _selectorClosest = require(14);
+var _selectorClosest = require(15);
 
 var closest = _interopRequireWildcard(_selectorClosest);
 
-var _selectorExtra = require(15);
+var _selectorExtra = require(16);
 
 var selector_extra = _interopRequireWildcard(_selectorExtra);
 
-var _eventTrigger = require(12);
+var _eventTrigger = require(13);
 
 var trigger = _interopRequireWildcard(_eventTrigger);
 
-var _type = require(17);
+var _type = require(18);
 
 var type = _interopRequireWildcard(_type);
 
@@ -1207,18 +1218,22 @@ if (typeof selector !== 'undefined') {
     api.find = selector.find;
 }
 
-(0, _util.extend)($, contains, noconflict, type);
-(0, _util.extend)(api, array, attr, class_, closest, css, data, dom, dom_extra, event, html, ready, selector_extra, trigger);
+_util.extend($, contains, noconflict, type);
+_util.extend(api, array, attr, class_, closest, css, data, dom, dom_extra, event, html, ready, selector_extra, trigger);
 
 $.fn = api;
 
-$.version = '0.10.3';
+$.version = '0.11.0';
 
 $.extend = _util.extend;
+
+if (typeof _baseClass2['default'] !== 'undefined') {
+    $.BaseClass = _baseClass2['default']($.fn);
+}
 
 exports['default'] = $;
 module.exports = exports['default'];
 
-},{"1":1,"10":10,"11":11,"12":12,"13":13,"14":14,"15":15,"16":16,"17":17,"18":18,"2":2,"3":3,"4":4,"5":5,"6":6,"7":7,"8":8,"9":9}]},{},[19])(19)
+},{"1":1,"10":10,"11":11,"12":12,"13":13,"14":14,"15":15,"16":16,"17":17,"18":18,"19":19,"2":2,"3":3,"4":4,"5":5,"6":6,"7":7,"8":8,"9":9}]},{},[20])(20)
 });
 //# sourceMappingURL=domtastic.js.map

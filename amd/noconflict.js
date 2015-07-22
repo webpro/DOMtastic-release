@@ -5,9 +5,7 @@ define(['exports', './util'], function (exports, _util) {
 
   'use strict';
 
-  Object.defineProperty(exports, '__esModule', {
-    value: true
-  });
+  exports.__esModule = true;
 
   /*
    * Save the previous value of the global `$` variable, so that it can be restored later on.

@@ -14,9 +14,7 @@
 
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
+exports.__esModule = true;
 function ready(handler) {
   if (/complete|loaded|interactive/.test(document.readyState) && document.body) {
     handler();

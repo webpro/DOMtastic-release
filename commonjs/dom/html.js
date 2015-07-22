@@ -4,9 +4,7 @@
 
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
+exports.__esModule = true;
 
 var _util = require('../util');
 
@@ -28,8 +26,8 @@ function html(fragment) {
     return element ? element.innerHTML : undefined;
   }
 
-  (0, _util.each)(this, function (element) {
-    element.innerHTML = fragment;
+  _util.each(this, function (element) {
+    return element.innerHTML = fragment;
   });
 
   return this;

@@ -5,9 +5,7 @@ define(['exports', '../util'], function (exports, _util) {
 
   'use strict';
 
-  Object.defineProperty(exports, '__esModule', {
-    value: true
-  });
+  exports.__esModule = true;
 
   /*
    * Get the HTML contents of the first element, or set the HTML contents for each element in the collection.
@@ -27,8 +25,8 @@ define(['exports', '../util'], function (exports, _util) {
       return element ? element.innerHTML : undefined;
     }
 
-    (0, _util.each)(this, function (element) {
-      element.innerHTML = fragment;
+    _util.each(this, function (element) {
+      return element.innerHTML = fragment;
     });
 
     return this;

@@ -7,7 +7,7 @@ define(['exports'], function (exports) {
    * Determine if the argument passed is a Javascript function object.
    *
    * @param {Object} [obj] Object to test whether or not it is a function.
-   * @return {boolean} 
+   * @return {boolean}
    * @example
    *     $.isFunction(function(){});
    *     // true
@@ -18,9 +18,7 @@ define(['exports'], function (exports) {
 
   'use strict';
 
-  Object.defineProperty(exports, '__esModule', {
-    value: true
-  });
+  exports.__esModule = true;
   function isFunction(obj) {
     return typeof obj === 'function';
   }
@@ -29,7 +27,7 @@ define(['exports'], function (exports) {
    * Determine whether the argument is an array.
    *
    * @param {Object} [obj] Object to test whether or not it is an array.
-   * @return {boolean} 
+   * @return {boolean}
    * @example
    *     $.isArray([]);
    *     // true

@@ -5,9 +5,7 @@ define(['exports', '../util'], function (exports, _util) {
 
     'use strict';
 
-    Object.defineProperty(exports, '__esModule', {
-        value: true
-    });
+    exports.__esModule = true;
 
     var dataKeyProp = '__domtastic_data__';
 
@@ -30,7 +28,7 @@ define(['exports', '../util'], function (exports, _util) {
             return element && element[dataKeyProp] ? element[dataKeyProp][key] : undefined;
         }
 
-        (0, _util.each)(this, function (element) {
+        _util.each(this, function (element) {
             element[dataKeyProp] = element[dataKeyProp] || {};
             element[dataKeyProp][key] = value;
         });
@@ -57,8 +55,8 @@ define(['exports', '../util'], function (exports, _util) {
             return element && element ? element[key] : undefined;
         }
 
-        (0, _util.each)(this, function (element) {
-            element[key] = value;
+        _util.each(this, function (element) {
+            return element[key] = value;
         });
 
         return this;

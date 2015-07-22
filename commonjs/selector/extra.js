@@ -4,9 +4,7 @@
 
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
+exports.__esModule = true;
 
 var _util = require('../util');
 
@@ -25,16 +23,16 @@ var _index = require('./index');
 
 function children(selector) {
     var nodes = [];
-    (0, _util.each)(this, function (element) {
+    _util.each(this, function (element) {
         if (element.children) {
-            (0, _util.each)(element.children, function (child) {
-                if (!selector || selector && (0, _index.matches)(child, selector)) {
+            _util.each(element.children, function (child) {
+                if (!selector || selector && _index.matches(child, selector)) {
                     nodes.push(child);
                 }
             });
         }
     });
-    return (0, _index.$)(nodes);
+    return _index.$(nodes);
 }
 
 /**
@@ -47,10 +45,10 @@ function children(selector) {
 
 function contents() {
     var nodes = [];
-    (0, _util.each)(this, function (element) {
-        nodes.push.apply(nodes, (0, _util.toArray)(element.childNodes));
+    _util.each(this, function (element) {
+        nodes.push.apply(nodes, _util.toArray(element.childNodes));
     });
-    return (0, _index.$)(nodes);
+    return _index.$(nodes);
 }
 
 /**
@@ -95,12 +93,12 @@ function get(index) {
 
 function parent(selector) {
     var nodes = [];
-    (0, _util.each)(this, function (element) {
-        if (!selector || selector && (0, _index.matches)(element.parentNode, selector)) {
+    _util.each(this, function (element) {
+        if (!selector || selector && _index.matches(element.parentNode, selector)) {
             nodes.push(element.parentNode);
         }
     });
-    return (0, _index.$)(nodes);
+    return _index.$(nodes);
 }
 
 /**
@@ -116,14 +114,14 @@ function parent(selector) {
 
 function siblings(selector) {
     var nodes = [];
-    (0, _util.each)(this, function (element) {
-        (0, _util.each)(element.parentNode.children, function (sibling) {
-            if (sibling !== element && (!selector || selector && (0, _index.matches)(sibling, selector))) {
+    _util.each(this, function (element) {
+        _util.each(element.parentNode.children, function (sibling) {
+            if (sibling !== element && (!selector || selector && _index.matches(sibling, selector))) {
                 nodes.push(sibling);
             }
         });
     });
-    return (0, _index.$)(nodes);
+    return _index.$(nodes);
 }
 
 /**
@@ -138,7 +136,7 @@ function siblings(selector) {
  */
 
 function slice(start, end) {
-    return (0, _index.$)([].slice.apply(this, arguments));
+    return _index.$([].slice.apply(this, arguments));
 }
 
 /*

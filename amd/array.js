@@ -5,9 +5,7 @@ define(['exports', './util', './selector/index'], function (exports, _util, _sel
 
   'use strict';
 
-  Object.defineProperty(exports, '__esModule', {
-    value: true
-  });
+  exports.__esModule = true;
 
   var ArrayProto = Array.prototype;
 
@@ -43,9 +41,9 @@ define(['exports', './util', './selector/index'], function (exports, _util, _sel
 
   function filter(selector, thisArg) {
     var callback = typeof selector === 'function' ? selector : function (element) {
-      return (0, _selectorIndex.matches)(element, selector);
+      return _selectorIndex.matches(element, selector);
     };
-    return (0, _selectorIndex.$)(ArrayProto.filter.call(this, callback, thisArg));
+    return _selectorIndex.$(ArrayProto.filter.call(this, callback, thisArg));
   }
 
   /**
@@ -62,7 +60,7 @@ define(['exports', './util', './selector/index'], function (exports, _util, _sel
    */
 
   function forEach(callback, thisArg) {
-    return (0, _util.each)(this, callback, thisArg);
+    return _util.each(this, callback, thisArg);
   }
 
   var each = forEach;
@@ -155,7 +153,7 @@ define(['exports', './util', './selector/index'], function (exports, _util, _sel
    */
 
   function reverse() {
-    return (0, _selectorIndex.$)((0, _util.toArray)(this).reverse());
+    return _selectorIndex.$(_util.toArray(this).reverse());
   }
 
   /**
