@@ -73,14 +73,14 @@ var _selectorIndex = require(17);
 var _util = require(19);
 
 exports['default'] = function (api) {
-    var Base = function Base() {
-        _classCallCheck(this, Base);
+    var BaseClass = function BaseClass() {
+        _classCallCheck(this, BaseClass);
 
         _selectorIndex.Wrapper.call(this, _selectorIndex.$.apply(undefined, arguments));
     };
 
-    _util.extend(Base.prototype, api);
-    return Base;
+    _util.extend(BaseClass.prototype, api);
+    return BaseClass;
 };
 
 module.exports = exports['default'];
@@ -1223,13 +1223,15 @@ _util.extend(api, array, attr, class_, closest, css, data, dom, dom_extra, event
 
 $.fn = api;
 
-$.version = '0.11.0';
+$.version = '0.11.1';
 
 $.extend = _util.extend;
 
 if (typeof _baseClass2['default'] !== 'undefined') {
     $.BaseClass = _baseClass2['default']($.fn);
 }
+
+$['default'] = $;
 
 exports['default'] = $;
 module.exports = exports['default'];

@@ -102,7 +102,7 @@ $.fn = api;
 
 // Version
 
-$.version = '0.11.0';
+$.version = '0.11.1';
 
 // Util
 
@@ -113,6 +113,10 @@ $.extend = _util.extend;
 if (typeof _baseClass2['default'] !== 'undefined') {
     $.BaseClass = _baseClass2['default']($.fn);
 }
+
+// Ugly interoperability hack, to prevent potential ES6 import issues
+
+$['default'] = $;
 
 // Export interface
 

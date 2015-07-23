@@ -12,6 +12,8 @@ define(['exports', 'module', './util', './array', './baseClass', './dom/attr', '
     var api = {},
         $ = {};
 
+    // Import modules to build up the API
+
     if (typeof _selectorIndex !== 'undefined') {
         $ = _selectorIndex.$;
         $.matches = _selectorIndex.matches;
@@ -25,7 +27,7 @@ define(['exports', 'module', './util', './array', './baseClass', './dom/attr', '
 
     // Version
 
-    $.version = '0.11.0';
+    $.version = '0.11.1';
 
     // Util
 
@@ -37,8 +39,11 @@ define(['exports', 'module', './util', './array', './baseClass', './dom/attr', '
         $.BaseClass = _BaseClass['default']($.fn);
     }
 
+    // Ugly interoperability hack, to prevent potential ES6 import issues
+
+    $['default'] = $;
+
     // Export interface
 
     module.exports = $;
 });
-// Import modules to build up the API
