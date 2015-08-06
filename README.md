@@ -1,6 +1,6 @@
 # DOMtastic
 
-Release repository for [DOMtastic](http://webpro.github.io/DOMtastic/). These files are what you get when you install the `domtastic` package from npm or Bower. Please refer to the [project page](http://webpro.github.io/DOMtastic/) for more documentation, source code, tests, etc.
+Release repository for [DOMtastic](https://domtastic.js.org). These files are what you get when you install the `domtastic` package from npm or Bower. Please refer to the [project page](https://domtastic.js.org) for more documentation, source code, tests, etc.
 
 ## Why?
 
@@ -16,15 +16,11 @@ This repository release contains the following files:
 
 `/domtastic.js`
 
-The UMD bundle, which works with AMD, CommonJS and browser global as fallback.
-
-This is also the file served by the [jsDelivr CDN](http://www.jsdelivr.com/) for easy inclusion anywhere. E.g. [//cdn.jsdelivr.net/domtastic/0.10/domtastic.js](https:////cdn.jsdelivr.net/domtastic/0.10/domtastic.js) will give you the most recent `0.10.x` version. Additionally, this might come in handy if you just want to fiddle around to try or test something on e.g. JSFiddle or JS Bin ([JSFiddle example](http://jsfiddle.net/56r00faz/), [JS Bin example](http://jsbin.com/huhixolabo/1/edit?html,js,output)).
+The UMD bundle, which works with AMD, CommonJS and browser global as fallback. This is also the file served by the [jsDelivr CDN](http://www.jsdelivr.com/) for easy inclusion anywhere. E.g. [//cdn.jsdelivr.net/domtastic/0.11/domtastic.js](https:////cdn.jsdelivr.net/domtastic/0.11/domtastic.js) will give you the most recent `0.11.x` version. Additionally, this might come in handy if you just want to fiddle around to try or test something on e.g. JSFiddle or JS Bin ([JSFiddle example](http://jsfiddle.net/56r00faz/), [JS Bin example](http://jsbin.com/huhixolabo/1/edit?html,js,output)).
 
 `/domtastic.min.js`
 
-The minified production version of `domtastic.js`.
-
-Both files come with a `.map` source map file for debugging purposes.
+The minified production version of `domtastic.js`. Both files come with a `.map` source map file for debugging purposes.
 
 `/amd`
 
