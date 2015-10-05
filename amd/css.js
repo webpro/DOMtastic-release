@@ -7,19 +7,19 @@ define(['exports', './util'], function (exports, _util) {
 
     exports.__esModule = true;
 
-    function isNumeric(value) {
+    var isNumeric = function isNumeric(value) {
         return !isNaN(parseFloat(value)) && isFinite(value);
-    }
+    };
 
-    function camelize(value) {
+    var camelize = function camelize(value) {
         return value.replace(/-([\da-z])/gi, function (matches, letter) {
             return letter.toUpperCase();
         });
-    }
+    };
 
-    function dasherize(value) {
+    var dasherize = function dasherize(value) {
         return value.replace(/([a-z\d])([A-Z])/g, '$1-$2').toLowerCase();
-    }
+    };
 
     /**
      * Get the value of a style property for the first element, or set one or more style properties for each element in the collection.

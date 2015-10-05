@@ -7,7 +7,7 @@ define(['exports', '../util'], function (exports, _util) {
 
     exports.__esModule = true;
 
-    var dataKeyProp = '__domtastic_data__';
+    var DATAKEYPROP = '__DOMTASTIC_DATA__';
 
     /**
      * Get data from first element, or set data for each element in the collection.
@@ -25,12 +25,12 @@ define(['exports', '../util'], function (exports, _util) {
 
         if (typeof key === 'string' && typeof value === 'undefined') {
             var element = this.nodeType ? this : this[0];
-            return element && element[dataKeyProp] ? element[dataKeyProp][key] : undefined;
+            return element && element[DATAKEYPROP] ? element[DATAKEYPROP][key] : undefined;
         }
 
         _util.each(this, function (element) {
-            element[dataKeyProp] = element[dataKeyProp] || {};
-            element[dataKeyProp][key] = value;
+            element[DATAKEYPROP] = element[DATAKEYPROP] || {};
+            element[DATAKEYPROP][key] = value;
         });
 
         return this;

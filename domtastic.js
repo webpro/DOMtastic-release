@@ -92,19 +92,19 @@ exports.__esModule = true;
 
 var _util = require(19);
 
-function isNumeric(value) {
+var isNumeric = function isNumeric(value) {
     return !isNaN(parseFloat(value)) && isFinite(value);
-}
+};
 
-function camelize(value) {
+var camelize = function camelize(value) {
     return value.replace(/-([\da-z])/gi, function (matches, letter) {
         return letter.toUpperCase();
     });
-}
+};
 
-function dasherize(value) {
+var dasherize = function dasherize(value) {
     return value.replace(/([a-z\d])([A-Z])/g, '$1-$2').toLowerCase();
-}
+};
 
 function css(key, value) {
 
@@ -257,18 +257,18 @@ exports.__esModule = true;
 
 var _util = require(19);
 
-var dataKeyProp = '__domtastic_data__';
+var DATAKEYPROP = '__DOMTASTIC_DATA__';
 
 function data(key, value) {
 
     if (typeof key === 'string' && typeof value === 'undefined') {
         var element = this.nodeType ? this : this[0];
-        return element && element[dataKeyProp] ? element[dataKeyProp][key] : undefined;
+        return element && element[DATAKEYPROP] ? element[DATAKEYPROP][key] : undefined;
     }
 
     _util.each(this, function (element) {
-        element[dataKeyProp] = element[dataKeyProp] || {};
-        element[dataKeyProp][key] = value;
+        element[DATAKEYPROP] = element[DATAKEYPROP] || {};
+        element[DATAKEYPROP][key] = value;
     });
 
     return this;
@@ -693,27 +693,29 @@ var _util = require(19);
 
 var _domContains = require(6);
 
-var reMouseEvent = /^(?:mouse|pointer|contextmenu)|click/,
-    reKeyEvent = /^key/;
+var reMouseEvent = /^(?:mouse|pointer|contextmenu)|click/;
+var reKeyEvent = /^key/;
 
 function trigger(type, data) {
-    var params = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+    var _ref = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 
-    params.bubbles = typeof params.bubbles === 'boolean' ? params.bubbles : true;
-    params.cancelable = typeof params.cancelable === 'boolean' ? params.cancelable : true;
-    params.preventDefault = typeof params.preventDefault === 'boolean' ? params.preventDefault : false;
-    params.detail = data;
+    var _ref$bubbles = _ref.bubbles;
+    var bubbles = _ref$bubbles === undefined ? true : _ref$bubbles;
+    var _ref$cancelable = _ref.cancelable;
+    var cancelable = _ref$cancelable === undefined ? true : _ref$cancelable;
+    var _ref$preventDefault = _ref.preventDefault;
+    var preventDefault = _ref$preventDefault === undefined ? false : _ref$preventDefault;
 
     var EventConstructor = getEventConstructor(type),
-        event = new EventConstructor(type, params);
+        event = new EventConstructor(type, { bubbles: bubbles, cancelable: cancelable, preventDefault: preventDefault, detail: data });
 
-    event._preventDefault = params.preventDefault;
+    event._preventDefault = preventDefault;
 
     _util.each(this, function (element) {
-        if (!params.bubbles || isEventBubblingInDetachedTree || isAttachedToDocument(element)) {
+        if (!bubbles || isEventBubblingInDetachedTree || isAttachedToDocument(element)) {
             dispatchEvent(element, event);
         } else {
-            triggerForPath(element, type, params);
+            triggerForPath(element, type, { bubbles: bubbles, cancelable: cancelable, preventDefault: preventDefault, detail: data });
         }
     });
     return this;
@@ -946,9 +948,9 @@ var _util = require(19);
 
 var isPrototypeSet = false;
 
-var reFragment = /^\s*<(\w+|!)[^>]*>/,
-    reSingleTag = /^<(\w+)\s*\/?>(?:<\/\1>|)$/,
-    reSimpleSelector = /^[\.#]?[\w-]*$/;
+var reFragment = /^\s*<(\w+|!)[^>]*>/;
+var reSingleTag = /^<(\w+)\s*\/?>(?:<\/\1>|)$/;
+var reSimpleSelector = /^[\.#]?[\w-]*$/;
 
 function $(selector) {
     var context = arguments.length <= 1 || arguments[1] === undefined ? document : arguments[1];
@@ -1064,9 +1066,9 @@ exports.Wrapper = Wrapper;
 
 exports.__esModule = true;
 
-function isFunction(obj) {
+var isFunction = function isFunction(obj) {
   return typeof obj === 'function';
-}
+};
 
 var isArray = Array.isArray;
 
@@ -1114,11 +1116,11 @@ function extend(target) {
     return target;
 }
 
-function uniq(collection) {
+var uniq = function uniq(collection) {
     return collection.filter(function (item, index) {
         return collection.indexOf(item) === index;
     });
-}
+};
 
 exports.global = global;
 exports.toArray = toArray;
@@ -1223,7 +1225,7 @@ _util.extend(api, array, attr, class_, closest, css, data, dom, dom_extra, event
 
 $.fn = api;
 
-$.version = '0.11.1';
+$.version = '0.11.2';
 
 $.extend = _util.extend;
 

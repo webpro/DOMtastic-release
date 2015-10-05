@@ -19,9 +19,9 @@ define(['exports'], function (exports) {
   'use strict';
 
   exports.__esModule = true;
-  function isFunction(obj) {
+  var isFunction = function isFunction(obj) {
     return typeof obj === 'function';
-  }
+  };
 
   /*
    * Determine whether the argument is an array.

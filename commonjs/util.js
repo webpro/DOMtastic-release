@@ -86,11 +86,11 @@ function extend(target) {
  * @private
  */
 
-function uniq(collection) {
+var uniq = function uniq(collection) {
     return collection.filter(function (item, index) {
         return collection.indexOf(item) === index;
     });
-}
+};
 
 /*
  * Export interface

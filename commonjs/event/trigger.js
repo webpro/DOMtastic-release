@@ -10,8 +10,8 @@ var _util = require('../util');
 
 var _domContains = require('../dom/contains');
 
-var reMouseEvent = /^(?:mouse|pointer|contextmenu)|click/,
-    reKeyEvent = /^key/;
+var reMouseEvent = /^(?:mouse|pointer|contextmenu)|click/;
+var reKeyEvent = /^key/;
 
 /**
  * Trigger event at element(s)
@@ -29,23 +29,25 @@ var reMouseEvent = /^(?:mouse|pointer|contextmenu)|click/,
  */
 
 function trigger(type, data) {
-    var params = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+    var _ref = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 
-    params.bubbles = typeof params.bubbles === 'boolean' ? params.bubbles : true;
-    params.cancelable = typeof params.cancelable === 'boolean' ? params.cancelable : true;
-    params.preventDefault = typeof params.preventDefault === 'boolean' ? params.preventDefault : false;
-    params.detail = data;
+    var _ref$bubbles = _ref.bubbles;
+    var bubbles = _ref$bubbles === undefined ? true : _ref$bubbles;
+    var _ref$cancelable = _ref.cancelable;
+    var cancelable = _ref$cancelable === undefined ? true : _ref$cancelable;
+    var _ref$preventDefault = _ref.preventDefault;
+    var preventDefault = _ref$preventDefault === undefined ? false : _ref$preventDefault;
 
     var EventConstructor = getEventConstructor(type),
-        event = new EventConstructor(type, params);
+        event = new EventConstructor(type, { bubbles: bubbles, cancelable: cancelable, preventDefault: preventDefault, detail: data });
 
-    event._preventDefault = params.preventDefault;
+    event._preventDefault = preventDefault;
 
     _util.each(this, function (element) {
-        if (!params.bubbles || isEventBubblingInDetachedTree || isAttachedToDocument(element)) {
+        if (!bubbles || isEventBubblingInDetachedTree || isAttachedToDocument(element)) {
             dispatchEvent(element, event);
         } else {
-            triggerForPath(element, type, params);
+            triggerForPath(element, type, { bubbles: bubbles, cancelable: cancelable, preventDefault: preventDefault, detail: data });
         }
     });
     return this;

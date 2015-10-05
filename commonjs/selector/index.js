@@ -10,9 +10,9 @@ var _util = require('../util');
 
 var isPrototypeSet = false;
 
-var reFragment = /^\s*<(\w+|!)[^>]*>/,
-    reSingleTag = /^<(\w+)\s*\/?>(?:<\/\1>|)$/,
-    reSimpleSelector = /^[\.#]?[\w-]*$/;
+var reFragment = /^\s*<(\w+|!)[^>]*>/;
+var reSingleTag = /^<(\w+)\s*\/?>(?:<\/\1>|)$/;
+var reSimpleSelector = /^[\.#]?[\w-]*$/;
 
 /*
  * Versatile wrapper for `querySelectorAll`.
