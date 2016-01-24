@@ -505,7 +505,7 @@ var _util = require(19);
 
 var _selectorClosest = require(15);
 
-function on(eventNames, selector, handler, useCapture) {
+function on(eventNames, selector, handler, useCapture, once) {
     var _this = this;
 
     if (typeof selector === 'function') {
@@ -529,6 +529,16 @@ function on(eventNames, selector, handler, useCapture) {
 
             if (selector) {
                 eventListener = delegateHandler.bind(element, selector, eventListener);
+            }
+
+            if (once) {
+                (function () {
+                    var listener = eventListener;
+                    eventListener = function (event) {
+                        off.call(element, eventNames, selector, handler, useCapture);
+                        listener.call(element, event);
+                    };
+                })();
             }
 
             element.addEventListener(eventName, eventListener, useCapture || false);
@@ -586,6 +596,10 @@ function off(eventNames, selector, handler, useCapture) {
     }, this);
 
     return this;
+}
+
+function one(eventNames, selector, handler, useCapture) {
+    return on.call(this, eventNames, selector, handler, useCapture, 1);
 }
 
 var eventKeyProp = '__domtastic_event__';
@@ -665,6 +679,7 @@ var bind = on,
 
 exports.on = on;
 exports.off = off;
+exports.one = one;
 exports.bind = bind;
 exports.unbind = unbind;
 
@@ -1225,7 +1240,7 @@ _util.extend(api, array, attr, class_, closest, css, data, dom, dom_extra, event
 
 $.fn = api;
 
-$.version = '0.11.2';
+$.version = '0.12.0';
 
 $.extend = _util.extend;
 

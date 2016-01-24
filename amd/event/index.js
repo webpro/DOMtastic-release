@@ -21,7 +21,7 @@ define(['exports', '../util', '../selector/closest'], function (exports, _util, 
      *     $('.container').on('click focus', '.item', handler);
      */
 
-    function on(eventNames, selector, handler, useCapture) {
+    function on(eventNames, selector, handler, useCapture, once) {
         var _this = this;
 
         if (typeof selector === 'function') {
@@ -45,6 +45,16 @@ define(['exports', '../util', '../selector/closest'], function (exports, _util, 
 
                 if (selector) {
                     eventListener = delegateHandler.bind(element, selector, eventListener);
+                }
+
+                if (once) {
+                    (function () {
+                        var listener = eventListener;
+                        eventListener = function (event) {
+                            off.call(element, eventNames, selector, handler, useCapture);
+                            listener.call(element, event);
+                        };
+                    })();
                 }
 
                 element.addEventListener(eventName, eventListener, useCapture || false);
@@ -117,6 +127,23 @@ define(['exports', '../util', '../selector/closest'], function (exports, _util, 
         }, this);
 
         return this;
+    }
+
+    /**
+     * Add event listener and execute the handler at most once per element.
+     *
+     * @param eventNames
+     * @param selector
+     * @param handler
+     * @param useCapture
+     * @return {Object} The wrapped collection
+     * @chainable
+     * @example
+     *     $('.item').one('click', callback);
+     */
+
+    function one(eventNames, selector, handler, useCapture) {
+        return on.call(this, eventNames, selector, handler, useCapture, 1);
     }
 
     /**
@@ -243,6 +270,7 @@ define(['exports', '../util', '../selector/closest'], function (exports, _util, 
 
     exports.on = on;
     exports.off = off;
+    exports.one = one;
     exports.bind = bind;
     exports.unbind = unbind;
 });

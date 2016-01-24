@@ -31,7 +31,7 @@ define(['exports', './util'], function (exports, _util) {
      * @example
      *     $('.item').css('padding-left'); // get
      *     $('.item').css('color', '#f00'); // set
-     *     $('.item').css({'border-width', '1px'}, {'display', 'inline-block}); // set multiple
+     *     $('.item').css({'border-width': '1px', display: 'inline-block'}); // set multiple
      */
 
     function css(key, value) {
