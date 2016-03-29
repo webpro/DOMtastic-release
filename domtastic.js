@@ -619,7 +619,7 @@ function clearHandlers(element) {
     var key = element[eventKeyProp];
     if (handlers[key]) {
         handlers[key] = null;
-        element[key] = null;
+        element[eventKeyProp] = null;
         unusedKeys.push(key);
     }
 }
@@ -1240,7 +1240,7 @@ _util.extend(api, array, attr, class_, closest, css, data, dom, dom_extra, event
 
 $.fn = api;
 
-$.version = '0.12.0';
+$.version = '0.12.1';
 
 $.extend = _util.extend;
 

@@ -178,7 +178,7 @@ define(['exports', '../util', '../selector/closest'], function (exports, _util, 
         var key = element[eventKeyProp];
         if (handlers[key]) {
             handlers[key] = null;
-            element[key] = null;
+            element[eventKeyProp] = null;
             unusedKeys.push(key);
         }
     }
